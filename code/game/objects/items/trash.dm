@@ -10,6 +10,7 @@
 /obj/item/trash/raisins
 	name = "\improper 4no raisins"
 	icon_state= "4no_raisins"
+	materials = list(/datum/material/plastic=150) //NSV13
 
 /obj/item/trash/candy
 	name = "candy"
@@ -18,15 +19,18 @@
 /obj/item/trash/cheesie
 	name = "cheesie honkers"
 	icon_state = "cheesie_honkers"
+	materials = list(/datum/material/plastic=150) //NSV13
 
 /obj/item/trash/chips
 	name = "chips"
 	icon_state = "chips"
+	materials = list(/datum/material/plastic=150) //NSV13
 
 /obj/item/trash/boritos
 	name = "boritos bag"
 	icon_state = "boritos"
 	grind_results = list(/datum/reagent/aluminium = 1) //from the mylar bag
+	materials = list(/datum/material/plastic=150) //NSV13
 
 /obj/item/trash/popcorn
 	name = "popcorn"
@@ -35,36 +39,44 @@
 /obj/item/trash/sosjerky
 	name = "\improper Scaredy's Private Reserve Beef Jerky"
 	icon_state = "sosjerky"
+	materials = list(/datum/material/plastic=150) //NSV13
 
 /obj/item/trash/syndi_cakes
 	name = "syndi-cakes"
 	icon_state = "syndi_cakes"
+	materials = list(/datum/material/plastic=150) //NSV13
 
 /obj/item/trash/energybar
 	name = "energybar wrapper"
 	icon_state = "energybar"
+	materials = list(/datum/material/plastic=150) //NSV13
 
 /obj/item/trash/waffles
 	name = "waffles tray"
 	icon_state = "waffles"
+	materials = list(/datum/material/iron=150) //NSV13
 
 /obj/item/trash/plate
 	name = "plate"
 	icon_state = "plate"
 	resistance_flags = NONE
+	materials = list(/datum/material/plastic=150) //NSV13
 
 /obj/item/trash/pistachios
 	name = "pistachios pack"
 	icon_state = "pistachios_pack"
+	materials = list(/datum/material/plastic=150) //NSV13
 
 /obj/item/trash/semki
 	name = "semki pack"
 	icon_state = "semki_pack"
+	materials = list(/datum/material/plastic=150) //NSV13
 
 /obj/item/trash/tray
 	name = "tray"
 	icon_state = "tray"
 	resistance_flags = NONE
+	materials = list(/datum/material/iron=150) //NSV13
 
 /obj/item/trash/candle
 	name = "candle"
@@ -76,6 +88,7 @@
 	icon_state = "cola"
 	resistance_flags = NONE
 	grind_results = list(/datum/reagent/aluminium = 10)
+	materials = list(/datum/material/iron=150) //NSV13
 
 /obj/item/trash/can/food/peaches
 	name = "canned peaches"
