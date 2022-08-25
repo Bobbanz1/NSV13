@@ -16,7 +16,7 @@
 	var/list/menutier4 = list("cake batter", "dough","egg box", "flour", "milk", "enzymes", "cheese wheel", "meat slab","an insult to pizza")
 	var/list/all_menus = list() //All the menu items. Built on init(). We scan for menu items that've been ordered here.
 	var/list/menualtnames = list("nutrients", "donk pizza", "veggie pizza", "surprise me", "you choose", "something", "i dont care","slab of meat","nutritional supplement")
-	var/list/temps = list("cold", "warm", "hot", "extra hot")
+	var/list/temps = list("cold", "warm", "hot", "extra hot", "well done")
 	var/activator = "computer"
 	var/menutype = READY
 	var/fuel = 50
@@ -36,6 +36,26 @@
 	all_menus += menualtnames.Copy()
 
 	become_hearing_sensitive(ROUNDSTART_TRAIT)
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/replicator/LateInitialize()
+	. = ..()
+	var/turf/object_current_turf = get_turf(src)
+	var/Z_level = object_current_turf.get_virtual_z_level()
+	var/valid_z = get_level_trait(Z_level)
+	for(var/obj/machinery/biogenerator/Bio in GLOB.machines)
+		if(Bio.get_virtual_z_level() in SSmapping.levels_by_trait(valid_z))
+			fuel = Bio.points
+			break
+
+/obj/machinery/replicator/proc/Recheck_Biomass()
+	var/turf/object_current_turf = get_turf(src)
+	var/Z_level = object_current_turf.get_virtual_z_level()
+	var/valid_z = get_level_trait(Z_level)
+	for(var/obj/machinery/biogenerator/Bio in GLOB.machines)
+		if(Bio.get_virtual_z_level() in SSmapping.levels_by_trait(valid_z))
+			fuel = Bio.points
+			break
 
 /obj/machinery/replicator/ui_interact(mob/user)
 	if(!is_operational())
@@ -156,6 +176,7 @@
 	qdel(G)
 
 /obj/machinery/replicator/attackby(obj/item/O, mob/user, params)
+	Recheck_Biomass()
 	if(default_deconstruction_screwdriver(user, "replicator-o", "replicator", O))
 		return FALSE
 	if(default_unfasten_wrench(user, O))
@@ -303,6 +324,8 @@
 							food.reagents.chem_temp = 450
 						if("extra hot")
 							food.reagents.chem_temp = 5000
+						if("well done")
+							food.reagents.chem_temp = 2000000000000 //A nice warm Steak or a perfectly well boiled Cup of Tea
 				if(nutriment > 0)
 					fuel -= nutriment
 				else
