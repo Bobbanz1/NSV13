@@ -20,6 +20,7 @@
 	var/activator = "computer"
 	var/menutype = READY
 	var/fuel = 50
+	var/obj/machinery/biogenerator/Biogen
 	var/capacity_multiplier = 1
 	var/failure_grade = 1
 	var/speed_grade = 1
@@ -45,17 +46,10 @@
 	var/valid_z = get_level_trait(Z_level)
 	for(var/obj/machinery/biogenerator/Bio in GLOB.machines)
 		if(Bio.get_virtual_z_level() in SSmapping.levels_by_trait(valid_z))
-			fuel = Bio.points
-			break
-
-/obj/machinery/replicator/proc/Recheck_Biomass()
-	var/turf/object_current_turf = get_turf(src)
-	var/Z_level = object_current_turf.get_virtual_z_level()
-	var/valid_z = get_level_trait(Z_level)
-	for(var/obj/machinery/biogenerator/Bio in GLOB.machines)
-		if(Bio.get_virtual_z_level() in SSmapping.levels_by_trait(valid_z))
-			fuel = Bio.points
-			break
+			var/area/location = get_area(Bio)
+			if(location.name == "Hydroponics")
+				Biogen = Bio
+				break
 
 /obj/machinery/replicator/ui_interact(mob/user)
 	if(!is_operational())
@@ -124,7 +118,7 @@
 /obj/machinery/replicator/examine(mob/user)
 	. = ..()
 	ui_interact(user)
-	to_chat(user, "<span class='notice'>fuel reserves: <b>[fuel]/[capacity_multiplier*600]</b>. Click it with any biomatter to recharge [src].</span>")
+	to_chat(user, "<span class='notice'>Fuel reserves: <b>[Biogen.points]</b>. Click it with any biomatter to recharge [src].</span>")
 
 /obj/machinery/replicator/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, message_mode)
 	. = ..()
@@ -170,13 +164,12 @@
 
 /obj/machinery/replicator/proc/grind(obj/item/reagent_containers/food/snacks/grown/G)
 	var/nutrimentgain = G.reagents.get_reagent_amount("nutriment")
-	fuel += nutrimentgain
-	if(fuel >= capacity_multiplier*600)
-		fuel = capacity_multiplier*600
+	Biogen.points += nutrimentgain
+	if(Biogen.points >= capacity_multiplier*600)
+		Biogen.points = capacity_multiplier*600
 	qdel(G)
 
 /obj/machinery/replicator/attackby(obj/item/O, mob/user, params)
-	Recheck_Biomass()
 	if(default_deconstruction_screwdriver(user, "replicator-o", "replicator", O))
 		return FALSE
 	if(default_unfasten_wrench(user, O))
@@ -187,14 +180,14 @@
 		playsound(src, 'nsv13/sound/effects/replicator-vaporize.ogg', 100, 1)
 		qdel(O)
 		return FALSE
-	if(fuel < capacity_multiplier*600)
+	if(Biogen.points < capacity_multiplier*600)
 		if(istype(O, /obj/item/reagent_containers/food/snacks/grown))
 			grind(O)
 			success = TRUE
 		else if(istype(O, /obj/item/storage/bag/plants))
 			var/obj/item/storage/bag/plants/P = O
 			for(var/obj/item/reagent_containers/food/snacks/grown/G in P.contents)
-				if(fuel < capacity_multiplier*600)
+				if(Biogen.points < capacity_multiplier*600)
 					grind(G)
 				success = TRUE
 	else
@@ -305,13 +298,13 @@
 
 	if(food)
 		var/nutriment = food.reagents.get_reagent_amount("nutriment")
-		if(fuel >= nutriment && fuel >= 5)
+		if(Biogen.points >= nutriment && Biogen.points >= 5)
 			//time to check laser power.
 			if(prob(6-failure_grade)) //Chance to make a burned mess so the chef is still useful.
 				var/obj/item/reagent_containers/food/snacks/badrecipe/neelixcooking = new /obj/item/reagent_containers/food/snacks/badrecipe(get_turf(src))
 				neelixcooking.name = "replicator mess"
 				neelixcooking.desc = "perhaps you should invest in some higher quality parts."
-				fuel -= 5
+				Biogen.points -= 5
 				qdel(food) //NO FOOD FOR YOU!
 				return
 			else
@@ -327,9 +320,9 @@
 						if("well done")
 							food.reagents.chem_temp = 2000000000000 //A nice warm Steak or a perfectly well boiled Cup of Tea
 				if(nutriment > 0)
-					fuel -= nutriment
+					Biogen.points -= nutriment
 				else
-					fuel -= 5 //Default, in case the food is useless.
+					Biogen.points -= 5 //Default, in case the food is useless.
 				if(emagged)
 					food.reagents.add_reagent("munchyserum", nutriment)
 					food.reagents.remove_reagent("nutriment",nutriment)
