@@ -10,14 +10,15 @@
 	idle_power_usage = 40
 	pixel_y = 32
 	anchored = TRUE
-	var/list/menutier1 = list("rice", "egg", "ration pack", "glass","tea earl grey") //It starts off terribly so the chef isn't replaced. You can then upgrade it via RnD to give actual food.
+	circuit = /obj/item/circuitboard/machine/replicator
+	var/list/menutier1 = list("rice", "egg", "ration pack", "glass", "tea earl grey") //It starts off terribly so the chef isn't replaced. You can then upgrade it via RnD to give actual food.
 	var/list/menutier2 = list("burger", "steak", "fries","onion rings", "pancakes","coffee")
 	var/list/menutier3 = list("cheese pizza", "meat pizza", "mushroom pizza", "meat pizza", "pineapple pizza", "donkpocket pizza", "vegetable pizza")
 	var/list/menutier4 = list("cake batter", "dough","egg box", "flour", "milk", "enzymes", "cheese wheel", "meat slab","an insult to pizza")
 	var/list/all_menus = list() //All the menu items. Built on init(). We scan for menu items that've been ordered here.
 	var/list/menualtnames = list("nutrients", "donk pizza", "veggie pizza", "surprise me", "you choose", "something", "i dont care","slab of meat","nutritional supplement")
 	var/list/temps = list("cold", "warm", "hot", "extra hot", "well done")
-	var/activator = "computer"
+	var/list/activator = list("computer", "alexa", "google", "ai", "voice")
 	var/menutype = READY
 	var/fuel = 50
 	var/obj/machinery/biogenerator/Biogen
@@ -51,38 +52,35 @@
 				Biogen = Bio
 				break
 
-/obj/machinery/replicator/ui_interact(mob/user)
-	if(!is_operational())
-		return
-	if(panel_open)
-		return
-	. = ..()
-	var/dat
-	if(menutype == REPLICATING)
-		dat += "REPLICATING FOOD, PLEASE WAIT.<br>"
-	dat += "<br><h1>MENU:</h1> "
-	dat += "<br><b>This machine is voice activated. To order food, say <i>computer</i> and then the food item you want. (Eg. Computer, Tea earl grey. Hot)</b><br> <hr><h2>Nutritional supplements:</h2>"
+/obj/machinery/replicator/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "Replicator", name)
+		ui.open()
 
-	for(var/foodname in menutier1)
-		dat += "<br>[foodname]"
+/obj/machinery/replicator/ui_data()
+	var/data = list()
+	data["menutier1"] = list()
+	data["menutier2"] = list()
+	data["menutier3"] = list()
+	data["menutier4"] = list()
+	if(menu_grade >= 1)
+		for(var/foodname in menutier1)
+			data["menutier1"] += foodname
+
 	if(menu_grade >= 2)
-		dat += "<h2>Basic dishes:</h2><br>"
 		for(var/foodname in menutier2)
-			dat += "<br>[foodname] "
+			data["menutier2"] += foodname
+
 	if(menu_grade >= 3)
-		dat += "<h2>Complex dishes:</h2><br>"
 		for(var/foodname in menutier3)
-			dat += "<br>[foodname] "
+			data["menutier3"] += foodname
+
 	if(menu_grade >= 4)
-		dat += "<h2>Ingredients:</h2><br>"
 		for(var/foodname in menutier4)
-			dat += "<br>[foodname] "
-	dat += "<h2>Temperatures:</h2>"
-	for(var/foodname in temps)
-		dat += "<br>[foodname] "
-	var/datum/browser/popup = new(user, "replicator menu", name, 450, 520)
-	popup.set_content(dat)
-	popup.open()
+			data["menutier4"] += foodname
+
+	return data
 
 /obj/machinery/replicator/emag_act(mob/user)
 	if(!emagged)
