@@ -13,7 +13,7 @@
 	circuit = /obj/item/circuitboard/machine/replicator
 	var/list/menutier1 = list("rice", "egg", "ration pack", "glass", "tea earl grey") //It starts off terribly so the chef isn't replaced. You can then upgrade it via RnD to give actual food.
 	var/list/menutier2 = list("burger", "steak", "fries","onion rings", "pancakes","coffee")
-	var/list/menutier3 = list("cheese pizza", "meat pizza", "mushroom pizza", "meat pizza", "pineapple pizza", "donkpocket pizza", "vegetable pizza")
+	var/list/menutier3 = list("cheese pizza", "mushroom pizza", "meat pizza", "pineapple pizza", "donkpocket pizza", "vegetable pizza")
 	var/list/menutier4 = list("cake batter", "dough","egg box", "flour", "milk", "enzymes", "cheese wheel", "meat slab","an insult to pizza")
 	var/list/all_menus = list() //All the menu items. Built on init(). We scan for menu items that've been ordered here.
 	var/list/menualtnames = list("nutrients", "donk pizza", "veggie pizza", "surprise me", "you choose", "something", "i dont care","slab of meat","nutritional supplement")
