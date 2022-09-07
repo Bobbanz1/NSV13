@@ -146,7 +146,7 @@
 		if(target && powered())
 			menutype = REPLICATING
 			idle_power_usage = 400
-			icon_state = "replicator-on"
+			icon_state = "replicator-replicating"
 			playsound(src, 'nsv13/sound/effects/replicator.ogg', 100, 1)
 			ready = FALSE
 			var/speed_mult = 60 //Starts off hella slow.
@@ -155,7 +155,7 @@
 			addtimer(CALLBACK(src, .proc/set_ready, TRUE), speed_mult)
 
 /obj/machinery/replicator/proc/set_ready()
-	icon_state = "replicator"
+	icon_state = "replicator-on"
 	idle_power_usage = 40
 	menutype = READY
 	ready = TRUE
@@ -168,7 +168,7 @@
 	qdel(G)
 
 /obj/machinery/replicator/attackby(obj/item/O, mob/user, params)
-	if(default_deconstruction_screwdriver(user, "replicator-o", "replicator", O))
+	if(default_deconstruction_screwdriver(user, "replicator-o", "replicator-on", O))
 		return FALSE
 	if(default_unfasten_wrench(user, O))
 		return FALSE
