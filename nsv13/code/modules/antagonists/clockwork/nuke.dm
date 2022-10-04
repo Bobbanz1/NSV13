@@ -1,7 +1,7 @@
 /obj/machinery/nuclearbomb/syndicate/clock
 	name = "ratvar nuclear payload"
 	desc = "You probably shouldn't stick around to see if this is armed."
-	icon = 'icons/obj/machines/nuke.dmi'
+	icon = 'nsv13/icons/obj/clockwork/machines/nuke.dmi'
 	icon_state = "ratvarbomb_base"
 
 /obj/machinery/nuclearbomb/syndicate/clock/process()
