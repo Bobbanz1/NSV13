@@ -1,10 +1,16 @@
 /datum/steamline
 	var/datum/gas_mixture/steam
+	var/list/datum/gas_mixture/other_steams
+
 	var/list/obj/machinery/steam_clock/steam/pipe/members
+	var/list/obj/machinery/steam_clock/steam/machine/other_steammch
+
 	var/update = TRUE
 
 /datum/steamline/New()
+	other_steams = list()
 	members = list()
+	other_steammch = list()
 	SSsteam.networks += src
 
 /datum/steamline/Destroy()
@@ -13,6 +19,8 @@
 		temporarily_store_steam()
 	for(var/obj/machinery/steam_clock/steam/pipe/P in members)
 		P.parent = null
+	for(var/obj/machinery/steam_clock/steam/machine/M in other_steammch)
+		M.nullifyPipenet(src)
 	return ..()
 
 /datum/steamline/process()
@@ -30,18 +38,22 @@
 		if(E.steam_temporary)
 			steam = E.steam_temporary
 			E.steam_temporary = null
-	//else
+	else
+		addMachineryMember(base)
 	if(!steam)
 		steam = new
 	var/list/possible_expansions = list(base)
 	while(possible_expansions.len > 0)
 		for(var/obj/machinery/steam_clock/steam/borderline in possible_expansions)
+
 			var/list/result = borderline.steamline_expansion(src)
+
 			if(result.len > 0)
 				for(var/obj/machinery/steam_clock/steam/P in result)
 					if(istype(P, /obj/machinery/steam_clock/steam/pipe))
 						var/obj/machinery/steam_clock/steam/pipe/item = P
 						if(!members.Find(item))
+
 							if(item.parent)
 								var/static/steamnetwarnings = 10
 								if(steamnetwarnings > 0)
@@ -60,11 +72,18 @@
 								item.steam_temporary = null
 					else
 						P.setPipenet(src, borderline)
-						//addMachineryMember(P)
+						addMachineryMember(P)
 
 			possible_expansions -= borderline
 
 	steam.set_volume(volume)
+
+/datum/steamline/proc/addMachineryMember(obj/machinery/steam_clock/steam/machine/M)
+	other_steammch |= M
+	var/datum/gas_mixture/G = M.returnPipenetSteam(src)
+	if(!G)
+		stack_trace("addMachineryMember: Null gasmix added to steamline datum from [M] which is of type [M.type]. Nearby: ([M.x], [M.y], [M.z])")
+	other_steams |= G
 
 /datum/steamline/proc/addMember(obj/machinery/steam_clock/steam/A, obj/machinery/steam_clock/steam/N)
 	if(istype(A, /obj/machinery/steam_clock/steam/pipe))
@@ -83,7 +102,7 @@
 			steam.set_volume(steam.return_volume() + P.volume)
 	else
 		A.setPipenet(src, N)
-		//addMachineryMember(A)
+		addMachineryMember(A)
 
 /datum/steamline/proc/merge(datum/steamline/E)
 	if(E == src)
@@ -93,7 +112,12 @@
 	for(var/obj/machinery/steam_clock/steam/pipe/S in E.members)
 		S.parent = src
 	steam.merge(E.steam)
+	for(var/obj/machinery/steam_clock/steam/machine/M in E.other_steammch)
+		M.replacePipenet(E, src)
+	other_steammch.Add(E.other_steammch)
+	other_steams.Add(E.other_steams)
 	E.members.Cut()
+	E.other_steammch.Cut()
 	update = TRUE
 	qdel(E)
 
@@ -102,6 +126,12 @@
 
 /obj/machinery/steam_clock/steam/pipe/addMember(obj/machinery/steam_clock/steam/A)
 	parent.addMember(A, src)
+
+/obj/machinery/steam_clock/steam/machine/addMember(obj/machinery/steam_clock/steam/S)
+	var/datum/steamline/L = returnPipenet(S)
+	if(!L)
+		CRASH("null.addMember() called by [type] on [COORD(src)]")
+	L.addMember(S, src)
 
 /datum/steamline/proc/temporarily_store_steam()
 	for(var/obj/machinery/steam_clock/steam/pipe/member in members)
@@ -114,7 +144,7 @@
 		member.steam_temporary.set_temperature(steam.return_temperature())
 
 /datum/steamline/proc/return_steam()
-	. = steam
+	. = other_steams + steam
 
 /datum/steamline/proc/empty()
 	for(var/datum/gas_mixture/GM in get_all_connected_steam())

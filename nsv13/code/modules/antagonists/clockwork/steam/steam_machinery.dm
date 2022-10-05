@@ -14,9 +14,14 @@
 	var/initialize_directions = 0
 	var/pipe_flags = NONE
 
+	var/static/list/iconsetids = list()
+	var/static/list/pipeimages = list()
+
 	var/device_type = 0
 	var/list/obj/machinery/steam_clock/steam/nodes
 
+	var/construction_type
+	var/pipe_state
 	var/on = FALSE
 	var/interacts_with_steam = FALSE
 
@@ -133,6 +138,39 @@
 	if(nodes.len >= nodes.Find(reference)) // for some reason things can still be acted on even though they've been deleted this is a really fucky way of detecting that
 		nodes[nodes.Find(reference)] = null
 		update_icon()
+
+/obj/machinery/steam_clock/steam/deconstruct(disassembled = TRUE)
+	if(!(flags_1 & NODECONSTRUCT_1))
+		if(can_unwrench)
+			var/obj/item/brass_pipe/stored = new construction_type(loc, null, dir, src)
+			if(!disassembled)
+				stored.obj_integrity = stored.max_integrity * 0.5
+			transfer_fingerprints_to(stored)
+	..()
+
+/obj/machinery/steam_clock/steam/proc/getpipeimage(iconset, iconstate, direction)
+
+	///Add identifiers for the iconset
+	if(iconsetids[iconset] == null)
+		iconsetids[iconset] = num2text(iconsetids.len + 1)
+
+	///Generate a unique identifier for this image combination
+	var/identifier = iconsetids[iconset] + "_[iconstate]_[direction]"
+
+	if((!(. = pipeimages[identifier])))
+		var/image/pipe_overlay
+		pipe_overlay = . = pipeimages[identifier] = image(iconset, iconstate, dir = direction)
+		PIPING_LAYER_SHIFT(pipe_overlay, 3)
+
+/obj/machinery/steam_clock/steam/on_construction()
+	var/turf/T = get_turf(src)
+	level = T.intact ? 2 : 1
+	steaminit()
+	var/list/nodes = steamline_expansion()
+	for(var/obj/machinery/steam_clock/steam/S in nodes)
+		S.steaminit()
+		S.addMember(src)
+	build_network()
 
 /obj/machinery/steam_clock/steam/proc/returnPipenets()
 	return list()

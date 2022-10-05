@@ -11,8 +11,8 @@
 
 	device_type = BINARY
 
-	//construction_type = /obj/item/pipe/binary/bendable
-	//pipe_state = "simple"
+	construction_type = /obj/item/brass_pipe/binary/bendable
+	pipe_state = "steam_pipe"
 
 /obj/machinery/steam_clock/steam/pipe/simple/SetInitDirections()
 	if(dir in GLOB.diagonals)
