@@ -37,8 +37,8 @@
 	update_icon()
 
 /obj/machinery/steam_clock/steam/pipe/returnPipenet()
-//	if(parent)
-//		return parent.air
+	if(parent)
+		return parent.steam
 
 /obj/machinery/steam_clock/steam/pipe/setPipenet(datum/steamline/P)
 	parent = P
