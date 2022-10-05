@@ -278,6 +278,7 @@
 //#define GAS_MIASMA				"miasma" //NSV13 - no miasma
 #define GAS_CONSTRICTED_PLASMA  "constricted_plasma" //NSV13
 #define GAS_NUCLEIUM			"nucleium" //NSV13
+#define GAS_STEAM				"steam" //NSV13
 
 #define GAS_FLAG_DANGEROUS		(1<<0)
 #define GAS_FLAG_BREATH_PROC	(1<<1)

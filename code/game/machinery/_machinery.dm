@@ -178,6 +178,9 @@ Class Procs:
 /obj/machinery/proc/process_atmos()//If you dont use process why are you here
 	return PROCESS_KILL
 
+/obj/machinery/proc/process_steam() //NSV13
+	return PROCESS_KILL //NSV13
+
 /obj/machinery/emp_act(severity)
 	. = ..()
 	if(use_power && !stat && !(. & EMP_PROTECT_SELF))

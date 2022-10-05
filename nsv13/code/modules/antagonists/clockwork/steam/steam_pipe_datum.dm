@@ -1,14 +1,25 @@
 /datum/steamline
+	var/datum/gas_mixture/steam
 	var/list/obj/machinery/steam_clock/steam/pipe/members
 	var/update = TRUE
 
 /datum/steamline/New()
 	members = list()
+	SSsteam.networks += src
 
 /datum/steamline/Destroy()
+	SSsteam.networks -= src
+	if(steam && steam.return_volume())
+		temporarily_store_steam()
 	for(var/obj/machinery/steam_clock/steam/pipe/P in members)
 		P.parent = null
 	return ..()
+
+/datum/steamline/process()
+	if(update)
+		update = FALSE
+		reconcile_steam()
+	update = steam.react(src)
 
 /datum/steamline/proc/build_steamline(obj/machinery/steam_clock/steam/base)
 	var/volume = 0
@@ -16,7 +27,12 @@
 		var/obj/machinery/steam_clock/steam/pipe/E = base
 		volume = E.volume
 		members += E
+		if(E.steam_temporary)
+			steam = E.steam_temporary
+			E.steam_temporary = null
 	//else
+	if(!steam)
+		steam = new
 	var/list/possible_expansions = list(base)
 	while(possible_expansions.len > 0)
 		for(var/obj/machinery/steam_clock/steam/borderline in possible_expansions)
@@ -39,8 +55,16 @@
 							volume += item.volume
 							item.parent = src
 
+							if(item.steam_temporary)
+								steam.merge(item.steam_temporary)
+								item.steam_temporary = null
+					else
+						P.setPipenet(src, borderline)
+						//addMachineryMember(P)
+
 			possible_expansions -= borderline
 
+	steam.set_volume(volume)
 
 /datum/steamline/proc/addMember(obj/machinery/steam_clock/steam/A, obj/machinery/steam_clock/steam/N)
 	if(istype(A, /obj/machinery/steam_clock/steam/pipe))
@@ -56,13 +80,59 @@
 			merge(E)
 		if(!members.Find(P))
 			members += P
+			steam.set_volume(steam.return_volume() + P.volume)
+	else
+		A.setPipenet(src, N)
+		//addMachineryMember(A)
 
-/datum/steamline/proc/merge(datum/pipeline/E)
+/datum/steamline/proc/merge(datum/steamline/E)
 	if(E == src)
 		return
+	steam.set_volume(steam.return_volume() + E.steam.return_volume())
 	members.Add(E.members)
 	for(var/obj/machinery/steam_clock/steam/pipe/S in E.members)
 		S.parent = src
+	steam.merge(E.steam)
 	E.members.Cut()
 	update = TRUE
 	qdel(E)
+
+/obj/machinery/steam_clock/steam/proc/addMember(obj/machinery/steam_clock/steam/A)
+	return
+
+/obj/machinery/steam_clock/steam/pipe/addMember(obj/machinery/steam_clock/steam/A)
+	parent.addMember(A, src)
+
+/datum/steamline/proc/temporarily_store_steam()
+	for(var/obj/machinery/steam_clock/steam/pipe/member in members)
+		member.steam_temporary = new
+		member.steam_temporary.set_volume(member.volume)
+		member.steam_temporary.copy_from(steam)
+
+		member.steam_temporary.multiply(member.volume/steam.return_volume())
+
+		member.steam_temporary.set_temperature(steam.return_temperature())
+
+/datum/steamline/proc/return_steam()
+	. = steam
+
+/datum/steamline/proc/empty()
+	for(var/datum/gas_mixture/GM in get_all_connected_steam())
+		GM.clear()
+
+/datum/steamline/proc/get_all_connected_steam()
+	var/list/datum/gas_mixture/GL = list()
+	var/list/datum/steamline/SL = list()
+	SL += src
+
+	for(var/i = 1; i <= SL.len; i++)
+		var/datum/steamline/S = SL[i]
+		if(!S)
+			continue
+		GL += S.return_steam()
+
+	return GL
+
+/datum/steamline/proc/reconcile_steam()
+	var/list/datum/gas_mixture/GL = get_all_connected_steam()
+	equalize_all_gases_in_list(GL)

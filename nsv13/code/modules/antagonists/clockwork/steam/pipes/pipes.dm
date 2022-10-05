@@ -1,4 +1,5 @@
 /obj/machinery/steam_clock/steam/pipe
+	var/datum/gas_mixture/steam_temporary
 	var/volume = 0
 
 	level = 1
@@ -11,6 +12,12 @@
 	volume = 35 * device_type
 	..()
 
+/obj/machinery/steam_clock/steam/pipe/nullifyNode(i)
+	var/obj/machinery/steam_clock/steam/oldN = nodes[i]
+	..()
+	if(oldN)
+		SSsteam.add_to_rebuild_queue(oldN)
+
 /obj/machinery/steam_clock/steam/pipe/destroy_network()
 	QDEL_NULL(parent)
 
@@ -18,6 +25,11 @@
 	if(QDELETED(parent))
 		parent = new
 		parent.build_steamline(src)
+
+/obj/machinery/steam_clock/steam/pipe/steaminit()
+	var/turf/T = loc
+	hide(T.intact)
+	..()
 
 /obj/machinery/steam_clock/steam/pipe/hide(i)
 	if(level == 1 && isturf(loc))

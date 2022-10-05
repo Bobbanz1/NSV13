@@ -18,6 +18,7 @@
 	var/list/obj/machinery/steam_clock/steam/nodes
 
 	var/on = FALSE
+	var/interacts_with_steam = FALSE
 
 /obj/machinery/steam_clock/steam/New(loc, process = TRUE, setdir)
 	if(!isnull(setdir))
@@ -26,7 +27,23 @@
 		normalize_cardinal_directions()
 	nodes = new(device_type)
 	..()
+	if(process)
+		if(interacts_with_steam)
+			SSsteam.steam_air_machinery += src
+		else
+			SSsteam.steam_machinery += src
 	SetInitDirections()
+
+/obj/machinery/steam_clock/steam/Destroy()
+	for(var/i in 1 to device_type)
+		nullifyNode(i)
+
+	SSsteam.steam_machinery -= src
+	SSsteam.steam_air_machinery -= src
+	SSsteam.steamnets_needing_rebuilt -= src
+
+	dropContents()
+	return ..()
 
 /obj/machinery/steam_clock/steam/proc/destroy_network()
 	return
@@ -38,6 +55,7 @@
 	if(nodes[i])
 		var/obj/machinery/steam_clock/steam/N = nodes[i]
 		N.disconnect(src)
+		nodes[i] = null
 
 /obj/machinery/steam_clock/steam/proc/getNodeConnects()
 	var/list/node_connects = list()
@@ -59,7 +77,7 @@
 		if(WEST)
 			setDir(EAST)
 
-/obj/machinery/steam_clock/steam/proc/pipeinit(list/node_connects)
+/obj/machinery/steam_clock/steam/proc/steaminit(list/node_connects)
 	if(!node_connects) //for pipes where order of nodes doesn't matter
 		node_connects = getNodeConnects()
 

@@ -145,3 +145,9 @@
 	gas_overlay = "nucleium"
 	moles_visible = MOLES_GAS_VISIBLE
 	flags = GAS_FLAG_DANGEROUS
+
+/datum/gas/steam //NSV13
+	id = "steam"
+	specific_heat = 40
+	name = "Steam"
+	breath_reagent = /datum/reagent/water
