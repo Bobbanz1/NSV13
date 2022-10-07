@@ -1,5 +1,5 @@
 /obj/machinery/steam_clock/steam/pipe/simple
-	icon = 'nsv13/icons/obj/clockwork/steam/pipes.dmi'
+	icon = 'nsv13/icons/obj/clockwork/steam/pipes/pipes.dmi'
 	icon_state = "steam_pipe"
 
 	name = "steam pipe"

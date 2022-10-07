@@ -5,7 +5,7 @@
 	var/pipename
 	force = 7
 	throwforce = 8
-	icon = 'nsv13/icons/obj/clockwork/steam/pipes.dmi'
+	icon = 'nsv13/icons/obj/clockwork/steam/pipes/pipes.dmi'
 	icon_state = "steam_pipe"
 	w_class = WEIGHT_CLASS_NORMAL
 	level = 2

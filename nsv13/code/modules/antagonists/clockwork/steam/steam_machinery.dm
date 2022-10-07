@@ -1,5 +1,5 @@
 /obj/machinery/steam_clock/steam
-	icon = 'nsv13/icons/obj/clockwork/steam/pipes.dmi'
+	icon = 'nsv13/icons/obj/clockwork/steam/pipes/pipes.dmi'
 	icon_state = "steam_pipe"
 	anchored = TRUE
 	move_resist = INFINITY

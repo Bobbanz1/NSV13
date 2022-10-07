@@ -47,7 +47,7 @@
 			underlays += get_pipe_underlay("pipe_exposed", direction)
 
 /obj/machinery/steam_clock/steam/machine/proc/get_pipe_underlay(state, dir)
-	. = getpipeimage('nsv13/icons/obj/clockwork/steam/pipes.dmi', state, dir)
+	. = getpipeimage('nsv13/icons/obj/clockwork/steam/pipes/pipes.dmi', state, dir)
 
 /obj/machinery/steam_clock/steam/machine/nullifyNode(i)
 	if(parents[i])
