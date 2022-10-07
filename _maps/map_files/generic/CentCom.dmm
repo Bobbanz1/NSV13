@@ -8417,20 +8417,6 @@
 	},
 /turf/open/floor/wood,
 /area/centcom/holding)
-"xF" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/machinery/steam_clock/steam/machine/primary/boiler,
-/turf/open/floor/plasteel,
-/area/tdome/arena)
 "xG" = (
 /turf/open/floor/plasteel/dark,
 /area/syndicate_mothership/control)
@@ -8596,22 +8582,6 @@
 	},
 /turf/open/floor/engine/cult,
 /area/wizard_station)
-"yc" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/machinery/steam_clock/steam/machine/primary/boiler{
-	dir = 8
-	},
-/turf/open/floor/plasteel,
-/area/tdome/arena)
 "yd" = (
 /obj/structure/flora/ausbushes/fernybush,
 /obj/structure/flora/ausbushes/fullgrass,
@@ -16120,24 +16090,6 @@
 /obj/effect/turf_decal/tile/blue,
 /turf/open/floor/plasteel/dark,
 /area/ctf)
-"Qy" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/machinery/steam_clock/steam/pipe/simple{
-	level = 2;
-	layer = 2.47;
-	dir = 4
-	},
-/turf/open/floor/plasteel,
-/area/tdome/arena)
 "Qz" = (
 /obj/docking_port/stationary{
 	dir = 4;
@@ -16763,24 +16715,6 @@
 	},
 /turf/open/floor/plasteel/dark,
 /area/ctf)
-"TQ" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/machinery/steam_clock/steam/pipe/simple{
-	level = 2;
-	layer = 2.47;
-	dir = 5
-	},
-/turf/open/floor/plasteel,
-/area/tdome/arena)
 "TT" = (
 /obj/structure/table/reinforced,
 /obj/item/storage/fancy/donut_box,
@@ -60644,8 +60578,8 @@ HW
 HN
 Il
 It
-xF
-TQ
+IH
+IH
 IH
 IH
 IH
@@ -60902,7 +60836,7 @@ HN
 Il
 It
 IH
-Qy
+IH
 Ji
 Ji
 IH
@@ -61159,7 +61093,7 @@ HN
 Il
 It
 IH
-Qy
+IH
 Jj
 Jq
 IH
@@ -61416,7 +61350,7 @@ HN
 Il
 It
 IH
-Qy
+IH
 Ji
 Ji
 IH
@@ -61673,7 +61607,7 @@ HN
 Il
 It
 IH
-yc
+IH
 IH
 IH
 IH
