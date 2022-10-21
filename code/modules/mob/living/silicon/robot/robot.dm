@@ -834,7 +834,8 @@
 
 /mob/living/silicon/robot/modules/Initialize()
 	. = ..()
-	module.transform_to(set_module)
+	//module.transform_to(set_module) NSV13
+	INVOKE_ASYNC(module, /obj/item/robot_module.proc/transform_to, set_module, TRUE) //NSV13
 
 /mob/living/silicon/robot/modules/standard
 	set_module = /obj/item/robot_module/standard
