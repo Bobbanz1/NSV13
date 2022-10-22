@@ -5,22 +5,43 @@
 
 /obj/item/robot_module/standard
 	name = "Standard"
+	borg_skins = list(
+		"Default" = list(SKIN_ICON_STATE = "robot"),
+		"Zoomba" = list(SKIN_ICON_STATE = "zoomba_standard", SKIN_ICON = CYBORG_ICON_STANDARD, SKIN_FEATURES = list(R_TRAIT_UNIQUEWRECK)),
+		"Protectron" = list(SKIN_ICON_STATE = "protectron_standard", SKIN_ICON = CYBORG_ICON_STANDARD),
+	)
 
 /obj/item/robot_module/medical
-	name = "Medical"
-
+	borg_skins = list(
+		"Default" = list(SKIN_ICON_STATE = "medical"),
+		"Protectron" = list(SKIN_ICON = CYBORG_ICON_MED, SKIN_ICON_STATE = "protectron_medical"),
+		"Zoomba" = list(SKIN_ICON = CYBORG_ICON_MED, SKIN_ICON_STATE = "zoomba_med", SKIN_FEATURES = list(R_TRAIT_UNIQUEWRECK), SKIN_HAT_OFFSET = -13),
+	)
 /obj/item/robot_module/engineering
-	name = "Engineering"
+	borg_skins = list(
+		"Default" = list(SKIN_ICON_STATE = "engineer"),
+		"Zoomba" = list(SKIN_ICON_STATE = "zoomba_engi", SKIN_ICON = CYBORG_ICON_ENG, SKIN_FEATURES = list(R_TRAIT_UNIQUEWRECK), SKIN_HAT_OFFSET = -13),
+		"Default - Treads" = list(SKIN_ICON_STATE = "engi-tread", SKIN_LIGHT_KEY = "engineer", SKIN_ICON = CYBORG_ICON_ENG),
+		"Can" = list(SKIN_ICON_STATE = "caneng", SKIN_ICON = CYBORG_ICON_ENG),
+	)
 
 /obj/item/robot_module/peacekeeper
-	name = "Peacekeeper"
-
+	borg_skins = list(
+		"Default" = list(SKIN_ICON_STATE = "peace"),
+		"Zoomba" = list(SKIN_ICON_STATE = "zoomba_peace", SKIN_ICON = CYBORG_ICON_PEACEKEEPER, SKIN_FEATURES = list(R_TRAIT_UNIQUEWRECK), SKIN_HAT_OFFSET = -13),
+	)
 /obj/item/robot_module/janitor
-	name = "Janitor"
-
+	borg_skins = list(
+		"Default" = list(SKIN_ICON_STATE = "janitor"),
+		"Zoomba" = list(SKIN_ICON_STATE = "zoomba_jani", SKIN_ICON = CYBORG_ICON_JANI, SKIN_FEATURES = list(R_TRAIT_UNIQUEWRECK), SKIN_HAT_OFFSET = -13),
+		"Can" = list(SKIN_ICON_STATE = "canjan", SKIN_ICON = CYBORG_ICON_JANI),
+		"Protectron" = list(SKIN_ICON_STATE = "protectron_janitor", SKIN_ICON = CYBORG_ICON_JANI),
+	)
 /obj/item/robot_module/clown
-	name = "Clown"
-
+	borg_skins = list(
+		"Default" = list(SKIN_ICON_STATE = "clown"),
+		"Clown Ross" = list(SKIN_ICON_STATE = "clownbot", SKIN_ICON = CYBORG_ICON_CLOWN),
+	)
 /obj/item/robot_module/butler
 	special_light_key = null
 	borg_skins = list(
@@ -29,12 +50,14 @@
 		"Bro" = list(SKIN_ICON_STATE = "brobot", SKIN_LIGHT_KEY = "service"),
 		"Kent" = list(SKIN_ICON_STATE = "kent", SKIN_LIGHT_KEY = "medical"),
 		"Tophat" = list(SKIN_ICON_STATE = "tophat"),
-		"Borgi" = list(SKIN_ICON_STATE = "borgi-serv", SKIN_ICON = CYBORG_ICON_SERVICE, SKIN_FEATURES = list(R_TRAIT_UNIQUEWRECK)),
+		"Handy" = list(SKIN_ICON_STATE = "handy-service", SKIN_ICON = CYBORG_ICON_SERVICE),
+		"Zoomba" = list(SKIN_ICON_STATE = "zoomba_green", SKIN_ICON = CYBORG_ICON_SERVICE, SKIN_FEATURES = list(model_features = R_TRAIT_UNIQUEWRECK)),
 	)
 /obj/item/robot_module/miner
-	name = "Miner"
+	special_light_key = null
 	borg_skins = list(
-		"Lavaland Miner" = list(SKIN_ICON_STATE = "miner"),
-		"Asteroid Miner" = list(SKIN_ICON_STATE = "minerOLD"),
-		"Spider Miner" = list(SKIN_ICON_STATE = "spidermin"),
+		"Lavaland Miner" = list(SKIN_ICON_STATE = "miner", SKIN_LIGHT_KEY = "miner"),
+		"Asteroid Miner" = list(SKIN_ICON_STATE = "minerOLD", SKIN_LIGHT_KEY = "miner"),
+		"Spider Miner" = list(SKIN_ICON_STATE = "spidermin", SKIN_LIGHT_KEY = "miner"),
+		"Zoomba" = list(SKIN_ICON_STATE = "zoomba_miner", SKIN_ICON = CYBORG_ICON_MINING, SKIN_FEATURES = list(R_TRAIT_UNIQUEWRECK)),
 	)
