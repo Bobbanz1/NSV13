@@ -13,55 +13,48 @@
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	flags_1 = CONDUCT_1
 
-	var/moduleselect_icon = "nomod"
+	var/list/basic_modules = list() //a list of paths, converted to a list of instances on New()
+	var/list/emag_modules = list() //ditto
+	var/list/ratvar_modules = list() //ditto
+	var/list/modules = list() //holds all the usable modules
+	var/list/added_modules = list() //modules not inherient to the robot module, are kept when the module changes
+	var/list/storages = list()
 
 	var/cyborg_base_icon = "robot" //produces the icon for the borg and, if no special_light_key is set, the lights
 	var/special_light_key //if we want specific lights, use this instead of copying lights in the dmi
 
+	var/moduleselect_icon = "nomod"
 
-	var/list/modules = list() //holds all the usable modules
-
-	var/list/basic_modules = list() //a list of paths, converted to a list of instances on New()
-	var/list/emag_modules = list() //ditto
-
-	var/list/ratvar_modules = list() //ditto
-
-	var/list/added_modules = list() //modules not inherient to the robot module, are kept when the module changes
-	var/list/storages = list()
-
-
+	var/can_be_pushed = TRUE
 	var/magpulsing = FALSE
 	var/clean_on_move = FALSE
 
-	var/allow_riding = TRUE
-	var/ride_allow_incapacitated = TRUE
-	var/canDispose = FALSE // Whether the borg can stuff itself into disposal
-	var/can_be_pushed = TRUE
-
 	var/did_feedback = FALSE
-
 
 	var/hat_offset = -3
 
 	var/list/ride_offset_x = list("north" = 0, "south" = 0, "east" = -6, "west" = 6)
 	var/list/ride_offset_y = list("north" = 4, "south" = 4, "east" = 3, "west" = 3)
+	var/ride_allow_incapacitated = TRUE
+	var/allow_riding = TRUE
+	var/canDispose = FALSE // Whether the borg can stuff itself into disposal
 
 	var/list/borg_skins
 
-/obj/item/robot_module/Initialize()
+/obj/item/robot_module/Initialize(mapload)
 	. = ..()
-	for(var/path in basic_modules)
-		var/obj/item/new_module = new path(src)
-		basic_modules += new_module
-		basic_modules -= path
-	for(var/path in emag_modules)
-		var/obj/item/new_module = new path(src)
-		emag_modules += new_module
-		emag_modules -= path
-	for(var/path in ratvar_modules)
-		var/obj/item/new_module = new path(src)
-		ratvar_modules += new_module
-		ratvar_modules -= path
+	for(var/i in basic_modules)
+		var/obj/item/I = new i(src)
+		basic_modules += I
+		basic_modules -= i
+	for(var/i in emag_modules)
+		var/obj/item/I = new i(src)
+		emag_modules += I
+		emag_modules -= i
+	for(var/i in ratvar_modules)
+		var/obj/item/I = new i(src)
+		ratvar_modules += I
+		ratvar_modules -= i
 
 /obj/item/robot_module/Destroy()
 	basic_modules.Cut()
@@ -209,6 +202,7 @@
 	R.module = RM
 	R.update_module_innate()
 	RM.rebuild_modules()
+	R.set_modularInterface_theme()
 	INVOKE_ASYNC(RM, .proc/do_transform_animation)
 	qdel(src)
 	return RM
@@ -258,6 +252,7 @@
 	R.notransform = TRUE
 	R.SetLockdown(TRUE)
 	R.anchored = TRUE
+	R.logevent("Chassis configuration has been set to [name].")
 	sleep(1)
 	for(var/i in 1 to 4)
 		playsound(R, pick('sound/items/drill_use.ogg', 'sound/items/jaws_cut.ogg', 'sound/items/jaws_pry.ogg', 'sound/items/welder.ogg', 'sound/items/ratchet.ogg'), 80, 1, -1)
@@ -267,7 +262,7 @@
 	R.setDir(SOUTH)
 	R.anchored = FALSE
 	R.notransform = FALSE
-	R.update_headlamp()
+	R.update_icons()
 	R.notify_ai(NEW_MODULE)
 	if(R.hud_used)
 		R.hud_used.update_robot_modules_display()
@@ -484,7 +479,7 @@
 	You are not a security module and you are expected to follow orders and prevent harm above all else. Space law means nothing to you.</span>")
 
 /obj/item/robot_module/janitor
-	name = "Janitor"
+	name = JOB_NAME_JANITOR
 	basic_modules = list(
 		/obj/item/assembly/flash/cyborg,
 		/obj/item/screwdriver/cyborg,
@@ -501,7 +496,8 @@
 		/obj/item/lightreplacer/cyborg,
 		/obj/item/holosign_creator/janibarrier,
 		/obj/item/reagent_containers/spray/cyborg/drying_agent,
-		/obj/item/reagent_containers/spray/cyborg/plantbgone)
+		/obj/item/reagent_containers/spray/cyborg/plantbgone,
+		/obj/item/wirebrush)
 	emag_modules = list(
 		/obj/item/reagent_containers/spray/cyborg/lube,
 		/obj/item/reagent_containers/spray/cyborg/acid)
@@ -523,7 +519,7 @@
 			LR.Charge(R)
 
 /obj/item/robot_module/clown
-	name = "Clown"
+	name = JOB_NAME_CLOWN
 	basic_modules = list(
 		/obj/item/assembly/flash/cyborg,
 		/obj/item/toy/crayon/rainbow,
@@ -724,7 +720,7 @@
 		/obj/item/stack/sheet/rglass/cyborg,
 		/obj/item/stack/rods/cyborg,
 		/obj/item/stack/tile/plasteel/cyborg,
-		/obj/item/destTagger/borg,
+		/obj/item/dest_tagger/borg,
 		/obj/item/stack/cable_coil/cyborg,
 		/obj/item/card/emag,
 		/obj/item/pinpointer/syndicate_cyborg,
