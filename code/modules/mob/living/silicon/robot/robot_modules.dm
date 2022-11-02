@@ -37,6 +37,8 @@
 	var/allow_riding = TRUE
 	var/canDispose = FALSE // Whether the borg can stuff itself into disposal
 
+	var/list/borg_skins //NSV13 - More Borg Skins
+
 /obj/item/robot_module/Initialize(mapload)
 	. = ..()
 	for(var/i in basic_modules)
@@ -203,7 +205,30 @@
 	qdel(src)
 	return RM
 
-/obj/item/robot_module/proc/be_transformed_to(obj/item/robot_module/old_module)
+//NSV13 - More Borg Skins - START
+/obj/item/robot_module/proc/be_transformed_to(obj/item/robot_module/old_module, forced = FALSE)
+	if(islist(borg_skins) && !forced)
+		var/mob/living/silicon/robot/cyborg = loc
+		var/list/reskin_icons = list()
+		for(var/skin in borg_skins)
+			var/list/details = borg_skins[skin]
+			reskin_icons[skin] = image(icon = details[SKIN_ICON] || 'icons/mob/robots.dmi', icon_state = details[SKIN_ICON_STATE])
+		var/borg_skin = show_radial_menu(cyborg, cyborg, reskin_icons, custom_check = CALLBACK(src, .proc/check_menu, cyborg, old_module), radius = 38, require_near = TRUE)
+		if(!borg_skin)
+			return FALSE
+		var/list/details = borg_skins[borg_skin]
+		if(!isnull(details[SKIN_ICON_STATE]))
+			cyborg_base_icon = details[SKIN_ICON_STATE]
+		if(!isnull(details[SKIN_ICON]))
+			cyborg.icon = details[SKIN_ICON]
+			cyborg_icon_override = details[SKIN_ICON]
+		if(!isnull(details[SKIN_LIGHT_KEY]))
+			special_light_key = details[SKIN_LIGHT_KEY]
+		if(!isnull(details[SKIN_HAT_OFFSET]))
+			hat_offset = details[SKIN_HAT_OFFSET]
+		if(!isnull(details[SKIN_FEATURES]))
+			model_features += details[SKIN_FEATURES]
+//NSV13 - More Borg Skins - END
 	for(var/i in old_module.added_modules)
 		added_modules += i
 		old_module.added_modules -= i
@@ -555,6 +580,13 @@
 	cyborg_base_icon = "service_m" // display as butlerborg for radial model selection
 	special_light_key = "service"
 	hat_offset = 0
+	borg_skins = list(
+		"Waitress" = list(SKIN_ICON_STATE = "service_f"),
+		"Butler" = list(SKIN_ICON_STATE = "service_m"),
+		"Bro" = list(SKIN_ICON_STATE = "brobot"),
+		"Kent" = list(SKIN_ICON_STATE = "kent"),
+		"Tophat" = list(SKIN_ICON_STATE = "tophat"),
+	) //NSV13 - More Borg Skins
 
 /obj/item/robot_module/butler/respawn_consumable(mob/living/silicon/robot/R, coeff = 1)
 	..()
@@ -562,6 +594,7 @@
 	if(O)
 		O.reagents.add_reagent(/datum/reagent/consumable/enzyme, 2 * coeff)
 
+/* NSV13 - More Borg Skins - Disabled
 /obj/item/robot_module/butler/be_transformed_to(obj/item/robot_module/old_module)
 	var/mob/living/silicon/robot/cyborg = loc
 	var/list/service_icons = list(
@@ -590,6 +623,7 @@
 		else
 			return FALSE
 	return ..()
+*/
 
 /obj/item/robot_module/borgi
 	name = "Borgi"
@@ -626,7 +660,13 @@
 	moduleselect_icon = "miner"
 	hat_offset = 0
 	var/obj/item/t_scanner/adv_mining_scanner/cyborg/mining_scanner //built in memes.
+	borg_skins = list(
+		"Lavaland Miner" = list(SKIN_ICON_STATE = "miner"),
+		"Asteroid Miner" = list(SKIN_ICON_STATE = "minerOLD"),
+		"Spider Miner" = list(SKIN_ICON_STATE = "spidermin"),
+	) //NSV13 - More Borg Skins
 
+/* NSV13 - More Borg Skins - Disabled
 /obj/item/robot_module/miner/be_transformed_to(obj/item/robot_module/old_module)
 	var/mob/living/silicon/robot/cyborg = loc
 	var/list/miner_icons = list(
@@ -646,6 +686,7 @@
 		else
 			return FALSE
 	return ..()
+*/
 
 /obj/item/robot_module/miner/rebuild_modules()
 	. = ..()
