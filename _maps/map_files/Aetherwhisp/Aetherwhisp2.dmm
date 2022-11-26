@@ -451,10 +451,6 @@
 	},
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
-"apQ" = (
-/obj/structure/frame/machine,
-/turf/open/floor/carpet/ship/purple_carpet,
-/area/science/research)
 "aqb" = (
 /obj/machinery/door/airlock/ship/external/glass{
 	name = "External Access Deck 2 Fore Starboard";
@@ -1431,6 +1427,15 @@
 /obj/effect/spawner/lootdrop/maintenance,
 /turf/open/floor/plating,
 /area/maintenance/nsv/bridge)
+"aYu" = (
+/obj/structure/cable{
+	icon_state = "1-2"
+	},
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/turf/open/floor/engine,
+/area/science/explab)
 "aYy" = (
 /obj/structure/sign/solgov_seal{
 	pixel_y = 26
@@ -3198,16 +3203,15 @@
 /turf/open/floor/plasteel/freezer,
 /area/crew_quarters/toilet/auxiliary)
 "ceK" = (
-/obj/machinery/disposal/bin,
-/obj/structure/disposalpipe/trunk{
-	dir = 4
-	},
 /obj/machinery/airalarm/directional/west,
-/obj/machinery/light/built{
+/obj/machinery/light{
 	dir = 8
 	},
+/obj/machinery/computer/xenoartifact_console{
+	dir = 4
+	},
 /turf/open/floor/carpet/ship/purple_carpet,
-/area/science/research)
+/area/science/explab)
 "cfz" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -4143,11 +4147,11 @@
 /turf/open/floor/carpet/ship/orange_carpet,
 /area/crew_quarters/heads/chief)
 "cLx" = (
-/obj/structure/disposalpipe/segment{
-	dir = 4
+/obj/structure/chair/office/light{
+	dir = 8
 	},
 /turf/open/floor/carpet/ship/purple_carpet,
-/area/science/research)
+/area/science/explab)
 "cLG" = (
 /obj/item/stack/sheet/rglass{
 	amount = 16
@@ -7185,8 +7189,9 @@
 /area/crew_quarters/dorms)
 "eWo" = (
 /obj/machinery/newscaster/directional/east,
-/turf/open/floor/plating,
-/area/science/research)
+/obj/structure/closet/firecloset,
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "eWt" = (
 /turf/closed/wall/ship,
 /area/science/nsv/astronomy)
@@ -10566,8 +10571,9 @@
 /turf/open/floor/carpet/ship,
 /area/quartermaster/lobby)
 "hkM" = (
-/turf/open/floor/plating,
-/area/science/research)
+/obj/structure/closet/radiation,
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "hkU" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer2{
 	dir = 4
@@ -11446,6 +11452,10 @@
 	},
 /turf/open/floor/carpet/ship/purple_carpet,
 /area/crew_quarters/heads/hor)
+"hVw" = (
+/obj/structure/window/reinforced,
+/turf/open/floor/engine,
+/area/science/explab)
 "hVM" = (
 /obj/machinery/computer/security/wooden_tv,
 /obj/machinery/button/door{
@@ -12023,8 +12033,9 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer2{
 	dir = 1
 	},
-/turf/open/floor/plating,
-/area/science/research)
+/obj/structure/disposalpipe/segment,
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "iqE" = (
 /obj/structure/disposalpipe/segment{
 	dir = 5
@@ -12238,6 +12249,10 @@
 	},
 /turf/open/floor/carpet/ship,
 /area/ai_monitored/turret_protected/aisat_interior)
+"ixw" = (
+/obj/structure/closet/bombcloset,
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "ixT" = (
 /obj/machinery/computer/cargo/request{
 	dir = 1
@@ -14046,14 +14061,11 @@
 	},
 /area/bridge/meeting_room)
 "jIv" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/machinery/light{
 	dir = 1
 	},
-/turf/open/floor/plating,
-/area/science/research)
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "jIw" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -14603,7 +14615,7 @@
 	icon_state = "0-4"
 	},
 /turf/open/floor/plating,
-/area/science/research)
+/area/science/explab)
 "khL" = (
 /obj/machinery/disposal/bin,
 /obj/structure/disposalpipe/trunk,
@@ -15366,7 +15378,7 @@
 	icon_state = "0-4"
 	},
 /turf/open/floor/plating,
-/area/science/research)
+/area/science/explab)
 "kQY" = (
 /obj/structure/cable{
 	icon_state = "1-2"
@@ -15782,8 +15794,8 @@
 	dir = 8;
 	name = "emergency shower"
 	},
-/turf/open/floor/plating,
-/area/science/research)
+/turf/open/floor/noslip/white,
+/area/science/explab)
 "llG" = (
 /obj/item/storage/fancy/donut_box,
 /obj/structure/table,
@@ -15958,12 +15970,14 @@
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
-/obj/structure/closet/l3closet/scientist,
 /obj/structure/window/reinforced{
 	dir = 4
 	},
-/turf/open/floor/plating,
-/area/science/research)
+/obj/machinery/door/window/eastleft{
+	dir = 2
+	},
+/turf/open/floor/engine,
+/area/science/explab)
 "lqA" = (
 /obj/structure/cable{
 	icon_state = "1-2"
@@ -17533,15 +17547,12 @@
 /turf/open/floor/carpet/orange,
 /area/quartermaster/storage)
 "msO" = (
-/obj/structure/sink{
-	dir = 8;
-	pixel_x = -11
-	},
 /obj/structure/cable{
 	icon_state = "0-4"
 	},
+/obj/machinery/power/apc/auto_name/west,
 /turf/open/floor/carpet/ship/purple_carpet,
-/area/science/research)
+/area/science/explab)
 "msR" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8"
@@ -20634,6 +20645,11 @@
 /obj/machinery/atmospherics/pipe/simple/supply/hidden/layer2,
 /turf/open/floor/plating,
 /area/maintenance/nsv/hangar)
+"oxE" = (
+/obj/effect/turf_decal/delivery,
+/obj/item/xenoartifact,
+/turf/open/floor/engine,
+/area/science/explab)
 "oyu" = (
 /obj/structure/table,
 /obj/item/circular_saw,
@@ -20827,15 +20843,12 @@
 /turf/open/floor/carpet/ship/purple_carpet,
 /area/science/computer_lab)
 "oEh" = (
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
 /obj/effect/landmark/event_spawn,
-/turf/open/floor/plating,
-/area/science/research)
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "oEq" = (
 /obj/structure/sign/poster/official/random{
 	pixel_x = -32
@@ -21933,6 +21946,10 @@
 	},
 /turf/open/floor/plating,
 /area/quartermaster/warehouse)
+"pnh" = (
+/obj/machinery/status_display/ai,
+/turf/closed/wall/ship,
+/area/science/explab)
 "pnu" = (
 /obj/structure/table/wood,
 /obj/item/weldingtool{
@@ -22449,11 +22466,9 @@
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden/layer4{
 	dir = 9
 	},
-/obj/structure/disposalpipe/segment{
-	dir = 9
-	},
-/turf/open/floor/plating,
-/area/science/research)
+/obj/structure/disposalpipe/segment,
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "pFt" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/on{
 	dir = 4;
@@ -23288,9 +23303,8 @@
 /turf/open/floor/engine,
 /area/science/robotics/lab)
 "qip" = (
-/obj/machinery/status_display/ai,
 /turf/closed/wall/ship,
-/area/science/research)
+/area/science/explab)
 "qiu" = (
 /obj/effect/turf_decal/bot/left,
 /turf/open/floor/engine,
@@ -23437,8 +23451,9 @@
 /obj/machinery/camera/autoname{
 	dir = 4
 	},
-/turf/open/floor/carpet/ship/purple_carpet,
-/area/science/research)
+/obj/structure/window/reinforced,
+/turf/open/floor/engine,
+/area/science/explab)
 "qpE" = (
 /obj/machinery/airalarm/directional/east,
 /turf/open/floor/carpet/ship/blue{
@@ -23500,9 +23515,9 @@
 /obj/structure/sign/poster/official/random{
 	pixel_x = 32
 	},
-/obj/structure/frame/machine,
-/turf/open/floor/plating,
-/area/science/research)
+/obj/structure/closet/emcloset,
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "qrF" = (
 /obj/machinery/atmospherics/pipe/simple/supply/hidden/layer2{
 	dir = 4
@@ -23542,11 +23557,9 @@
 /turf/open/floor/plating,
 /area/maintenance/department/science/central)
 "qsN" = (
-/obj/structure/frame/computer{
-	dir = 1
-	},
-/turf/open/floor/plating,
-/area/science/research)
+/obj/structure/disposalpipe/segment,
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "qti" = (
 /obj/structure/chair{
 	dir = 4
@@ -24096,11 +24109,11 @@
 /turf/open/floor/plasteel/freezer,
 /area/crew_quarters/toilet/auxiliary)
 "qQS" = (
-/obj/machinery/door/window/northleft{
-	req_one_access_txt = "9"
-	},
-/turf/open/floor/plating,
-/area/science/research)
+/obj/structure/table/reinforced,
+/obj/item/storage/firstaid/regular,
+/obj/item/clothing/neck/stethoscope,
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "qQU" = (
 /obj/structure/cable{
 	icon_state = "2-8"
@@ -25519,12 +25532,6 @@
 	},
 /turf/open/floor/engine,
 /area/engine/engine_smes)
-"rDI" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
-/turf/open/floor/plating,
-/area/science/research)
 "rDV" = (
 /obj/machinery/door/firedoor/border_only/directional/north,
 /obj/machinery/door/firedoor/border_only/directional/south,
@@ -26617,8 +26624,8 @@
 /obj/structure/cable{
 	icon_state = "1-4"
 	},
-/turf/open/floor/plating,
-/area/science/research)
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "slI" = (
 /obj/machinery/atmospherics/components/unary/thermomachine/heater,
 /obj/structure/extinguisher_cabinet/east,
@@ -26629,11 +26636,20 @@
 /turf/open/floor/engine/vacuum,
 /area/nsv/hanger)
 "slO" = (
-/obj/structure/window/reinforced{
-	dir = 1
+/obj/structure/table/reinforced,
+/obj/item/xenoartifact_labeler,
+/obj/item/xenoartifact_labeler{
+	pixel_x = -5;
+	pixel_y = 7
 	},
-/turf/open/floor/plating,
-/area/science/research)
+/obj/item/clothing/glasses/science,
+/obj/item/clothing/glasses/science{
+	pixel_y = 9
+	},
+/obj/item/clothing/gloves/artifact_pinchers,
+/obj/item/clothing/gloves/artifact_pinchers,
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "slS" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer2{
 	dir = 1
@@ -26967,8 +26983,8 @@
 /obj/machinery/atmospherics/pipe/simple/supply/hidden/layer2,
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden/layer4,
 /obj/structure/disposalpipe/segment,
-/turf/open/floor/plating,
-/area/science/research)
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "sxp" = (
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden/layer4,
 /obj/structure/table/reinforced,
@@ -27205,6 +27221,9 @@
 "sDW" = (
 /turf/open/openspace,
 /area/shuttle/turbolift/quinary)
+"sEG" = (
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "sET" = (
 /obj/machinery/atmospherics/pipe/simple/supply/hidden/layer2{
 	dir = 4
@@ -27409,9 +27428,12 @@
 /turf/open/floor/carpet,
 /area/crew_quarters/heads/captain/private)
 "sLS" = (
-/obj/structure/table,
+/obj/structure/rack,
+/obj/item/clothing/mask/gas,
+/obj/item/tank/internals/oxygen,
+/obj/item/book/manual/wiki/xenoarchaeology,
 /turf/open/floor/carpet/ship/purple_carpet,
-/area/science/research)
+/area/science/explab)
 "sMv" = (
 /obj/structure/disposalpipe/trunk{
 	dir = 4
@@ -28349,6 +28371,13 @@
 /obj/item/storage/toolbox/emergency,
 /turf/open/floor/plating,
 /area/maintenance/department/crew_quarters/dorms)
+"tCf" = (
+/obj/machinery/disposal/bin,
+/obj/structure/disposalpipe/trunk{
+	dir = 1
+	},
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "tCn" = (
 /obj/docking_port/stationary{
 	dwidth = 4;
@@ -29038,7 +29067,7 @@
 	icon_state = "4-8"
 	},
 /turf/open/floor/carpet/ship/purple_carpet,
-/area/science/research)
+/area/science/explab)
 "ufn" = (
 /obj/structure/chair/office/light{
 	dir = 1
@@ -29203,7 +29232,7 @@
 	icon_state = "0-2"
 	},
 /turf/open/floor/plating,
-/area/science/research)
+/area/science/explab)
 "ulz" = (
 /obj/machinery/portable_atmospherics/scrubber,
 /obj/machinery/atmospherics/components/unary/portables_connector/layer4,
@@ -31088,12 +31117,6 @@
 	},
 /turf/open/floor/carpet/ship/purple_carpet,
 /area/science/research)
-"vNv" = (
-/obj/structure/cable{
-	icon_state = "4-8"
-	},
-/turf/open/floor/plating,
-/area/science/research)
 "vNG" = (
 /turf/open/floor/carpet/ship/blue{
 	color = "#9999DD";
@@ -31387,9 +31410,24 @@
 /turf/open/floor/carpet,
 /area/crew_quarters/dorms)
 "vZF" = (
-/obj/structure/table_frame,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer4,
+/obj/structure/rack,
+/obj/item/multitool{
+	pixel_x = 3
+	},
+/obj/item/assembly/igniter,
+/obj/item/analyzer,
+/obj/item/stock_parts/cell/high{
+	charge = 100;
+	maxcharge = 15000
+	},
+/obj/item/geiger_counter,
+/obj/item/assembly/signaler{
+	pixel_x = -8;
+	pixel_y = 5
+	},
 /turf/open/floor/carpet/ship/purple_carpet,
-/area/science/research)
+/area/science/explab)
 "vZK" = (
 /obj/machinery/power/apc/auto_name/north,
 /obj/structure/cable{
@@ -31791,6 +31829,10 @@
 /obj/structure/chair/office/light,
 /turf/open/floor/engine,
 /area/nsv/weapons/fore)
+"wpF" = (
+/obj/structure/sign/warning/explosives,
+/turf/closed/wall/ship,
+/area/science/explab)
 "wpY" = (
 /turf/closed/wall/ship,
 /area/science/research)
@@ -32198,6 +32240,14 @@
 	},
 /turf/open/floor/wood,
 /area/library)
+"wGC" = (
+/obj/structure/rack,
+/obj/item/storage/toolbox/mechanical{
+	pixel_x = -2;
+	pixel_y = -1
+	},
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "wHM" = (
 /obj/machinery/atmospherics/pipe/simple/supply/hidden/layer2{
 	dir = 4
@@ -33121,11 +33171,8 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer4{
 	dir = 4
 	},
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/turf/open/floor/plating,
-/area/science/research)
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "xjr" = (
 /turf/closed/wall/r_wall/ship,
 /area/nsv/weapons/starboard)
@@ -33858,6 +33905,14 @@
 	name = "nanoweave carpet (bluer)"
 	},
 /area/bridge/meeting_room/council)
+"xMc" = (
+/obj/structure/sink{
+	dir = 8;
+	pixel_x = -11
+	},
+/obj/structure/extinguisher_cabinet/west,
+/turf/open/floor/carpet/ship/purple_carpet,
+/area/science/explab)
 "xMv" = (
 /obj/machinery/atmospherics/pipe/simple/supply/hidden/layer2,
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden/layer4,
@@ -57948,11 +58003,11 @@ agw
 mzE
 dxo
 qip
-jby
+qmn
 qpc
 ceK
 msO
-sLS
+xMc
 sLS
 hSl
 bax
@@ -58205,11 +58260,11 @@ cbJ
 oAr
 dUv
 khp
-jby
-jby
+oxE
+hVw
 cLx
 ueX
-jby
+sEG
 vZF
 hSl
 nhj
@@ -58462,12 +58517,12 @@ jby
 mzE
 lWu
 kQJ
-jby
-jby
-cLx
+qmn
+hVw
+sEG
 ueX
-apQ
-vZF
+sEG
+wGC
 hSl
 rlD
 rlD
@@ -58719,11 +58774,11 @@ jby
 mzE
 jby
 ukZ
-lqx
+aYu
 lqx
 oEh
 skW
-qsN
+sEG
 slO
 hSl
 vpG
@@ -58975,12 +59030,12 @@ huI
 jby
 mzE
 lVe
-wpY
+pnh
 jIv
-rDI
+sEG
 xjq
-vNv
-hkM
+ueX
+sEG
 qQS
 cPn
 oSE
@@ -59238,7 +59293,7 @@ sxk
 pEY
 iqr
 qsN
-slO
+tCf
 rlD
 sbr
 rAA
@@ -59489,9 +59544,9 @@ hWE
 jby
 aTJ
 rkn
-wpY
+wpF
 llu
-hkM
+ixw
 hkM
 eWo
 qrE
