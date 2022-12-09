@@ -612,11 +612,19 @@ Pass a positive integer as an argument to override a bot's default speed.
 	access_card.access = prev_access
 	tries = 0
 	mode = BOT_IDLE
+	hard_reset() //NSV13 - Hard reset the bot's pathing
 	diag_hud_set_botstat()
 	diag_hud_set_botmode()
 
 
-
+//NSV13 - Hard Reset - Literally tries to make it forget everything about it's last path in the hopes that resetting it will make it start fresh
+/mob/living/simple_animal/bot/proc/hard_reset()
+	patrol_target = null
+	last_waypoint = null
+	ai_waypoint = null
+	original_patrol = null
+	nearest_beacon = null
+	nearest_beacon_loc = null
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Patrol and summon code!
