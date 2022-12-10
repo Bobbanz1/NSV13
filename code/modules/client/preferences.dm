@@ -470,6 +470,20 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "</td>"
 					mutant_category = 0
 
+			//NSV13 - Oozeling Mimicking
+			if("mimicking" in active_character.pref_species.mutant_bodyparts)
+				if(!mutant_category)
+					dat += APPEARANCE_CATEGORY_COLUMN
+
+				dat += "<h3>Oozeling Type</h3>"
+
+				dat += "<a href='?_src_=prefs;preference=mimicking;task=input'>[active_character.features["mimicking"]]</a><BR>"
+
+				mutant_category++
+				if(mutant_category >= MAX_MUTANT_ROWS)
+					dat += "</td>"
+					mutant_category = 0
+
 			if("ears" in active_character.pref_species.default_features)
 				if(!mutant_category)
 					dat += APPEARANCE_CATEGORY_COLUMN
@@ -1633,6 +1647,15 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 					if(new_insect_type)
 						active_character.features["insect_type"] = new_insect_type
+
+				//NSV13 - Oozeling Subspecies
+				if("mimicking")
+					var/new_mimicking_type
+
+					new_mimicking_type = input(user, "Choose what species your character is mimicking:", "Character Preference") as null|anything in GLOB.mimicking_list
+
+					if(new_mimicking_type)
+						active_character.features["mimicking"] = new_mimicking_type
 
 				if("s_tone")
 					var/new_s_tone = input(user, "Choose your character's skin-tone:", "Character Preference")  as null|anything in GLOB.skin_tones

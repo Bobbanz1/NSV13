@@ -2358,3 +2358,19 @@
 /datum/sprite_accessory/ipc_chassis/zenghupharmaceuticals
 	name = "Zeng-Hu Pharmaceuticals"
 	limbs_id = "zhpipc"
+
+// NSV13 - Oozeling Subspecies
+/datum/sprite_accessory/mimicking
+	icon = null
+	icon_state = "NULL"
+	color_src = 0
+
+/datum/sprite_accessory/mimicking/oozeling
+	name = "Oozeling"
+	limbs_id = "oozeling"
+	color_src = MUTCOLORS
+
+/datum/sprite_accessory/mimicking/lizard
+	name = "Lizard"
+	limbs_id = "lizard"
+	color_src = MUTCOLORS

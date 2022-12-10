@@ -36,6 +36,7 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_antennas, GLOB.ipc_antennas_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_chassis, GLOB.ipc_chassis_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/insect_type, GLOB.insect_type_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/mimicking, GLOB.mimicking_list) //NSV13
 
 	//Species
 	for(var/spath in subtypesof(/datum/species))

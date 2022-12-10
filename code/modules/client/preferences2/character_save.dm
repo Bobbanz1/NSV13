@@ -55,7 +55,8 @@
 						"ipc_screen" = "Blue",
 						"ipc_antenna" = "None",
 						"ipc_chassis" = "Morpheus Cyberkinetics(Greyscale)",
-						"insect_type" = "Common Fly"
+						"insect_type" = "Common Fly",
+						"mimicking" = "None",
 					)
 	var/list/custom_names = list()
 	var/preferred_ai_core_display = "Blue"
@@ -218,6 +219,7 @@
 	features["ipc_antenna"]	= sanitize_inlist(features["ipc_antenna"], GLOB.ipc_antennas_list)
 	features["ipc_chassis"]	= sanitize_inlist(features["ipc_chassis"], GLOB.ipc_chassis_list)
 	features["insect_type"]	= sanitize_inlist(features["insect_type"], GLOB.insect_type_list)
+	features["mimicking"] = sanitize_inlist(features["mimicking"], GLOB.mimicking_list)
 
 	//Validate species forced mutant parts
 	for(var/forced_part in pref_species.forced_features)

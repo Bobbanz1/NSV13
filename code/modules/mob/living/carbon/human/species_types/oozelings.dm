@@ -20,6 +20,8 @@
 	swimming_component = /datum/component/swimming/dissolve
 	inert_mutation = ACIDOOZE
 	ass_image = 'icons/ass/assslime.png' //NSV13
+	mutant_bodyparts = list("mimicking") //NSV13
+	default_features = list("mcolor" = "#7D7D7D", "mimicking" = "Oozeling") //NSV13
 
 	species_chest = /obj/item/bodypart/chest/oozeling
 	species_head = /obj/item/bodypart/head/oozeling
@@ -166,3 +168,19 @@
 		H.reagents.remove_reagent(chem.type, chem.metabolization_rate)
 		return TRUE
 	return ..()
+
+//NSV13 - Oozeling Sub-species
+/datum/species/oozeling/replace_body(mob/living/carbon/C, datum/species/new_species)
+	..()
+
+	var/datum/sprite_accessory/mimicking/mimicking_species = GLOB.mimicking_list[C.dna.features["mimicking"]]
+
+	for(var/obj/item/bodypart/BP as() in C.bodyparts) //Override bodypart data as necessary
+		BP.uses_mutcolor = mimicking_species.color_src ? TRUE : FALSE
+		if(BP.uses_mutcolor)
+			BP.should_draw_greyscale = TRUE
+			BP.species_color = C.dna?.features["mcolor"]
+
+		BP.limb_id = mimicking_species.limbs_id
+		BP.name = "\improper[mimicking_species.name] [parse_zone(BP.body_zone)]"
+		BP.update_limb()
