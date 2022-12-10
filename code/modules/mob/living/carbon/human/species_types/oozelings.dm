@@ -184,3 +184,9 @@
 		BP.limb_id = mimicking_species.limbs_id
 		BP.name = "\improper[mimicking_species.name] [parse_zone(BP.body_zone)]"
 		BP.update_limb()
+
+	if(mimicking_species.custom_tail)
+		mutanttail = mimicking_species.tail_type
+
+	if(mimicking_species.custom_ears)
+		mutantears = mimicking_species.ear_type

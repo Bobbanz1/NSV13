@@ -2364,6 +2364,10 @@
 	icon = null
 	icon_state = "NULL"
 	color_src = 0
+	var/custom_tail = FALSE //Used to determine if this subspecies has custom tails
+	var/tail_type = null
+	var/custom_ears = FALSE //Used to determine if this subspecies has custom ears
+	var/ear_type = null
 
 /datum/sprite_accessory/mimicking/oozeling
 	name = "Oozeling"
@@ -2373,4 +2377,20 @@
 /datum/sprite_accessory/mimicking/lizard
 	name = "Lizard"
 	limbs_id = "lizard"
+	color_src = MUTCOLORS
+	custom_tail = TRUE
+	tail_type = /obj/item/organ/tail/lizard
+
+/datum/sprite_accessory/mimicking/felinid
+	name = "Felinid"
+	limbs_id = "oozeling"
+	color_src = MUTCOLORS
+	custom_tail = TRUE
+	custom_ears = TRUE
+	tail_type = /obj/item/organ/tail/cat
+	ear_type = /obj/item/organ/ears/cat
+
+/datum/sprite_accessory/mimicking/moth
+	name = "Moth"
+	limbs_id = "moth"
 	color_src = MUTCOLORS
