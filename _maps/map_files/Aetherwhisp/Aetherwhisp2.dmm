@@ -30830,7 +30830,7 @@
 	req_one_access_txt = "7;47"
 	},
 /turf/open/floor/carpet/ship/purple_carpet,
-/area/science/research)
+/area/science/explab)
 "vCZ" = (
 /obj/machinery/atmospherics/pipe/simple/supply/hidden/layer2{
 	dir = 4
@@ -32242,10 +32242,7 @@
 /area/library)
 "wGC" = (
 /obj/structure/rack,
-/obj/item/storage/toolbox/mechanical{
-	pixel_x = -2;
-	pixel_y = -1
-	},
+/obj/item/storage/toolbox/mechanical,
 /turf/open/floor/carpet/ship/purple_carpet,
 /area/science/explab)
 "wHM" = (
