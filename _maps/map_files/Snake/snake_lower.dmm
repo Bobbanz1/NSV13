@@ -6379,7 +6379,8 @@
 	},
 /obj/machinery/navbeacon{
 	codes_txt = "patrol;next_patrol=fore";
-	location = "aft"
+	location = "aft";
+	node_number = 1
 	},
 /turf/open/floor/plasteel/dark,
 /area/hallway/primary/aft)
@@ -7290,7 +7291,8 @@
 	},
 /obj/machinery/navbeacon{
 	codes_txt = "patrol;next_patrol=UpperEntry";
-	location = "centralUp"
+	location = "centralUp";
+	node_number = 3
 	},
 /turf/open/floor/plasteel/dark,
 /area/hallway/primary/central)
@@ -13809,7 +13811,8 @@
 	},
 /obj/machinery/navbeacon{
 	codes_txt = "patrol;next_patrol=centralUp";
-	location = "fore"
+	location = "fore";
+	node_number = 2
 	},
 /turf/open/floor/plasteel/dark,
 /area/hallway/primary/fore)

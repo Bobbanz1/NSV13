@@ -115,7 +115,8 @@
 	var/list/overmaps_in_ship = list() //A list of smaller overmaps inside the ship
 
 	//Beacons
-	var/list/beacons_in_ship = list()
+	var/list/delivery_beacons = list()
+	var/list/patrol_beacons = list() //A list of patrol beacons that we can use to navigate the ship
 
 	// Controlling equipment
 	var/obj/machinery/computer/ship/helm //Relay beeping noises when we act

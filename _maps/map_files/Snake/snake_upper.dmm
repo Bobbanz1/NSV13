@@ -439,7 +439,8 @@
 	},
 /obj/machinery/navbeacon{
 	codes_txt = "patrol;next_patrol=Aft";
-	location = "UpperExit"
+	location = "UpperExit";
+	node_number = 7
 	},
 /turf/open/floor/plasteel/dark,
 /area/maintenance/central)
@@ -6251,7 +6252,8 @@
 	},
 /obj/machinery/navbeacon{
 	codes_txt = "patrol;next_patrol=UpperCargo";
-	location = "UpperEntry"
+	location = "UpperEntry";
+	node_number = 4
 	},
 /turf/open/floor/plasteel/dark,
 /area/maintenance/central)
@@ -6781,7 +6783,8 @@
 	},
 /obj/machinery/navbeacon{
 	codes_txt = "patrol;next_patrol=UpperExit";
-	location = "UpperHangar"
+	location = "UpperHangar";
+	node_number = 6
 	},
 /turf/open/floor/plasteel/dark,
 /area/maintenance/central)
@@ -7268,7 +7271,8 @@
 	},
 /obj/machinery/navbeacon{
 	codes_txt = "patrol;next_patrol=UpperHangar";
-	location = "UpperCargo"
+	location = "UpperCargo";
+	node_number = 5
 	},
 /turf/open/floor/plasteel,
 /area/maintenance/fore)

@@ -19,7 +19,8 @@
 	var/list/codes		// assoc. list of transponder codes
 	var/codes_txt = ""	// codes as set on map: "tag1;tag2" or "tag1=value;tag2=value"
 	var/obj/structure/overmap/linked //NSV13 - DIFFERENCE BETWEEN CODEBASE
-
+	var/node_number = 0 //NSV13 - DIFFERENCE BETWEEN CODEBASE
+	var/network = ""
 	req_one_access = list(ACCESS_ENGINE, ACCESS_ROBOTICS)
 
 /obj/machinery/navbeacon/Initialize(mapload)
@@ -37,10 +38,15 @@
 		GLOB.deliverybeacons += src
 		GLOB.deliverybeacontags += location
 
-	return INITIALIZE_HINT_LATELOAD //NSV13 start - Overmap ship compatibility
+	has_overmap() //NSV13 start - Overmap ship compatibility
+	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/navbeacon/LateInitialize()
-	has_overmap()
+	if(linked && node_number)
+		if(!linked.patrol_beacons[network])
+			LAZYINITLIST(network)
+			linked.patrol_beacons[network] = network
+		linked.patrol_beacons[network[node_number]] = src
 
 /obj/machinery/navbeacon/proc/has_overmap()
 	linked = get_overmap()
@@ -49,12 +55,17 @@
 	return linked
 
 /obj/machinery/navbeacon/proc/set_position(obj/structure/overmap/OM)
-	OM.beacons_in_ship += src
+	if(node_number != 0)
+		OM.patrol_beacons += src
+	else
+		OM.delivery_beacons += src
 	return
 
 /obj/machinery/navbeacon/Destroy()
-	if (linked.beacons_in_ship)
-		linked.beacons_in_ship -= src //NSV13 end
+	if (linked.delivery_beacons)
+		linked.delivery_beacons -= src
+	if(node_number != 0)
+		linked.patrol_beacons -= src //NSV13 end
 	if (GLOB.navbeacons["[z]"])
 		GLOB.navbeacons["[z]"] -= src //Remove from beacon list, if in one.
 	GLOB.deliverybeacons -= src
