@@ -155,6 +155,35 @@
 /obj/machinery/navbeacon/attack_paw()
 	return
 
+//SCREW THIS DAMN CODE I'VE BEEN STARING AT IT FOR BLOODY DAYS AND THE ONLY THING I HAVE TO SHOW FOR IT IS A WAY TO NETWORK NAVBEACONS AND BOTS RATHER THAN THE DAMNED NAVBEACON REDUNDANCY METHOD I WANTED TO IMPLEMENT
+//I'M MAKING A FREAKING TGUI INTERFACE FOR THIS AND THE REST OF THE UNIVERSE CAN GO CRY IN A BLOODY HOLE
+/obj/machinery/navbeacon/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "Navbeacon")
+		ui.open()
+
+/obj/machinery/navbeacon/ui_data(mob/user)
+	var/list/data = list()
+	data["open"] = open
+	data["locked"] = locked
+	data["ai"] = isAI(user)
+	data["location"] = location
+
+	for(var/key in codes)
+		data["key"]	= key
+		data["codes"] = codes
+
+	data["network"] = network
+	return data
+
+/obj/machinery/navbeacon/ui_act(action, params, datum/tgui/ui)
+	switch(action)
+		if("delete")
+			var/codekey = params["code"]
+			codes.Remove(codekey)
+
+/*
 /obj/machinery/navbeacon/ui_interact(mob/user)
 	. = ..()
 	var/ai = isAI(user)
@@ -252,3 +281,4 @@ Transponder Codes:<UL>"}
 			codes[newkey] = newval
 
 			updateDialog()
+*/
