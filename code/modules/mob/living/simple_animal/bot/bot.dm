@@ -103,6 +103,9 @@
 
 	hud_possible = list(DIAG_STAT_HUD, DIAG_BOT_HUD, DIAG_HUD, DIAG_PATH_HUD = HUD_LIST_LIST) //Diagnostic HUD views
 
+	//NSV13 - Networked Bots
+	var/list/network = list("primary")
+
 /mob/living/simple_animal/bot/proc/get_mode()
 	if(client) //Player bots do not have modes, thus the override. Also an easy way for PDA users/AI to know when a bot is a player.
 		if(paicard)
@@ -704,30 +707,32 @@ Pass a positive integer as an argument to override a bot's default speed.
 
 /mob/living/simple_animal/bot/proc/get_next_patrol_target()
 	// search the beacon list for the next target in the list.
-	for(var/obj/machinery/navbeacon/NB in get_overmap().patrol_beacons) //NSV13 - Navbeacons are in the Overmap Ship
-		if(NB.location == next_destination) //Does the Beacon location text match the destination?
-			destination = new_destination //We now know the name of where we want to go.
-			patrol_target = NB.loc //Get its location and set it as the target.
-			original_patrol = NB.loc
-			next_destination = NB.codes["next_patrol"] //Also get the name of the next beacon in line.
-			return TRUE
+	for(var/entry in network)
+		for(var/obj/machinery/navbeacon/NB in get_overmap().patrol_beacons["[entry]"]) //NSV13 - Navbeacons are in the Overmap Ship
+			if(NB.location == next_destination) //Does the Beacon location text match the destination?
+				destination = new_destination //We now know the name of where we want to go.
+				patrol_target = NB.loc //Get its location and set it as the target.
+				original_patrol = NB.loc
+				next_destination = NB.codes["next_patrol"] //Also get the name of the next beacon in line.
+				return TRUE
 
 /mob/living/simple_animal/bot/proc/find_nearest_beacon()
-	for(var/obj/machinery/navbeacon/NB in get_overmap().patrol_beacons) //NSV13 - Navbeacons are in the Overmap Ship
-		var/dist = get_dist(src, NB)
-		if(nearest_beacon) //Loop though the beacon net to find the true closest beacon.
-			//Ignore the beacon if were are located on it.
-			if(dist>1 && dist<get_dist(src,nearest_beacon_loc))
+	for(var/entry in network)
+		for(var/obj/machinery/navbeacon/NB in get_overmap().patrol_beacons["[entry]"]) //NSV13 - Navbeacons are in the Overmap Ship
+			var/dist = get_dist(src, NB)
+			if(nearest_beacon) //Loop though the beacon net to find the true closest beacon.
+				//Ignore the beacon if were are located on it.
+				if(dist>1 && dist<get_dist(src,nearest_beacon_loc))
+					nearest_beacon = NB.location
+					nearest_beacon_loc = NB.loc
+					next_destination = NB.codes["next_patrol"]
+				else
+					continue
+			else if(dist > 1) //Begin the search, save this one for comparison on the next loop.
 				nearest_beacon = NB.location
 				nearest_beacon_loc = NB.loc
-				next_destination = NB.codes["next_patrol"]
-			else
-				continue
-		else if(dist > 1) //Begin the search, save this one for comparison on the next loop.
-			nearest_beacon = NB.location
-			nearest_beacon_loc = NB.loc
-		else //NSV13
-			continue //NSV13
+			else //NSV13
+				continue //NSV13
 	patrol_target = nearest_beacon_loc
 	destination = nearest_beacon
 

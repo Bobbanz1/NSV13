@@ -20,7 +20,7 @@
 	var/codes_txt = ""	// codes as set on map: "tag1;tag2" or "tag1=value;tag2=value"
 	var/obj/structure/overmap/linked //NSV13 - DIFFERENCE BETWEEN CODEBASE
 	var/node_number = 0 //NSV13 - DIFFERENCE BETWEEN CODEBASE
-	var/network = ""
+	var/list/network = list("primary")
 	req_one_access = list(ACCESS_ENGINE, ACCESS_ROBOTICS)
 
 /obj/machinery/navbeacon/Initialize(mapload)
@@ -30,23 +30,10 @@
 
 	var/turf/T = loc
 	hide(T.intact)
-	if(codes?["patrol"])
-		if(!GLOB.navbeacons["[z]"])
-			GLOB.navbeacons["[z]"] = list()
-		GLOB.navbeacons["[z]"] += src //Register with the patrol list!
-	if(codes?["delivery"])
-		GLOB.deliverybeacons += src
-		GLOB.deliverybeacontags += location
+
+	glob_lists_register(init=TRUE)
 
 	has_overmap() //NSV13 start - Overmap ship compatibility
-	return INITIALIZE_HINT_LATELOAD
-
-/obj/machinery/navbeacon/LateInitialize()
-	if(linked && node_number)
-		if(!linked.patrol_beacons[network])
-			LAZYINITLIST(network)
-			linked.patrol_beacons[network] = network
-		linked.patrol_beacons[network[node_number]] = src
 
 /obj/machinery/navbeacon/proc/has_overmap()
 	linked = get_overmap()
@@ -55,20 +42,17 @@
 	return linked
 
 /obj/machinery/navbeacon/proc/set_position(obj/structure/overmap/OM)
-	if(node_number != 0)
-		OM.patrol_beacons += src
-	else
+	if(codes["patrol"])
+		for(var/entry in network)
+			if(!OM.patrol_beacons["[entry]"])
+				OM.patrol_beacons["[entry]"] = list()
+			OM.patrol_beacons["[entry]"] += src
+	if(codes["delivery"])
 		OM.delivery_beacons += src
 	return
 
 /obj/machinery/navbeacon/Destroy()
-	if (linked.delivery_beacons)
-		linked.delivery_beacons -= src
-	if(node_number != 0)
-		linked.patrol_beacons -= src //NSV13 end
-	if (GLOB.navbeacons["[z]"])
-		GLOB.navbeacons["[z]"] -= src //Remove from beacon list, if in one.
-	GLOB.deliverybeacons -= src
+	glob_lists_deregister()
 	return ..()
 
 /obj/machinery/navbeacon/onTransitZ(old_z, new_z)
@@ -96,6 +80,33 @@
 		else
 			codes[e] = "1"
 
+/obj/machinery/navbeacon/proc/glob_lists_deregister()
+	if(codes["delivery"])
+		linked.delivery_beacons -= src
+	for(var/entry in network)
+		if(codes["patrol"])
+			linked.patrol_beacons["[entry]"] -= src
+
+	if (GLOB.navbeacons["[z]"])
+		GLOB.navbeacons["[z]"] -= src //Remove from beacon list, if in one.
+	GLOB.deliverybeacons -= src
+
+/obj/machinery/navbeacon/proc/glob_lists_register(init=FALSE)
+	if(!init)
+		glob_lists_deregister()
+	if(!codes)
+		return
+
+	if(codes["patrol"])
+		if(!GLOB.navbeacons["[z]"])
+			GLOB.navbeacons["[z]"] = list()
+		GLOB.navbeacons["[z]"] += src //Register with the patrol list!
+
+	if(codes["delivery"])
+		GLOB.deliverybeacons += src
+		GLOB.deliverybeacontags += location
+
+//NSV13 end
 
 // called when turf state changes
 // hide the object if turf is intact

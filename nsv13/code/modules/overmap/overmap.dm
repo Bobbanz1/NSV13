@@ -117,6 +117,7 @@
 	//Beacons
 	var/list/delivery_beacons = list()
 	var/list/patrol_beacons = list() //A list of patrol beacons that we can use to navigate the ship
+	var/list/useless_beacons = list() //A list temporarily holding the current patrol beacons found inside the ship
 
 	// Controlling equipment
 	var/obj/machinery/computer/ship/helm //Relay beeping noises when we act
