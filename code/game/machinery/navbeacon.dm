@@ -156,23 +156,28 @@
 	return
 
 //SCREW THIS DAMN CODE I'VE BEEN STARING AT IT FOR BLOODY DAYS AND THE ONLY THING I HAVE TO SHOW FOR IT IS A WAY TO NETWORK NAVBEACONS AND BOTS RATHER THAN THE DAMNED NAVBEACON REDUNDANCY METHOD I WANTED TO IMPLEMENT
-//I'M MAKING A FREAKING TGUI INTERFACE FOR THIS AND THE REST OF THE UNIVERSE CAN GO CRY IN A BLOODY HOLE
+//I'M MAKING A FREAKING TGUI INTERFACE FOR THIS AND THE REST OF THE UNIVERSE CAN GO CRY IN A HOLE
 /obj/machinery/navbeacon/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "Navbeacon")
-		ui.open()
+		if(!open && !isAI(user))	// can't alter controls if not open, unless you're an AI
+			to_chat(user, "<span class='warning'>The beacon's control cover is closed!</span>")
+			return
+		else
+			ui = new(user, src, "Navbeacon")
+			ui.open()
 
 /obj/machinery/navbeacon/ui_data(mob/user)
 	var/list/data = list()
-	data["open"] = open
 	data["locked"] = locked
 	data["ai"] = isAI(user)
 	data["location"] = location
 
+	var/navcodes[0]
 	for(var/key in codes)
-		data["key"]	= key
-		data["codes"] = codes
+		navcodes.Add(list(list("entry" = key, "navcode" = codes[key])))
+
+	data["codes"] = navcodes
 
 	data["network"] = network
 	return data
