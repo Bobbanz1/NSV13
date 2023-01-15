@@ -13,7 +13,9 @@ export const Navbeacon = (props, context) => {
     ai,
     locked,
     network,
+    codes = [],
   } = data;
+
 
   return (
     <Window
@@ -23,16 +25,25 @@ export const Navbeacon = (props, context) => {
       <Window.Content scrollable>
         <Section>
           {!!locked && !ai && (
-            <NoticeBox>
-              Swipe a card to unlock the controls.<br />
-              Location: {location ? location : "(None)"}
-              {data.codes.map(key => {
-                <Box>
-                  TEST
-                  {key.entry} ... {key.navcode}
-                </Box>;
-              })}
-            </NoticeBox>
+            <>
+              <NoticeBox>
+                Swipe a card to unlock the controls.<br />
+                Location: {location ? location : "(None)"} <br />
+                {codes} <br />
+              </NoticeBox>
+              <Table>
+                {codes.map(thing => {
+                  <Table.Row key={thing.code}>
+                    <Table.Cell>
+                      {thing.code}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {thing.value}
+                    </Table.Cell>
+                  </Table.Row>;
+                })}
+              </Table>
+            </>
           )}
           {!locked && (
             <Table>

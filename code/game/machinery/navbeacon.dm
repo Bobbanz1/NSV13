@@ -169,15 +169,19 @@
 
 /obj/machinery/navbeacon/ui_data(mob/user)
 	var/list/data = list()
+	var/list/payload = list()
+
 	data["locked"] = locked
 	data["ai"] = isAI(user)
 	data["location"] = location
 
-	var/navcodes[0]
-	for(var/key in codes)
-		navcodes.Add(list(list("entry" = key, "navcode" = codes[key])))
+	for(var/code in codes)
+		var/list/beacon_info = list()
+		beacon_info["code"] = code
+		beacon_info["value"] = codes[code]
+		payload += list(beacon_info)
 
-	data["codes"] = navcodes
+	data["codes"] = payload
 
 	data["network"] = network
 	return data
