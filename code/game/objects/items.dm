@@ -213,6 +213,11 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	///Icon for monkey
 	var/icon/monkey_icon
 
+	//NSV13 - Digi Clothing - Start
+	/// Icon file for mob worn overlays, if the user is digi.
+	var/icon/worn_icon_digi
+	//NSV13 - Digi Clothing - Stop
+
 /obj/item/Initialize(mapload)
 
 	materials =	typelist("materials", materials)
