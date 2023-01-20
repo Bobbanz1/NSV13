@@ -15,7 +15,3 @@
 
 /obj/item/clothing/under/rank/munitions_tech
 	supports_variations = DIGITIGRADE_VARIATION
-
-/obj/item/clothing/under/ship/officer
-	worn_icon_digi = 'nsv13/icons/mob/clothing/under/ihatemyself.dmi'
-	supports_variations = DIGITIGRADE_VARIATION

@@ -120,20 +120,22 @@ There are several things that need to be remembered:
 
 		var/mutable_appearance/uniform_overlay
 
-		if(dna?.species.sexes)
-			if(gender == FEMALE && U.fitted != NO_FEMALE_UNIFORM)
-				uniform_overlay = U.build_worn_icon(default_layer = UNIFORM_LAYER, default_icon_file = 'icons/mob/clothing/uniform.dmi', isinhands = FALSE, femaleuniform = U.fitted, override_state = target_overlay)
-
+		//NSV13 - Digi Clothing - Start
 		//Change check_adjustable_clothing.dm if you change this
 		var/icon_file = 'icons/mob/clothing/uniform.dmi'
+		var/digi_check = FALSE
 		if(!uniform_overlay)
 			if(U.sprite_sheets & (dna?.species.bodyflag))
 				icon_file = dna.species.get_custom_icons("uniform")
-			//NSV13 - Digi Clothing - Start
 			if((dna?.species.bodytype & BODYTYPE_DIGITIGRADE) && (U.supports_variations & DIGITIGRADE_VARIATION))
 				icon_file = U.worn_icon_digi
-			//NSV13 - Digi Clothing - End
-			uniform_overlay = U.build_worn_icon(default_layer = UNIFORM_LAYER, default_icon_file = icon_file, isinhands = FALSE, override_state = target_overlay)
+				digi_check = TRUE
+			uniform_overlay = U.build_worn_icon(default_layer = UNIFORM_LAYER, default_icon_file = icon_file, isinhands = FALSE, override_state = target_overlay, digi_clothing = digi_check)
+
+		if(dna?.species.sexes)
+			if(gender == FEMALE && U.fitted != NO_FEMALE_UNIFORM)
+				uniform_overlay = U.build_worn_icon(default_layer = UNIFORM_LAYER, default_icon_file = icon_file, isinhands = FALSE, femaleuniform = U.fitted, override_state = target_overlay)
+		//NSV13 - Digi Clothing - End
 
 
 		if(OFFSET_UNIFORM in dna.species.offset_features)
@@ -314,6 +316,7 @@ There are several things that need to be remembered:
 
 	if(shoes)
 		var/icon_file = 'icons/mob/clothing/feet.dmi'
+		var/digi_check = FALSE //NSV13
 		if(istype(shoes, /obj/item/clothing/shoes))
 			var/obj/item/clothing/shoes/S = shoes
 			if(S.sprite_sheets & (dna?.species.bodyflag))
@@ -321,6 +324,7 @@ There are several things that need to be remembered:
 
 			if(dna?.species.bodytype & BODYTYPE_DIGITIGRADE)
 				if(S.supports_variations & DIGITIGRADE_VARIATION)
+					digi_check = TRUE //NSV13
 					icon_file = 'icons/mob/species/misc/digitigrade_shoes.dmi'
 
 		shoes.screen_loc = ui_shoes					//move the item to the appropriate screen loc
@@ -328,7 +332,7 @@ There are several things that need to be remembered:
 			if(hud_used.inventory_shown)			//if the inventory is open
 				client.screen += shoes					//add it to client's screen
 		update_observer_view(shoes,1)
-		overlays_standing[SHOES_LAYER] = shoes.build_worn_icon(default_layer = SHOES_LAYER, default_icon_file = icon_file)
+		overlays_standing[SHOES_LAYER] = shoes.build_worn_icon(default_layer = SHOES_LAYER, default_icon_file = icon_file, digi_clothing = digi_check) //NSV13
 		var/mutable_appearance/shoes_overlay = overlays_standing[SHOES_LAYER]
 		if(OFFSET_SHOES in dna.species.offset_features)
 			shoes_overlay.pixel_x += dna.species.offset_features[OFFSET_SHOES][1]
@@ -428,12 +432,14 @@ There are several things that need to be remembered:
 
 	if(istype(wear_suit, /obj/item/clothing/suit))
 		var/icon_file = 'icons/mob/clothing/suit.dmi'
+		var/digi_check = FALSE //NSV13
 		var/obj/item/clothing/suit/S = wear_suit
 		if(S.sprite_sheets & (dna?.species.bodyflag))
 			icon_file = dna.species.get_custom_icons("suit")
 
 		if(dna?.species.bodytype & BODYTYPE_DIGITIGRADE)
 			if(S.supports_variations & DIGITIGRADE_VARIATION)
+				digi_check = TRUE //NSV13
 				icon_file = 'icons/mob/species/misc/digitigrade_suits.dmi'
 
 		wear_suit.screen_loc = ui_oclothing
@@ -442,7 +448,7 @@ There are several things that need to be remembered:
 				client.screen += wear_suit
 		update_observer_view(wear_suit,1)
 
-		overlays_standing[SUIT_LAYER] = wear_suit.build_worn_icon(default_layer = SUIT_LAYER, default_icon_file = icon_file)
+		overlays_standing[SUIT_LAYER] = wear_suit.build_worn_icon(default_layer = SUIT_LAYER, default_icon_file = icon_file, digi_clothing = digi_check) //NSV13
 		var/mutable_appearance/suit_overlay = overlays_standing[SUIT_LAYER]
 		if(OFFSET_SUIT in dna.species.offset_features)
 			suit_overlay.pixel_x += dna.species.offset_features[OFFSET_SUIT][1]
@@ -666,9 +672,12 @@ in this situation default_icon_file is expected to match either the lefthand_ or
 femalueuniform: A value matching a uniform item's fitted var, if this is anything but NO_FEMALE_UNIFORM, we
 generate/load female uniform sprites matching all previously decided variables
 
+//NSV13
+Digiclothing: If true, we use the digi clothes instead of the normal ones
+
 
 */
-/obj/item/proc/build_worn_icon(default_layer = 0, default_icon_file = null, isinhands = FALSE, femaleuniform = NO_FEMALE_UNIFORM, override_state = null)
+/obj/item/proc/build_worn_icon(default_layer = 0, default_icon_file = null, isinhands = FALSE, femaleuniform = NO_FEMALE_UNIFORM, override_state = null, digi_clothing = FALSE) //NSV13 - Digi-Uniforms
 
 	var/t_state
 	if(override_state)
@@ -678,6 +687,10 @@ generate/load female uniform sprites matching all previously decided variables
 
 	//Find a valid icon file from variables+arguments
 	var/file2use = !isinhands ? (worn_icon ? worn_icon : default_icon_file) : default_icon_file
+	//NSV13 - Digi-Uniforms - Start
+	if(digi_clothing)
+		file2use = default_icon_file
+	//NSV13 - Digi-Uniforms - End
 
 	//Find a valid layer from variables+arguments
 	var/layer2use = alternate_worn_layer ? alternate_worn_layer : default_layer

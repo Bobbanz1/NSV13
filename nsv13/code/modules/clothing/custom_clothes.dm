@@ -16,6 +16,8 @@
 	sensor_mode = SENSOR_COORDS
 	random_sensor = FALSE
 	can_adjust = TRUE
+	worn_icon_digi = 'nsv13/icons/mob/clothing/under/ihatemyself.dmi'
+	supports_variations = DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/ship/peacekeeper
 	name = "Space cop uniform"
