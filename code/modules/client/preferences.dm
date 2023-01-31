@@ -77,6 +77,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/action_buttons_screen_locs = list()
 	//Nsv13 - Syndicate role select
 	var/preferred_syndie_role = CONQUEST_ROLE_GRUNT
+	//NSV13 - Character Creation Tab Overhaul
+	var/character_settings_tab = 0
 
 /datum/preferences/proc/set_max_character_slots(newmax)
 	max_usable_slots = min(TRUE_MAX_SAVE_SLOTS, newmax) // Make sure they dont go over
@@ -829,76 +831,87 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "<a style='white-space:nowrap;' href='?_src_=prefs;preference=changeslot;num=[CS.slot_number];' [CS.slot_number == default_slot ? "class='linkOn'" : ""]>[name]</a> "
 			dat += "</center>"
 
-			dat += "<h2>Flavor Text</h2>"
-			dat += "<table width='100%'><tr><td width='75%' valign='top'>"
+			dat += "<HR>"
+			dat += "<center>"
+			dat += "<a href='?_src_=prefs;preference=character_tab;tab=0' [character_settings_tab == 0 ? "class='linkOn'" : ""]>General</a>"
+			dat += "<a href='?_src_=prefs;preference=character_tab;tab=1' [character_settings_tab == 1 ? "class='linkOn'" : ""]>Appearance</a>"
+			dat += "<a href='?_src_=prefs;preference=character_tab;tab=2' [character_settings_tab == 2 ? "class='linkOn'" : ""]>Markings</a>"
+			dat += "<a href='?_src_=prefs;preference=character_tab;tab=3' [character_settings_tab == 3 ? "class='linkOn'" : ""]>Background</a>"
+			dat += "</center>"
 
-			dat += "<a href='?_src_=prefs;preference=flavor_text;task=input'><b>Set Flavor Text</b></a><br>"
-			if(length(active_character.flavor_text) <= 40)
-				if(!length(active_character.flavor_text))
-					dat += "\[...\]"
-				else
-					dat += "[active_character.flavor_text]"
-			else
-				dat += "[copytext_char(active_character.flavor_text, 1, 40)]...<br>"
+			dat += "<HR>"
+			switch(character_settings_tab)
+				if(3) //Background
+					dat += "<h2>Flavor Text</h2>"
+					dat += "<table width='100%'><tr><td width='75%' valign='top'>"
 
-			dat += "<br>"
+					dat += "<a href='?_src_=prefs;preference=flavor_text;task=input'><b>Set Flavor Text</b></a><br>"
+					if(length(active_character.flavor_text) <= 40)
+						if(!length(active_character.flavor_text))
+							dat += "\[...\]"
+						else
+							dat += "[active_character.flavor_text]"
+					else
+						dat += "[copytext_char(active_character.flavor_text, 1, 40)]...<br>"
 
-			dat += "<a href='?_src_=prefs;preference=silicon_flavor_text;task=input'><b>Set Silicon Examine Text</b></a><br>"
-			if(length(active_character.silicon_flavor_text) <= 40)
-				if(!length(active_character.silicon_flavor_text))
-					dat += "\[...\]"
-				else
-					dat += "[active_character.silicon_flavor_text]"
-			else
-				dat += "[copytext_char(active_character.silicon_flavor_text, 1, 40)]...<br>"
+					dat += "<br>"
 
-			dat += "</tr></table>"
+					dat += "<a href='?_src_=prefs;preference=silicon_flavor_text;task=input'><b>Set Silicon Examine Text</b></a><br>"
+					if(length(active_character.silicon_flavor_text) <= 40)
+						if(!length(active_character.silicon_flavor_text))
+							dat += "\[...\]"
+						else
+							dat += "[active_character.silicon_flavor_text]"
+					else
+						dat += "[copytext_char(active_character.silicon_flavor_text, 1, 40)]...<br>"
 
-			dat += "<table width='100%'><tr>"
-			dat += "<td width='33%'>"
+					dat += "</tr></table>"
 
-			dat += "<h2>General Record</h2>"
-			dat += "<a href='?_src_=prefs;preference=general_record;task=input'><b>Set General Record</b></a><br>"
+					dat += "<table width='100%'><tr>"
+					dat += "<td width='33%'>"
 
-			if(length(active_character.general_record) <= 40)
-				if(!length(active_character.general_record))
-					dat += "\[...\]"
-				else
-					dat += "[html_encode(active_character.general_record)]"
-			else
-				dat += "[copytext_char(active_character.general_record, 1, 40)]..."
+					dat += "<h2>General Record</h2>"
+					dat += "<a href='?_src_=prefs;preference=general_record;task=input'><b>Set General Record</b></a><br>"
 
-			dat += "<br>"
+					if(length(active_character.general_record) <= 40)
+						if(!length(active_character.general_record))
+							dat += "\[...\]"
+						else
+							dat += "[html_encode(active_character.general_record)]"
+					else
+						dat += "[copytext_char(active_character.general_record, 1, 40)]..."
 
-
-			dat += "<h2>Medical Record</h2>"
-			dat += "<a href='?_src_=prefs;preference=medical_record;task=input'><b>Set Medical Record</b></a><br>"
-
-			if(length(active_character.medical_record) <= 40)
-				if(!length(active_character.medical_record))
-					dat += "\[...\]"
-				else
-					dat += "[html_encode(active_character.medical_record)]"
-			else
-				dat += "[copytext_char(active_character.medical_record, 1, 40)]..."
-
-			dat += "<br>"
+					dat += "<br>"
 
 
-			dat += "<h2>Security Record</h2>"
-			dat += "<a href='?_src_=prefs;preference=security_record;task=input'><b>Set Security Record</b></a><br>"
+					dat += "<h2>Medical Record</h2>"
+					dat += "<a href='?_src_=prefs;preference=medical_record;task=input'><b>Set Medical Record</b></a><br>"
 
-			if(length(active_character.security_record) <= 40)
-				if(!length(active_character.security_record))
-					dat += "\[...\]"
-				else
-					dat += "[html_encode(active_character.security_record)]"
-			else
-				dat += "[copytext_char(active_character.security_record, 1, 40)]..."
+					if(length(active_character.medical_record) <= 40)
+						if(!length(active_character.medical_record))
+							dat += "\[...\]"
+						else
+							dat += "[html_encode(active_character.medical_record)]"
+					else
+						dat += "[copytext_char(active_character.medical_record, 1, 40)]..."
 
-			dat += "<br>"
-			dat += "</td>"
-			dat += "</tr></table>"
+					dat += "<br>"
+
+
+					dat += "<h2>Security Record</h2>"
+					dat += "<a href='?_src_=prefs;preference=security_record;task=input'><b>Set Security Record</b></a><br>"
+
+					if(length(active_character.security_record) <= 40)
+						if(!length(active_character.security_record))
+							dat += "\[...\]"
+						else
+							dat += "[html_encode(active_character.security_record)]"
+					else
+						dat += "[copytext_char(active_character.security_record, 1, 40)]..."
+
+					dat += "<br>"
+					dat += "</td>"
+					dat += "</tr></table>"
 		//NSV13 - Roleplay Tab - End
 	dat += "<hr><center>"
 
@@ -2037,6 +2050,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if("tab")
 					if (href_list["tab"])
 						current_tab = text2num(href_list["tab"])
+
+				//NSV13 - Character Creation Overhaul - Start
+				if("character_tab")
+					if (href_list["tab"])
+						character_settings_tab = text2num(href_list["tab"])
 
 				if("keybindings_menu")
 					ShowKeybindings(user)
