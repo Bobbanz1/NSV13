@@ -289,6 +289,12 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_FRIENDLY			"friendly"
 #define TRAIT_GRABWEAKNESS		"grab_weakness"
 #define TRAIT_BRAIN_TUMOR		"brain_tumor"
+/// NSV13 - God fucking Help Me - Start
+#define TRAIT_PERMABONER		"permanent_arousal"
+#define TRAIT_NEVERBONER		"never_aroused"
+#define TRAIT_NYMPHO			"nymphomania"
+#define TRAIT_MASO              "masochism"
+/// NSV13 - God fucking Help Me - Stop
 
 ///Trait applied to turfs when an atmos holosign is placed on them. It will stop firedoors from closing.
 #define TRAIT_FIREDOOR_STOP "firedoor_stop"
@@ -321,6 +327,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define CURSE_TRAIT "eldritch"
 #define STATION_TRAIT "station-trait"
 #define TRAIT_RUSTY "rust_trait"
+/// NSV13 - God fucking Help Me - Start
+#define GHOSTROLE_TRAIT "ghostrole"
+#define APHRO_TRAIT "aphro"
+/// NSV13 - God fucking Help Me - Stop
 
 // unique trait sources, still defines
 #define CLONING_POD_TRAIT "cloning-pod"

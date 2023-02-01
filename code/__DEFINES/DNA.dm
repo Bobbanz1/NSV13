@@ -130,6 +130,10 @@
 #define NOSOCKS       22 // You cannot wear socks.
 #define DRINKSBLOOD		23 // NSV13 - moths like drinking blood
 
+//NSV13 - Arousal stuff
+#define NOAROUSAL		24	//Stops all arousal effects
+#define NOGENITALS		25	//Cannot create, use, or otherwise have genitals
+
 //organ slots
 #define ORGAN_SLOT_BRAIN "brain"
 #define ORGAN_SLOT_APPENDIX "appendix"
@@ -155,6 +159,14 @@
 #define ORGAN_SLOT_BRAIN_SURGICAL_IMPLANT "brain_surgical"
 #define ORGAN_SLOT_TAIL "tail"
 #define ORGAN_SLOT_WINGS "wings"
+
+//NSV13 - Stuff
+#define ORGAN_SLOT_PENIS "penis"
+#define ORGAN_SLOT_WOMB "womb"
+#define ORGAN_SLOT_VAGINA "vagina"
+#define ORGAN_SLOT_TESTICLES "testicles"
+#define ORGAN_SLOT_BREASTS "breasts"
+#define ORGAN_SLOT_BUTT "butt"
 
 //organ defines
 #define STANDARD_ORGAN_THRESHOLD 	100

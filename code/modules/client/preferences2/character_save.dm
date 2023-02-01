@@ -55,7 +55,37 @@
 						"ipc_screen" = "Blue",
 						"ipc_antenna" = "None",
 						"ipc_chassis" = "Morpheus Cyberkinetics(Greyscale)",
-						"insect_type" = "Common Fly"
+						"insect_type" = "Common Fly",
+						"genitals_use_skintone" = FALSE,
+						"has_cock" = FALSE,
+						"cock_shape" = DEF_COCK_SHAPE,
+						"cock_length" = COCK_SIZE_DEF,
+						"cock_diameter_ratio" = COCK_DIAMETER_RATIO_DEF,
+						"cock_color" = "ffffff",
+						"has_balls" = FALSE,
+						"balls_color" = "ffffff",
+						"balls_shape" = DEF_BALLS_SHAPE,
+						"balls_size" = BALLS_SIZE_DEF,
+						"balls_cum_rate" = CUM_RATE,
+						"balls_cum_mult" = CUM_RATE_MULT,
+						"balls_efficiency" = CUM_EFFICIENCY,
+						"has_breasts" = FALSE,
+						"breasts_color" = "ffffff",
+						"breasts_size" = BREASTS_SIZE_DEF,
+						"breasts_shape" = DEF_BREASTS_SHAPE,
+						"breasts_producing" = FALSE,
+						"has_vag" = FALSE,
+						"vag_shape" = DEF_VAGINA_SHAPE,
+						"vag_color" = "ffffff",
+						"has_womb" = FALSE,
+						"has_butt" = FALSE,
+						"butt_color" = "ffffff",
+						"butt_size" = BUTT_SIZE_DEF,
+						"balls_visibility"	= GEN_VISIBLE_NO_UNDIES,
+						"breasts_visibility"= GEN_VISIBLE_NO_UNDIES,
+						"cock_visibility" = GEN_VISIBLE_NO_UNDIES,
+						"vag_visibility" = GEN_VISIBLE_NO_UNDIES,
+						"butt_visibility" = GEN_VISIBLE_NO_UNDIES,
 					)
 	var/list/custom_names = list()
 	var/preferred_ai_core_display = "Blue"
@@ -250,6 +280,17 @@
 			job_preferences -= j
 
 	all_quirks = SANITIZE_LIST(all_quirks)
+
+	//NSV13 - God Fucking Help Me - Start
+	for(var/V in all_quirks)
+		switch(V)
+			if("Crocin Immunity")
+				ENABLE_BITFIELD(usr.client?.prefs.cit_toggles, NO_APHRO)
+				all_quirks -= V
+			if("Buns of Steel")
+				ENABLE_BITFIELD(usr.client?.prefs.cit_toggles, NO_ASS_SLAP)
+				all_quirks -= V
+	//NSV13 - God Fucking Help Me - Stop
 
 	//NSV13 - Roleplay Stuff - Start
 	flavor_text = html_decode(strip_html(flavor_text))
@@ -521,13 +562,15 @@
 	character.facial_hair_style = facial_hair_style
 	//NSV13 START
 	character.flavour_text = flavor_text //Let's update their flavor_text at least initially
-	//NSV13 STOP
+	character.give_genitals(TRUE)
 	if("tail_lizard" in pref_species.default_features)
 		character.dna.species.mutant_bodyparts |= "tail_lizard"
 
 	if(icon_updates)
 		character.update_body()
 		character.update_hair()
+		character.update_genitals()
 		character.update_body_parts(TRUE)
+	//NSV13 STOP
 
 	character.dna.update_body_size()

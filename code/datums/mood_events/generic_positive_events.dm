@@ -241,3 +241,9 @@
 /datum/mood_event/brain_tumor_mannitol/New(mob/M, param)
 	timeout = rand(30,60) SECONDS // makes the timing unreliable on your mood
 	..()
+
+//NSV13 - ERP
+/datum/mood_event/orgasm
+	description = "<span class='userlove'>I came!</span>\n" //funny meme haha
+	mood_change = 3
+	timeout = 100 SECONDS

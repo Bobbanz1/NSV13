@@ -563,6 +563,16 @@
 			var/mob/living/L = V
 			L.SpinAnimation(speed = 10, loops = 5)
 
+	//NSV13 - God Fucking Help Me - Start
+	/*ORGASM
+	else if((findtext(message, orgasm_words)))
+		cooldown = COOLDOWN_MEME
+		for(var/V in listeners)
+			var/mob/living/carbon/human/H = V
+			if(H.client && H.client.prefs && H.client.prefs.cit_toggles & HYPNO)
+				H.mob_climax(forced_climax=TRUE)
+	*/
+	//NSV13 - God Fucking Help Me - Stop
 	else
 		cooldown = COOLDOWN_NONE
 

@@ -47,6 +47,7 @@
 	var/bleedsuppress = 0 //for stopping bloodloss, eventually this will be limb-based like bleeding
 
 	var/name_override //For temporary visible name changes
+	var/genital_override = FALSE //Force genitals on things incase of chems
 
 	var/datum/physiology/physiology
 
