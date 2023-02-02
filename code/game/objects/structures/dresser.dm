@@ -55,4 +55,4 @@
 					H.socks= new_socks
 
 		add_fingerprint(H)
-		H.update_body()
+		H.update_body(TRUE)

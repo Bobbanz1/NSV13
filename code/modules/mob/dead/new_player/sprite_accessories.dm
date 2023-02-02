@@ -62,6 +62,8 @@
 	var/dimension_y = 32
 	var/center = FALSE	//Should we center the sprite?
 	var/limbs_id // The limbs id supplied for full-body replacing features.
+	var/covers_groin = FALSE
+	var/covers_chest = FALSE
 
 //////////////////////
 // Hair Definitions //
@@ -1080,6 +1082,7 @@
 /datum/sprite_accessory/underwear
 	icon = 'icons/mob/clothing/underwear.dmi'
 	use_static = FALSE
+	covers_groin = TRUE
 
 
 //MALE UNDERWEAR
@@ -1087,6 +1090,7 @@
 	name = "Nude"
 	icon_state = null
 	gender = NEUTER
+	covers_groin = FALSE
 
 /datum/sprite_accessory/underwear/male_briefs
 	name = "Men's Briefs"
@@ -1256,11 +1260,13 @@
 
 /datum/sprite_accessory/undershirt
 	icon = 'icons/mob/clothing/underwear.dmi'
+	covers_chest = TRUE
 
 /datum/sprite_accessory/undershirt/nude
 	name = "Nude"
 	icon_state = null
 	gender = NEUTER
+	covers_chest = FALSE
 
 // please make sure they're sorted alphabetically and categorized
 

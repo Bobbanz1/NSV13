@@ -82,8 +82,9 @@
 #define NO_APHRO			(1<<6)
 #define NO_ASS_SLAP			(1<<7)
 #define BIMBOFICATION		(1<<8)
+#define GENITAL_EXAMINE		(1<<9)
 
-#define TOGGLES_CITADEL (BREAST_ENLARGEMENT|PENIS_ENLARGEMENT)
+#define TOGGLES_CITADEL 0
 
 //special species definitions
 #define MINIMUM_MUTANT_COLOR	"#202020" //this is how dark players mutant parts and skin can be

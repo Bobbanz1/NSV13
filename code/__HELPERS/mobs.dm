@@ -78,6 +78,19 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_chassis, GLOB.ipc_chassis_list)
 	if(!GLOB.insect_type_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/insect_type, GLOB.insect_type_list)
+
+	//NSV CHANGES - genitals and such
+	if(!GLOB.cock_shapes_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/penis, GLOB.cock_shapes_list)
+	if(!GLOB.balls_shapes_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/testicles, GLOB.balls_shapes_list)
+	if(!GLOB.vagina_shapes_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/vagina, GLOB.vagina_shapes_list)
+	if(!GLOB.breasts_shapes_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/breasts, GLOB.breasts_shapes_list)
+	if(!GLOB.butt_shapes_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/butt, GLOB.butt_shapes_list)
+
 	//For now we will always return none for tail_human and ears.
 	return(
 		list(
@@ -100,7 +113,32 @@
 		"ipc_antenna" = pick(GLOB.ipc_antennas_list),
 		"ipc_chassis" = pick(GLOB.ipc_chassis_list),
 		"insect_type" = pick(GLOB.insect_type_list),
-		"flavour_text" = ""
+		"flavour_text" = "",
+		"has_cock"			= FALSE,
+		"cock_shape"		= pick(GLOB.cock_shapes_list),
+		"cock_length"		= COCK_SIZE_DEF,
+		"cock_diameter_ratio"	= COCK_DIAMETER_RATIO_DEF,
+		"cock_color"		= pick("FFFFFF","7F7F7F", "7FFF7F", "7F7FFF", "FF7F7F", "7FFFFF", "FF7FFF", "FFFF7F"),
+		"has_balls" 		= FALSE,
+		"balls_color" 		= pick("FFFFFF","7F7F7F", "7FFF7F", "7F7FFF", "FF7F7F", "7FFFFF", "FF7FFF", "FFFF7F"),
+		"balls_size"		= BALLS_SIZE_DEF,
+		"balls_shape"		= DEF_BALLS_SHAPE,
+		"balls_cum_rate"	= CUM_RATE,
+		"balls_cum_mult"	= CUM_RATE_MULT,
+		"balls_efficiency"	= CUM_EFFICIENCY,
+		"has_breasts" 		= FALSE,
+		"breasts_color" 	= pick("FFFFFF","7F7F7F", "7FFF7F", "7F7FFF", "FF7F7F", "7FFFFF", "FF7FFF", "FFFF7F"),
+		"breasts_size" 		= pick(CONFIG_GET(keyed_list/breasts_cups_prefs)),
+		"breasts_shape"		= DEF_BREASTS_SHAPE,
+		"breasts_producing" = FALSE,
+		"has_vag"			= FALSE,
+		"vag_shape"			= pick(GLOB.vagina_shapes_list),
+		"vag_color"			= pick("FFFFFF","7F7F7F", "7FFF7F", "7F7FFF", "FF7F7F", "7FFFFF", "FF7FFF", "FFFF7F"),
+		"has_womb"			= FALSE,
+		"balls_visibility"	= GEN_VISIBLE_NO_UNDIES,
+		"breasts_visibility"= GEN_VISIBLE_NO_UNDIES,
+		"cock_visibility"	= GEN_VISIBLE_NO_UNDIES,
+		"vag_visibility"	= GEN_VISIBLE_NO_UNDIES,
 		)
 	) //NSV13 - ADD FLAVOR TEXT
 

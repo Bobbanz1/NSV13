@@ -97,6 +97,12 @@
 	//Status effects
 	. += status_effect_examines()
 
+	//NSV13 - Genital Examine
+	if(LAZYLEN(internal_organs) && (user.client?.prefs.cit_toggles & GENITAL_EXAMINE))
+		for(var/obj/item/organ/genital/dicc in internal_organs)
+			if(istype(dicc) && dicc.is_exposed())
+				. += "[dicc.desc]"
+
 	//Jitters
 	switch(jitteriness)
 		if(300 to INFINITY)

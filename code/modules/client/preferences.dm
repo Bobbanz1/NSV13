@@ -184,7 +184,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				dat += "<b>Gender:</b> <a href='?_src_=prefs;preference=gender'>[active_character.gender == MALE ? "Male" : "Female"]</a><BR>"
 			dat += "<b>Age:</b> <a href='?_src_=prefs;preference=age;task=input'>[active_character.age]</a><BR>"
 			dat += "<b>Arousal:</b><a href='?_src_=prefs;preference=arousable'>[arousable == TRUE ? "Enabled" : "Disabled"]</a><BR>"
-
 			dat += "<b>Special Names:</b><BR>"
 			var/old_group
 			for(var/custom_name_id in GLOB.preferences_custom_names)
@@ -523,6 +522,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
 			dat += "<h2>Fetish content prefs</h2>"
 			dat += "<b>Arousal:</b><a href='?_src_=prefs;preference=arousable'>[arousable == TRUE ? "Enabled" : "Disabled"]</a><BR>"
+			dat += "<b>Genital examine text</b>:<a href='?_src_=prefs;preference=genital_examine'>[(cit_toggles & GENITAL_EXAMINE) ? "Enabled" : "Disabled"]</a><BR>"
 			dat += "<b>Forced Feminization:</b> <a href='?_src_=prefs;preference=feminization'>[(cit_toggles & FORCED_FEM) ? "Allowed" : "Disallowed"]</a><br>"
 			dat += "<b>Forced Masculinization:</b> <a href='?_src_=prefs;preference=masculinization'>[(cit_toggles & FORCED_MASC) ? "Allowed" : "Disallowed"]</a><br>"
 			dat += "<b>Lewd Hypno:</b> <a href='?_src_=prefs;preference=hypno'>[(cit_toggles & HYPNO) ? "Allowed" : "Disallowed"]</a><br>"
@@ -2204,6 +2204,34 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						parent.mob.hud_used.update_parallax_pref(parent.mob)
 
 				//NSV13 - God Fucking Help Me - Start
+				if("genital_colour")
+					active_character.features["genitals_use_skintone"] = !active_character.features["genitals_use_skintone"]
+				if("arousable")
+					arousable = !arousable
+				if("has_cock")
+					active_character.features["has_cock"] = !active_character.features["has_cock"]
+					if(active_character.features["has_cock"] == FALSE)
+						active_character.features["has_balls"] = FALSE
+				if("has_balls")
+					active_character.features["has_balls"] = !active_character.features["has_balls"]
+				if("has_breasts")
+					active_character.features["has_breasts"] = !active_character.features["has_breasts"]
+					if(active_character.features["has_breasts"] == FALSE)
+						active_character.features["breasts_producing"] = FALSE
+				if("breasts_producing")
+					active_character.features["breasts_producing"] = !active_character.features["breasts_producing"]
+				if("has_vag")
+					active_character.features["has_vag"] = !active_character.features["has_vag"]
+					if(active_character.features["has_vag"] == FALSE)
+						active_character.features["has_womb"] = FALSE
+				if("has_womb")
+					active_character.features["has_womb"] = !active_character.features["has_womb"]
+				if("has_butt")
+					active_character.features["has_butt"] = !active_character.features["has_butt"]
+
+				if("genital_examine")
+					cit_toggles ^= GENITAL_EXAMINE
+
 				if("breast_enlargement")
 					cit_toggles ^= BREAST_ENLARGEMENT
 

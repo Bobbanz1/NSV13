@@ -266,6 +266,46 @@
 	features["ipc_chassis"]	= sanitize_inlist(features["ipc_chassis"], GLOB.ipc_chassis_list)
 	features["insect_type"]	= sanitize_inlist(features["insect_type"], GLOB.insect_type_list)
 
+	var/static/list/B_sizes
+	if(!B_sizes)
+		var/list/L = CONFIG_GET(keyed_list/breasts_cups_prefs)
+		B_sizes = L.Copy()
+	var/static/min_D
+	if(!min_D)
+		min_D = CONFIG_GET(number/penis_min_inches_prefs)
+	var/static/max_D
+	if(!max_D)
+		max_D = CONFIG_GET(number/penis_max_inches_prefs)
+	var/static/min_B
+	if(!min_B)
+		min_B = CONFIG_GET(number/butt_min_size_prefs)
+	var/static/max_B
+	if(!max_B)
+		max_B = CONFIG_GET(number/butt_max_size_prefs)
+
+	var/static/safe_visibilities
+	if(!safe_visibilities)
+		var/list/L = CONFIG_GET(keyed_list/safe_visibility_toggles)
+		safe_visibilities = L.Copy()
+
+	//NSV13 - God Help Me - Start
+	features["breasts_size"] = sanitize_inlist(features["breasts_size"], B_sizes, BREASTS_SIZE_DEF)
+	features["cock_length"] = sanitize_integer(features["cock_length"], min_D, max_D, COCK_SIZE_DEF)
+	features["butt_size"] = sanitize_integer(features["butt_size"], min_B, max_B, BUTT_SIZE_DEF)
+	features["breasts_shape"] = sanitize_inlist(features["breasts_shape"], GLOB.breasts_shapes_list, DEF_BREASTS_SHAPE)
+	features["cock_shape"] = sanitize_inlist(features["cock_shape"], GLOB.cock_shapes_list, DEF_COCK_SHAPE)
+	features["balls_shape"] = sanitize_inlist(features["balls_shape"], GLOB.balls_shapes_list, DEF_BALLS_SHAPE)
+	features["vag_shape"] = sanitize_inlist(features["vag_shape"], GLOB.vagina_shapes_list, DEF_VAGINA_SHAPE)
+	features["breasts_color"] = sanitize_hexcolor(features["breasts_color"], 6, FALSE, "FFFFFF")
+	features["cock_color"] = sanitize_hexcolor(features["cock_color"], 6, FALSE, "FFFFFF")
+	features["balls_color"] = sanitize_hexcolor(features["balls_color"], 6, FALSE, "FFFFFF")
+	features["vag_color"] = sanitize_hexcolor(features["vag_color"], 6, FALSE, "FFFFFF")
+	features["breasts_visibility"] = sanitize_inlist(features["breasts_visibility"], safe_visibilities, GEN_VISIBLE_NO_UNDIES)
+	features["cock_visibility"] = sanitize_inlist(features["cock_visibility"], safe_visibilities, GEN_VISIBLE_NO_UNDIES)
+	features["balls_visibility"] = sanitize_inlist(features["balls_visibility"], safe_visibilities, GEN_VISIBLE_NO_UNDIES)
+	features["vag_visibility"] = sanitize_inlist(features["vag_visibility"], safe_visibilities, GEN_VISIBLE_NO_UNDIES)
+	features["butt_visibility"] = sanitize_inlist(features["butt_visibility"], safe_visibilities, GEN_VISIBLE_NO_UNDIES)
+
 	//Validate species forced mutant parts
 	for(var/forced_part in pref_species.forced_features)
 		//Get the forced type
@@ -352,6 +392,8 @@
 	if(previewJob)
 		mannequin.job = previewJob.title
 		previewJob.equip(mannequin, TRUE, preference_source = parent)
+
+	mannequin.regenerate_icons()
 
 	COMPILE_OVERLAYS(mannequin)
 	parent.show_character_previews(new /mutable_appearance(mannequin))
@@ -562,14 +604,15 @@
 	character.facial_hair_style = facial_hair_style
 	//NSV13 START
 	character.flavour_text = flavor_text //Let's update their flavor_text at least initially
-	character.give_genitals(TRUE)
+	character.give_genitals(TRUE) //character.update_genitals() is already called on genital.update_appearance()
+
 	if("tail_lizard" in pref_species.default_features)
 		character.dna.species.mutant_bodyparts |= "tail_lizard"
 
 	if(icon_updates)
-		character.update_body()
-		character.update_hair()
+		character.update_body(TRUE)
 		character.update_genitals()
+		character.update_hair()
 		character.update_body_parts(TRUE)
 	//NSV13 STOP
 

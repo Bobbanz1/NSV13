@@ -57,9 +57,12 @@ There are several things that need to be remembered:
 	dna.species.handle_mutant_bodyparts(src)
 
 
-/mob/living/carbon/human/update_body()
+/mob/living/carbon/human/update_body(update_genitals = FALSE)
 	remove_overlay(BODY_LAYER)
 	dna.species.handle_body(src)
+	..()
+	if(update_genitals)
+		update_genitals()
 
 /mob/living/carbon/human/update_fire()
 	..((fire_stacks > HUMAN_FIRE_STACK_ICON_NUM) ? "Standing" : "Generic_mob_burning")
@@ -70,7 +73,7 @@ There are several things that need to be remembered:
 /mob/living/carbon/human/regenerate_icons()
 
 	if(!..())
-		update_body()
+		update_body(TRUE)
 		update_hair()
 		update_inv_w_uniform()
 		update_inv_wear_id()
@@ -134,7 +137,7 @@ There are several things that need to be remembered:
 			//	icon_file = 'icons/mob/species/misc/digitigrade.dmi'
 			uniform_overlay = U.build_worn_icon(default_layer = UNIFORM_LAYER, default_icon_file = icon_file, isinhands = FALSE, override_state = target_overlay)
 
-			
+
 
 		if(OFFSET_UNIFORM in dna.species.offset_features)
 			uniform_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]

@@ -26,7 +26,7 @@
 	if(ishuman(new_spawn))
 		var/mob/living/carbon/human/H = new_spawn
 		H.underwear = "Nude" //You're a plant, partner
-		H.update_body()
+		H.update_body(TRUE)
 
 /obj/effect/mob_spawn/human/seed_vault/Destroy()
 	new/obj/structure/fluff/empty_terrarium(get_turf(src))

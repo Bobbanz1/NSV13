@@ -15,33 +15,42 @@
 	var/fluid_efficiency = 1
 	var/fluid_rate = CUM_RATE
 	var/fluid_mult = 1
+	var/last_orgasmed = 0
 	var/aroused_state = FALSE //Boolean used in icon_state strings
 	var/obj/item/organ/genital/linked_organ
 	var/linked_organ_slot //used for linking an apparatus' organ to its other half on update_link().
 	var/layer_index = GENITAL_LAYER_INDEX //Order should be very important. FIRST vagina, THEN testicles, THEN penis, as this affects the order they are rendered in.
 
-/obj/item/organ/genital/Initialize(mapload, mob/living/carbon/human/H)
+/obj/item/organ/genital/Initialize(mapload, do_update = TRUE)
 	. = ..()
-	if(fluid_id)
-		create_reagents(fluid_max_volume)
-		if(CHECK_BITFIELD(genital_flags, GENITAL_FUID_PRODUCTION))
-			reagents.add_reagent(fluid_id, fluid_max_volume)
-	if(H)
-		get_features(H)
-		Insert(H)
-	else
+	if(do_update)
 		update()
 
-/obj/item/organ/genital/proc/set_aroused_state(new_state)
+/obj/item/organ/genital/Destroy()
+	if(linked_organ?.linked_organ == src)
+		linked_organ.linked_organ = null
+	linked_organ = null
+	. = ..()
+
+/obj/item/organ/genital/on_life()
+	return
+
+/obj/item/organ/genital/proc/set_aroused_state(new_state,cause = "manual toggle")
+	if(!(genital_flags & GENITAL_CAN_AROUSE))
+		return FALSE
 	if(!((HAS_TRAIT(owner,TRAIT_PERMABONER) && !new_state) || HAS_TRAIT(owner,TRAIT_NEVERBONER) && new_state))
 		aroused_state = new_state
+	owner.log_message("[src]'s arousal was [new_state ? "enabled" : "disabled"] due to [cause]", LOG_EMOTE)
 	return aroused_state
 
 /obj/item/organ/genital/proc/update()
 	if(QDELETED(src))
 		return
 	update_size()
-	update_appearance_genitals()
+	update_appearance()
+	if(genital_flags & UPDATE_OWNER_APPEARANCE && owner && ishuman(owner))
+		var/mob/living/carbon/human/H = owner
+		H.update_genitals()
 	if(linked_organ_slot || (linked_organ && !owner))
 		update_link()
 
@@ -50,9 +59,16 @@
 	var/list/exposed_genitals = list() //Keeping track of them so we don't have to iterate through every genitalia and see if exposed
 
 /obj/item/organ/genital/proc/is_exposed()
-	if(!owner || CHECK_BITFIELD(genital_flags, GENITAL_INTERNAL) || CHECK_BITFIELD(genital_flags, GENITAL_HIDDEN))
+	if(!owner || genital_flags & (GENITAL_INTERNAL|GENITAL_HIDDEN))
 		return FALSE
-	if(CHECK_BITFIELD(genital_flags, GENITAL_THROUGH_CLOTHES))
+	if(genital_flags & GENITAL_UNDIES_HIDDEN && ishuman(owner))
+		var/mob/living/carbon/human/H = owner
+		if(!(NO_UNDERWEAR in H.dna.species.species_traits))
+			var/datum/sprite_accessory/undershirt/T = H.hidden_undershirt ? null : GLOB.undershirt_list[H.undershirt]
+			var/datum/sprite_accessory/underwear/B = H.hidden_underwear ? null : GLOB.underwear_list[H.underwear]
+			if(zone == BODY_ZONE_CHEST ? (T?.covers_chest || B?.covers_chest) : (T?.covers_groin || B?.covers_groin))
+				return FALSE
+	if(genital_flags & GENITAL_THROUGH_CLOTHES)
 		return TRUE
 
 	switch(zone) //update as more genitals are added
@@ -61,25 +77,29 @@
 		if(BODY_ZONE_PRECISE_GROIN)
 			return owner.is_groin_exposed()
 
-/obj/item/organ/genital/proc/toggle_visibility(visibility)
+/obj/item/organ/genital/proc/toggle_visibility(visibility, update = TRUE)
+	genital_flags &= ~(GENITAL_THROUGH_CLOTHES|GENITAL_HIDDEN|GENITAL_UNDIES_HIDDEN)
+	if(owner)
+		owner.exposed_genitals -= src
 	switch(visibility)
-		if("Always visible")
-			ENABLE_BITFIELD(genital_flags, GENITAL_THROUGH_CLOTHES)
-			DISABLE_BITFIELD(genital_flags, GENITAL_HIDDEN)
-			if(!(src in owner.exposed_genitals))
+		if(GEN_VISIBLE_ALWAYS)
+			genital_flags |= GENITAL_THROUGH_CLOTHES
+			if(owner)
+				owner.log_message("Exposed their [src]",LOG_EMOTE)
 				owner.exposed_genitals += src
-		if("Hidden by clothes")
-			DISABLE_BITFIELD(genital_flags, GENITAL_THROUGH_CLOTHES)
-			DISABLE_BITFIELD(genital_flags, GENITAL_HIDDEN)
-			if(src in owner.exposed_genitals)
-				owner.exposed_genitals -= src
-		if("Always hidden")
-			DISABLE_BITFIELD(genital_flags, GENITAL_THROUGH_CLOTHES)
-			ENABLE_BITFIELD(genital_flags, GENITAL_HIDDEN)
-			if(src in owner.exposed_genitals)
-				owner.exposed_genitals -= src
+		if(GEN_VISIBLE_NO_CLOTHES)
+			if(owner)
+				owner.log_message("Hid their [src] under clothes only",LOG_EMOTE)
+		if(GEN_VISIBLE_NO_UNDIES)
+			genital_flags |= GENITAL_UNDIES_HIDDEN
+			if(owner)
+				owner.log_message("Hid their [src] under underwear",LOG_EMOTE)
+		if(GEN_VISIBLE_NEVER)
+			genital_flags |= GENITAL_HIDDEN
+			if(owner)
+				owner.log_message("Hid their [src] completely",LOG_EMOTE)
 
-	if(ishuman(owner)) //recast to use update genitals proc
+	if(update && owner && ishuman(owner)) //recast to use update genitals proc
 		var/mob/living/carbon/human/H = owner
 		H.update_genitals()
 
@@ -88,19 +108,25 @@
 	set name = "Expose/Hide genitals"
 	set desc = "Allows you to toggle which genitals should show through clothes or not."
 
+	if(stat != CONSCIOUS)
+		to_chat(usr, "<span class='warning'>You can toggle genitals visibility right now...</span>")
+		return
+
 	var/list/genital_list = list()
 	for(var/obj/item/organ/genital/G in internal_organs)
-		if(!CHECK_BITFIELD(G.genital_flags, GENITAL_INTERNAL))
+		if(!(G.genital_flags & GENITAL_INTERNAL))
 			genital_list += G
 	if(!genital_list.len) //There is nothing to expose
 		return
 	//Full list of exposable genitals created
 	var/obj/item/organ/genital/picked_organ
-	picked_organ = input(src, "Choose which genitalia to expose/hide", "Expose/Hide genitals", null) in genital_list
-	if(picked_organ)
-		var/picked_visibility = input(src, "Choose visibility setting", "Expose/Hide genitals", "Hidden by clothes") in list("Always visible", "Hidden by clothes", "Always hidden")
-		picked_organ.toggle_visibility(picked_visibility)
+	picked_organ = input(src, "Choose which genitalia to expose/hide", "Expose/Hide genitals") as null|anything in genital_list
+	if(picked_organ && (picked_organ in internal_organs))
+		var/picked_visibility = input(src, "Choose visibility setting", "Expose/Hide genitals") as null|anything in GLOB.genitals_visibility_toggles
+		if(picked_visibility && picked_organ && (picked_organ in internal_organs))
+			picked_organ.toggle_visibility(picked_visibility)
 	return
+
 
 /mob/living/carbon/verb/toggle_arousal_state()
 	set category = "IC"
@@ -131,8 +157,6 @@
 /obj/item/organ/genital/proc/modify_size(modifier, min = -INFINITY, max = INFINITY)
 	fluid_max_volume += modifier*2.5
 	fluid_rate += modifier/10
-	if(reagents)
-		reagents.maximum_volume = fluid_max_volume
 	return
 
 /obj/item/organ/genital/proc/update_size()
@@ -142,25 +166,15 @@
 	if(!owner || owner.stat == DEAD)
 		aroused_state = FALSE
 
-/obj/item/organ/genital/on_life()
-	if(!reagents || !owner)
-		return
-	reagents.maximum_volume = fluid_max_volume
-	if(fluid_id && CHECK_BITFIELD(genital_flags, GENITAL_FUID_PRODUCTION))
-		generate_fluid()
-
-/obj/item/organ/genital/proc/generate_fluid()
-	var/amount = fluid_rate
-	if(!reagents.total_volume && amount < 0.1) // Apparently, 0.015 gets rounded down to zero and no reagents are created if we don't start it with 0.1 in the tank.
-		amount += 0.1
-	var/multiplier = fluid_mult
-	if(reagents.total_volume >= 5)
-		multiplier *= 0.8
-	if(reagents.total_volume < reagents.maximum_volume)
-		reagents.isolate_reagent(fluid_id)//remove old reagents if it changed and just clean up generally
-		reagents.add_reagent(fluid_id, (amount * multiplier))//generate the cum
-		return TRUE
-	return FALSE
+/obj/item/organ/genital/proc/generate_fluid(datum/reagents/R)
+	var/amount = clamp((fluid_rate * ((world.time - last_orgasmed) / (10 SECONDS)) * fluid_mult),0,fluid_max_volume)
+	R.clear_reagents()
+	R.maximum_volume = fluid_max_volume
+	if(fluid_id)
+		R.add_reagent(fluid_id,amount)
+	else if(linked_organ?.fluid_id)
+		R.add_reagent(linked_organ.fluid_id,amount)
+	return TRUE
 
 /obj/item/organ/genital/proc/update_link()
 	if(owner)
@@ -202,7 +216,7 @@
 
 //proc to give a player their genitals and stuff when they log in
 /mob/living/carbon/human/proc/give_genitals(clean = FALSE)//clean will remove all pre-existing genitals. proc will then give them any genitals that are enabled in their DNA
-	if(clean)
+	if(!clean)
 		for(var/obj/item/organ/genital/G in internal_organs)
 			qdel(G)
 	if (NOGENITALS in dna.species.species_traits)
@@ -217,17 +231,15 @@
 		give_genital(/obj/item/organ/genital/breasts)
 	if(dna.features["has_cock"])
 		give_genital(/obj/item/organ/genital/penis)
-	/*
-	if(dna.features["has_ovi"])
-		give_genital(/obj/item/organ/genital/ovipositor)
-	if(dna.features["has_eggsack"])
-		give_genital(/obj/item/organ/genital/eggsack)
-	*/
+	if(dna.features["has_butt"])
+		give_genital(/obj/item/organ/genital/butt)
 
 /mob/living/carbon/human/proc/give_genital(obj/item/organ/genital/G)
 	if(!dna || (NOGENITALS in dna.species.species_traits) || getorganslot(initial(G.slot)))
 		return FALSE
-	G = new G(null, src)
+	G = new G(null, FALSE)
+	G.get_features(src)
+	G.Insert(src)
 	return G
 
 /obj/item/organ/genital/proc/get_features(mob/living/carbon/human/H)
@@ -279,8 +291,8 @@
 					S = GLOB.vagina_shapes_list[G.shape]
 				if(/obj/item/organ/genital/breasts)
 					S = GLOB.breasts_shapes_list[G.shape]
-				//if(/obj/item/organ/genital/butt)
-				//	S = GLOB.butt_shapes_list[G.shape]
+				if(/obj/item/organ/genital/butt)
+					S = GLOB.butt_shapes_list[G.shape]
 
 			if(!S || S.icon_state == "none")
 				continue
