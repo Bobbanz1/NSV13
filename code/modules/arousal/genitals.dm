@@ -216,7 +216,7 @@
 
 //proc to give a player their genitals and stuff when they log in
 /mob/living/carbon/human/proc/give_genitals(clean = FALSE)//clean will remove all pre-existing genitals. proc will then give them any genitals that are enabled in their DNA
-	if(!clean)
+	if(clean)
 		for(var/obj/item/organ/genital/G in internal_organs)
 			qdel(G)
 	if (NOGENITALS in dna.species.species_traits)

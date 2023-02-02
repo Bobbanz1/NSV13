@@ -139,6 +139,13 @@
 	var/temp = getBruteLoss() //no need to calculate each of these twice
 
 	var/list/msg = list("<span class='warning'>")
+
+	if(client && client.prefs) // Skyrat Change
+		if(client.prefs.toggles & VERB_CONSENT) // Skyrat Change
+			. += "[t_His] player has allowed lewd verbs.\n" // Skyrat Change
+		else // Skyrat Change
+			. += "[t_His] player has not allowed lewd verbs.\n" // Skyrat Change
+
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)
 	var/list/disabled = list()
 

@@ -78,11 +78,11 @@
 		RegisterSignal(hand, COMSIG_ITEM_ATTACK_SELF, .proc/on_item_attack_self) //If the limb gets an attack-self, open the menu. Only happens when hand is empty
 		RegisterSignal(M, COMSIG_KB_MOB_DROPITEM_DOWN, .proc/dropkey) //We're nodrop, but we'll watch for the drop hotkey anyway and then stow if possible.
 
-/obj/item/organ/cyberimp/arm/Remove(mob/living/carbon/M, special = 0)
+/obj/item/organ/cyberimp/arm/Remove(special = FALSE)
 	Retract()
 	if(hand)
 		UnregisterSignal(hand, COMSIG_ITEM_ATTACK_SELF)
-		UnregisterSignal(M, COMSIG_KB_MOB_DROPITEM_DOWN)
+		UnregisterSignal(owner, COMSIG_KB_MOB_DROPITEM_DOWN)
 	..()
 
 /obj/item/organ/cyberimp/arm/proc/on_item_attack_self()

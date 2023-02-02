@@ -86,6 +86,8 @@
 						"cock_visibility" = GEN_VISIBLE_NO_UNDIES,
 						"vag_visibility" = GEN_VISIBLE_NO_UNDIES,
 						"butt_visibility" = GEN_VISIBLE_NO_UNDIES,
+						"lust_tolerance" = 100,
+						"sexual_potency" = 15,
 					)
 	var/list/custom_names = list()
 	var/preferred_ai_core_display = "Blue"
@@ -610,8 +612,7 @@
 		character.dna.species.mutant_bodyparts |= "tail_lizard"
 
 	if(icon_updates)
-		character.update_body(TRUE)
-		character.update_genitals()
+		character.update_body()
 		character.update_hair()
 		character.update_body_parts(TRUE)
 	//NSV13 STOP

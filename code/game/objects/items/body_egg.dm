@@ -22,13 +22,13 @@
 	owner.med_hud_set_status()
 	INVOKE_ASYNC(src, .proc/AddInfectionImages, owner)
 
-/obj/item/organ/body_egg/Remove(var/mob/living/carbon/M, special = 0)
-	if(owner)
+/obj/item/organ/body_egg/Remove(special = FALSE)
+	if(!QDELETED(owner))
 		REMOVE_TRAIT(owner, TRAIT_XENO_HOST, TRAIT_GENERIC)
 		REMOVE_TRAIT(owner, TRAIT_XENO_IMMUNE, "xeno immune")
 		owner.med_hud_set_status()
 		INVOKE_ASYNC(src, .proc/RemoveInfectionImages, owner)
-	..()
+	return ..()
 
 /obj/item/organ/body_egg/on_death()
 	. = ..()

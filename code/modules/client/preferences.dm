@@ -80,6 +80,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	//NSV13 - God fucking Help Me - Start
 	var/cit_toggles = TOGGLES_CITADEL
 	var/arousable = TRUE
+	var/erppref = "Ask"
+	var/nonconpref = "Ask"
 	//NSV13 - God fucking Help Me - End
 
 /datum/preferences/proc/set_max_character_slots(newmax)
@@ -124,7 +126,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	active_character.save(C)		//let's save this new random character so it doesn't keep generating new ones.
 	return
 
-#define APPEARANCE_CATEGORY_COLUMN "<td valign='top' width='14%'>"
+#define APPEARANCE_CATEGORY_COLUMN "<td valign='top' width='17%'>"
 #define MAX_MUTANT_ROWS 4
 
 /datum/preferences/proc/ShowChoices(mob/user)
@@ -133,20 +135,19 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	active_character.update_preview_icon(user.client)
 	var/list/dat = list("<center>")
 
-	dat += "<a href='?_src_=prefs;preference=tab;tab=0' [current_tab == 0 ? "class='linkOn'" : ""]>Character Settings</a>"
-	dat += "<a href='?_src_=prefs;preference=tab;tab=5' [current_tab == 5 ? "class='linkOn'" : ""]>Character Appearance</a>"
-	dat += "<a href='?_src_=prefs;preference=tab;tab=1' [current_tab == 1 ? "class='linkOn'" : ""]>Game Preferences</a>"
+	dat += "<a href='?_src_=prefs;preference=tab;tab=[SETTINGS_TAB]' [current_tab == SETTINGS_TAB ? "class='linkOn'" : ""]>Character Settings</a>"
+	dat += "<a href='?_src_=prefs;preference=tab;tab=[APPEARANCE_TAB]' [current_tab == APPEARANCE_TAB ? "class='linkOn'" : ""]>Character Appearance</a>"
 	var/shop_name = "[CONFIG_GET(string/metacurrency_name)] Shop"
-	dat += "<a href='?_src_=prefs;preference=tab;tab=2' [current_tab == 2 ? "class='linkOn'" : ""]>[shop_name]</a>"
-	dat += "<a href='?_src_=prefs;preference=tab;tab=3' [current_tab == 3 ? "class='linkOn'" : ""]>OOC Preferences</a>"
-	dat += "<a href='?_src_=prefs;preference=tab;tab=4' [current_tab == 4 ? "class='linkOn'" : ""]>Roleplay Settings</a>" //NSV13 - Roleplay Tab
+	dat += "<a href='?_src_=prefs;preference=tab;tab=[LOADOUT_TAB]' [current_tab == LOADOUT_TAB ? "class='linkOn'" : ""]>[shop_name]</a>"
+	dat += "<a href='?_src_=prefs;preference=tab;tab=[GAME_PREFERENCES_TAB]' [current_tab == GAME_PREFERENCES_TAB ? "class='linkOn'" : ""]>Game Preferences</a>"
+	dat += "<a href='?_src_=prefs;preference=tab;tab=[CONTENT_PREFERENCES_TAB]' [current_tab == CONTENT_PREFERENCES_TAB ? "class='linkOn'" : ""]>Content Preferences</a>"
 
 	dat += "</center>"
 
 	dat += "<HR>"
 
 	switch(current_tab)
-		if (0) // Character Settings#
+		if(SETTINGS_TAB) // Character Settings#
 			dat += "<center>"
 			var/name
 			var/unspaced_slots = 0
@@ -183,7 +184,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if(!(AGENDER in active_character.pref_species.species_traits))
 				dat += "<b>Gender:</b> <a href='?_src_=prefs;preference=gender'>[active_character.gender == MALE ? "Male" : "Female"]</a><BR>"
 			dat += "<b>Age:</b> <a href='?_src_=prefs;preference=age;task=input'>[active_character.age]</a><BR>"
-			dat += "<b>Arousal:</b><a href='?_src_=prefs;preference=arousable'>[arousable == TRUE ? "Enabled" : "Disabled"]</a><BR>"
 			dat += "<b>Special Names:</b><BR>"
 			var/old_group
 			for(var/custom_name_id in GLOB.preferences_custom_names)
@@ -208,156 +208,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "<a href='?_src_=prefs;preference=squad;task=input'><b>Preferred GQ Squad:</b> [active_character.preferred_squad]</a><br>" //Nsv13 squads - we CM now.
 			dat += "</td></tr></table>"
 
-		if (1) // Game Preferences
-			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
-			dat += "<h2>General Settings</h2>"
-			dat += "<b>UI Style:</b> <a href='?_src_=prefs;task=input;preference=ui'>[UI_style]</a><br>"
-			dat += "<b>Outline:</b> <a href='?_src_=prefs;preference=outline_enabled'>[toggles & PREFTOGGLE_OUTLINE_ENABLED ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<b>Outline Color:</b> <span style='border:1px solid #161616; background-color: [outline_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=outline_color'>Change</a><BR>"
-			dat += "<b>tgui Monitors:</b> <a href='?_src_=prefs;preference=tgui_lock'>[(toggles2 & PREFTOGGLE_2_LOCKED_TGUI) ? "Primary" : "All"]</a><br>"
-			dat += "<b>tgui Style:</b> <a href='?_src_=prefs;preference=tgui_fancy'>[(toggles2 & PREFTOGGLE_2_FANCY_TGUI) ? "Fancy" : "No Frills"]</a><br>"
-			dat += "<b>Show Runechat Chat Bubbles:</b> <a href='?_src_=prefs;preference=chat_on_map'>[toggles & PREFTOGGLE_RUNECHAT_GLOBAL ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<b>See Runechat for non-mobs:</b> <a href='?_src_=prefs;preference=see_chat_non_mob'>[toggles & PREFTOGGLE_RUNECHAT_NONMOBS ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<b>See Runechat emotes:</b> <a href='?_src_=prefs;preference=see_rc_emotes'>[toggles & PREFTOGGLE_RUNECHAT_EMOTES ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<b>See Balloon alerts: </b> <a href='?_src_=prefs;preference=see_balloon_alerts;task=input'>[see_balloon_alerts]</a>"
-			dat += "<br>"
-			dat += "<b>Action Buttons:</b> <a href='?_src_=prefs;preference=action_buttons'>[(toggles2 & PREFTOGGLE_2_LOCKED_BUTTONS) ? "Locked In Place" : "Unlocked"]</a><br>"
-			dat += "<b>Hotkey Mode:</b> <a href='?_src_=prefs;preference=hotkeys'>[(toggles2 & PREFTOGGLE_2_HOTKEYS) ? "Hotkeys" : "Default"]</a><br>"
-			dat += "<br>"
-			dat += "<b>PDA Color:</b> <span style='border:1px solid #161616; background-color: [pda_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=pda_color;task=input'>Change</a><BR>"
-			dat += "<b>PDA Style:</b> <a href='?_src_=prefs;task=input;preference=pda_style'>[pda_style]</a><br>"
-			dat += "<br>"
-			dat += "<b>Crew Objectives:</b> <a href='?_src_=prefs;preference=crewobj'>[(toggles2 & PREFTOGGLE_2_CREW_OBJECTIVES) ? "Yes" : "No"]</a><br>"
-			dat += "<br>"
-			dat += "<b>Ghost Ears:</b> <a href='?_src_=prefs;preference=ghost_ears'>[(chat_toggles & CHAT_GHOSTEARS) ? "All Speech" : "Nearest Creatures"]</a><br>"
-			dat += "<b>Ghost Radio:</b> <a href='?_src_=prefs;preference=ghost_radio'>[(chat_toggles & CHAT_GHOSTRADIO) ? "All Messages":"No Messages"]</a><br>"
-			dat += "<b>Ghost Sight:</b> <a href='?_src_=prefs;preference=ghost_sight'>[(chat_toggles & CHAT_GHOSTSIGHT) ? "All Emotes" : "Nearest Creatures"]</a><br>"
-			dat += "<b>Ghost Whispers:</b> <a href='?_src_=prefs;preference=ghost_whispers'>[(chat_toggles & CHAT_GHOSTWHISPER) ? "All Speech" : "Nearest Creatures"]</a><br>"
-			dat += "<b>Ghost PDA:</b> <a href='?_src_=prefs;preference=ghost_pda'>[(chat_toggles & CHAT_GHOSTPDA) ? "All Messages" : "Nearest Creatures"]</a><br>"
-			dat += "<b>Ghost Law Changes:</b> <a href='?_src_=prefs;preference=ghost_laws'>[(chat_toggles & CHAT_GHOSTLAWS) ? "All Law Changes" : "No Law Changes"]</a><br>"
-
-			if(unlock_content)
-				dat += "<b>Ghost Form:</b> <a href='?_src_=prefs;task=input;preference=ghostform'>[ghost_form]</a><br>"
-				dat += "<B>Ghost Orbit: </B> <a href='?_src_=prefs;task=input;preference=ghostorbit'>[ghost_orbit]</a><br>"
-
-			var/button_name = "If you see this something went wrong."
-			switch(ghost_accs)
-				if(GHOST_ACCS_FULL)
-					button_name = GHOST_ACCS_FULL_NAME
-				if(GHOST_ACCS_DIR)
-					button_name = GHOST_ACCS_DIR_NAME
-				if(GHOST_ACCS_NONE)
-					button_name = GHOST_ACCS_NONE_NAME
-
-			dat += "<b>Ghost Accessories:</b> <a href='?_src_=prefs;task=input;preference=ghostaccs'>[button_name]</a><br>"
-
-			switch(ghost_others)
-				if(GHOST_OTHERS_THEIR_SETTING)
-					button_name = GHOST_OTHERS_THEIR_SETTING_NAME
-				if(GHOST_OTHERS_DEFAULT_SPRITE)
-					button_name = GHOST_OTHERS_DEFAULT_SPRITE_NAME
-				if(GHOST_OTHERS_SIMPLE)
-					button_name = GHOST_OTHERS_SIMPLE_NAME
-
-			dat += "<b>Ghosts of Others:</b> <a href='?_src_=prefs;task=input;preference=ghostothers'>[button_name]</a><br>"
-			dat += "<br>"
-
-			dat += "<b>Income Updates:</b> <a href='?_src_=prefs;preference=income_pings'>[(chat_toggles & CHAT_BANKCARD) ? "Allowed" : "Muted"]</a><br>"
-			dat += "<br>"
-
-			dat += "<b>FPS:</b> <a href='?_src_=prefs;preference=clientfps;task=input'>[clientfps]</a><br>"
-
-			dat += "<b>Parallax (Fancy Space):</b> <a href='?_src_=prefs;preference=parallaxdown' oncontextmenu='window.location.href=\"?_src_=prefs;preference=parallaxup\";return false;'>"
-			switch (parallax)
-				if (PARALLAX_LOW)
-					dat += "Low"
-				if (PARALLAX_MED)
-					dat += "Medium"
-				if (PARALLAX_INSANE)
-					dat += "Insane"
-				if (PARALLAX_DISABLE)
-					dat += "Disabled"
-				else
-					dat += "High"
-			dat += "</a><br>"
-
-			dat += "<b>Ambient Occlusion:</b> <a href='?_src_=prefs;preference=ambientocclusion'>[toggles2 & PREFTOGGLE_2_AMBIENT_OCCLUSION ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<b>Fit Viewport:</b> <a href='?_src_=prefs;preference=auto_fit_viewport'>[toggles2 & PREFTOGGLE_2_AUTO_FIT_VIEWPORT ? "Auto" : "Manual"]</a><br>"
-			if (CONFIG_GET(flag/widescreen)) //Nsv13 - widescreen
-				dat += "<b>Widescreen:</b> <a href='?_src_=prefs;preference=widescreenpref'>[toggles2 & PREFTOGGLE_2_WIDESCREEN ? "Enabled" : "Disabled"]</a><br>"
-
-			button_name = pixel_size
-			dat += "<b>Pixel Scaling:</b> <a href='?_src_=prefs;preference=pixel_size'>[(button_name) ? "Pixel Perfect [button_name]x" : "Stretch to fit"]</a><br>"
-
-			switch(scaling_method)
-				if(SCALING_METHOD_NORMAL)
-					button_name = "Nearest Neighbor"
-				if(SCALING_METHOD_DISTORT)
-					button_name = "Point Sampling"
-				if(SCALING_METHOD_BLUR)
-					button_name = "Bilinear"
-			dat += "<b>Scaling Method:</b> <a href='?_src_=prefs;preference=scaling_method'>[button_name]</a><br>"
-
-			if (CONFIG_GET(flag/maprotation))
-				var/p_map = preferred_map
-				if (!p_map)
-					p_map = "Default"
-					if (config.defaultmap)
-						p_map += " ([config.defaultmap.map_name])"
-				else
-					if (p_map in config.maplist)
-						var/datum/map_config/VM = config.maplist[p_map]
-						if (!VM)
-							p_map += " (No longer exists)"
-						else
-							p_map = VM.map_name
-					else
-						p_map += " (No longer exists)"
-				if(CONFIG_GET(flag/preference_map_voting))
-					dat += "<b>Preferred Map:</b> <a href='?_src_=prefs;preference=preferred_map;task=input'>[p_map]</a><br>"
-
-			dat += "</td><td width='300px' height='300px' valign='top'>"
-
-			dat += "<h2>Special Role Settings</h2>"
-
-			if(is_banned_from(user.ckey, ROLE_SYNDICATE))
-				dat += "<font color=red><b>You are banned from antagonist roles.</b></font><br>"
-				src.be_special = list()
-
-
-			for (var/i in GLOB.special_roles)
-				if(is_banned_from(user.ckey, i))
-					dat += "<b>Be [capitalize(i)]:</b> <a href='?_src_=prefs;bancheck=[i]'>BANNED</a><br>"
-				else
-					var/days_remaining = null
-					if(ispath(GLOB.special_roles[i]) && CONFIG_GET(flag/use_age_restriction_for_jobs)) //If it's a game mode antag, check if the player meets the minimum age
-						var/mode_path = GLOB.special_roles[i]
-						var/datum/game_mode/temp_mode = new mode_path
-						days_remaining = temp_mode.get_remaining_days(user.client)
-
-					if(days_remaining)
-						dat += "<b>Be [capitalize(i)]:</b> <font color=red> \[IN [days_remaining] DAYS]</font><br>"
-					else
-						dat += "<b>Be [capitalize(i)]:</b> <a href='?_src_=prefs;preference=be_special;be_special_type=[i]'>[(i in be_special) ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<br>"
-			dat += "<b>Midround Antagonist:</b> <a href='?_src_=prefs;preference=allow_midround_antag'>[(toggles & PREFTOGGLE_MIDROUND_ANTAG) ? "Enabled" : "Disabled"]</a><br>"
-
-			dat += "</td></tr><tr><td> </td></tr>" // i hate myself for this
-			dat += "<tr><td colspan='2' width='100%'><center><a style='font-size: 18px;' href='?_src_=prefs;preference=keybindings_menu'>Customize Keybinds</a></center></td></tr>"
-			dat += "</table>"
-
-		if(2) //Loadout
-			var/list/type_blacklist = list()
-			if(length(active_character.equipped_gear))
-				for(var/i in 1 to length(active_character.equipped_gear))
-					var/datum/gear/G = GLOB.gear_datums[active_character.equipped_gear[i]]
-					if(G)
-						if(G.subtype_path in type_blacklist)
-							continue
-						type_blacklist += G.subtype_path
-					else
-						active_character.equipped_gear.Cut(i,i+1)
-
+		if(APPEARANCE_TAB) //Character Appearance
 			dat += "<center>"
 			var/name
 			var/unspaced_slots = 0
@@ -375,258 +226,62 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "<a style='white-space:nowrap;' href='?_src_=prefs;preference=changeslot;num=[CS.slot_number];' [CS.slot_number == default_slot ? "class='linkOn'" : ""]>[name]</a> "
 			dat += "</center>"
 
-			var/fcolor =  "#3366CC"
-			var/metabalance = user.client.get_metabalance()
-			dat += "<table align='center' width='100%'>"
-			dat += "<tr><td colspan=4><center><b>Current balance: <font color='[fcolor]'>[metabalance]</font> [CONFIG_GET(string/metacurrency_name)]s.</b> \[<a href='?_src_=prefs;preference=gear;clear_loadout=1'>Clear Loadout</a>\]</center></td></tr>"
-			dat += "<tr><td colspan=4><center><b>"
-
-			var/firstcat = 1
-			for(var/category in GLOB.loadout_categories)
-				if(category == "Donator" && (!LAZYLEN(GLOB.patrons) || !CONFIG_GET(flag/donator_items)))
-					continue
-				if(firstcat)
-					firstcat = 0
-				else
-					dat += " |"
-				if(category == gear_tab)
-					dat += " <span class='linkOff'>[category]</span> "
-				else
-					dat += " <a href='?_src_=prefs;preference=gear;select_category=[category]'>[category]</a> "
-			dat += "</b></center></td></tr>"
-
-			var/datum/loadout_category/LC = GLOB.loadout_categories[gear_tab]
-			dat += "<tr><td colspan=4><hr></td></tr>"
-			dat += "<tr><td colspan=4><b><center>[LC.category]</center></b></td></tr>"
-			dat += "<tr><td colspan=4><hr></td></tr>"
-
-			dat += "<tr><td colspan=4><hr></td></tr>"
-			dat += "<tr><td><b>Name</b></td>"
-			if(LC.category != "Donator")
-				dat += "<td><b>Cost</b></td>"
-			dat += "<td><b>Restricted Jobs</b></td>"
-			dat += "<td><b>Description</b></td></tr>"
-			dat += "<tr><td colspan=4><hr></td></tr>"
-			for(var/gear_id in LC.gear)
-				var/datum/gear/G = LC.gear[gear_id]
-				var/ticked = (G.id in active_character.equipped_gear)
-
-				if((G.unlocktype == GEAR_DONATOR) && !(usr.ckey == G.ckey)) //NSV13 - donator items
-					continue
-				dat += "<tr style='vertical-align:top;'><td width=15%>[G.display_name]\n"
-				var/donator = G.sort_category == "Donator" // purchase box and cost coloumns doesn't appear on donator items
-				if(G.id in purchased_gear)
-					if(G.sort_category == "OOC")
-						dat += "<i>[G.unlocktype != GEAR_DONATOR ? "Unlocked" : "Purchased"].</i></td>" //NSV13 - donator items
-					else
-						dat += "<a style='white-space:normal;' [ticked ? "class='linkOn' " : ""]href='?_src_=prefs;preference=gear;toggle_gear=[G.id]'>Equip</a></td>"
-				else
-					dat += "<a style='white-space:normal;' href='?_src_=prefs;preference=gear;purchase_gear=[G.id]'>[donator ? "Donator" : "Purchase"]</a></td>"
-				dat += "<td width = 5% style='vertical-align:top'>[donator ? "" : "[G.cost]"]</td><td>"
-
-				if(G.allowed_roles)
-					dat += "<font size=2>"
-					for(var/role in G.allowed_roles)
-						dat += role + ",	 "
-					dat += "</font>"
-				dat += "</td><td><font size=2><i>[G.description]</i></font></td></tr>"
-			dat += "</table>"
-
-		if(3) //OOC Preferences
-			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
-			dat += "<h2>OOC Settings</h2>"
-			dat += "<b>Window Flashing:</b> <a href='?_src_=prefs;preference=winflash'>[(toggles2 & PREFTOGGLE_2_WINDOW_FLASHING) ? "Enabled":"Disabled"]</a><br>"
-			dat += "<br>"
-			dat += "<b>Play Admin MIDIs:</b> <a href='?_src_=prefs;preference=hear_midis'>[(toggles & PREFTOGGLE_SOUND_MIDI) ? "Enabled":"Disabled"]</a><br>"
-			dat += "<b>Play Lobby Music:</b> <a href='?_src_=prefs;preference=lobby_music'>[(toggles & PREFTOGGLE_SOUND_LOBBY) ? "Enabled":"Disabled"]</a><br>"
-			dat += "<b>See Pull Requests:</b> <a href='?_src_=prefs;preference=pull_requests'>[(chat_toggles & CHAT_PULLR) ? "Enabled":"Disabled"]</a><br>"
-			dat += "<br>"
-
-
-			if(user.client)
-				if(unlock_content)
-					dat += "<b>BYOND Membership Publicity:</b> <a href='?_src_=prefs;preference=publicity'>[(toggles & PREFTOGGLE_MEMBER_PUBLIC) ? "Public" : "Hidden"]</a><br>"
-
-				if(unlock_content || check_rights_for(user.client, R_ADMIN))
-					dat += "<b>OOC Color:</b> <span style='border: 1px solid #161616; background-color: [ooccolor ? ooccolor : GLOB.normal_ooc_colour];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=ooccolor;task=input'>Change</a><br>"
-
-			dat += "</td>"
-
-			if(user.client.holder)
-				dat +="<td width='300px' height='300px' valign='top'>"
-
-				dat += "<h2>Admin Settings</h2>"
-
-				dat += "<b>Adminhelp Sounds:</b> <a href='?_src_=prefs;preference=hear_adminhelps'>[(toggles & PREFTOGGLE_SOUND_ADMINHELP)?"Enabled":"Disabled"]</a><br>"
-				dat += "<b>Prayer Sounds:</b> <a href = '?_src_=prefs;preference=hear_prayers'>[(toggles & PREFTOGGLE_SOUND_PRAYERS)?"Enabled":"Disabled"]</a><br>"
-				dat += "<b>Announce Login:</b> <a href='?_src_=prefs;preference=announce_login'>[(toggles & PREFTOGGLE_ANNOUNCE_LOGIN)?"Enabled":"Disabled"]</a><br>"
-				dat += "<br>"
-				dat += "<b>Combo HUD Lighting:</b> <a href = '?_src_=prefs;preference=combohud_lighting'>[(toggles & PREFTOGGLE_COMBOHUD_LIGHTING)?"Full-bright":"No Change"]</a><br>"
-				dat += "<br>"
-				dat += "<b>Hide Dead Chat:</b> <a href = '?_src_=prefs;preference=toggle_dead_chat'>[(chat_toggles & CHAT_DEAD)?"Shown":"Hidden"]</a><br>"
-				dat += "<b>Hide Radio Messages:</b> <a href = '?_src_=prefs;preference=toggle_radio_chatter'>[(chat_toggles & CHAT_RADIO)?"Shown":"Hidden"]</a><br>"
-				dat += "<b>Hide Prayers:</b> <a href = '?_src_=prefs;preference=toggle_prayers'>[(chat_toggles & CHAT_PRAYER)?"Shown":"Hidden"]</a><br>"
-				if(CONFIG_GET(flag/allow_admin_asaycolor))
-					dat += "<br>"
-					dat += "<b>ASAY Color:</b> <span style='border: 1px solid #161616; background-color: [asaycolor ? asaycolor : "#FF4500"];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=asaycolor;task=input'>Change</a><br>"
-
-				//deadmin
-				dat += "<h2>Deadmin While Playing</h2>"
-				if(CONFIG_GET(flag/auto_deadmin_players))
-					dat += "<b>Always Deadmin:</b> FORCED</a><br>"
-				else
-					dat += "<b>Always Deadmin:</b> <a href = '?_src_=prefs;preference=toggle_deadmin_always'>[(toggles & PREFTOGGLE_DEADMIN_ALWAYS)?"Enabled":"Disabled"]</a><br>"
-					if(!(toggles & PREFTOGGLE_DEADMIN_ALWAYS))
-						dat += "<br>"
-						if(!CONFIG_GET(flag/auto_deadmin_antagonists))
-							dat += "<b>As Antag:</b> <a href = '?_src_=prefs;preference=toggle_deadmin_antag'>[(toggles & PREFTOGGLE_DEADMIN_ANTAGONIST)?"Deadmin":"Keep Admin"]</a><br>"
-						else
-							dat += "<b>As Antag:</b> FORCED<br>"
-
-						if(!CONFIG_GET(flag/auto_deadmin_heads))
-							dat += "<b>As Command:</b> <a href = '?_src_=prefs;preference=toggle_deadmin_head'>[(toggles & PREFTOGGLE_DEADMIN_POSITION_HEAD)?"Deadmin":"Keep Admin"]</a><br>"
-						else
-							dat += "<b>As Command:</b> FORCED<br>"
-
-						if(!CONFIG_GET(flag/auto_deadmin_security))
-							dat += "<b>As Security:</b> <a href = '?_src_=prefs;preference=toggle_deadmin_security'>[(toggles & PREFTOGGLE_DEADMIN_POSITION_SECURITY)?"Deadmin":"Keep Admin"]</a><br>"
-						else
-							dat += "<b>As Security:</b> FORCED<br>"
-
-						if(!CONFIG_GET(flag/auto_deadmin_silicons))
-							dat += "<b>As Silicon:</b> <a href = '?_src_=prefs;preference=toggle_deadmin_silicon'>[(toggles & PREFTOGGLE_DEADMIN_POSITION_SILICON)?"Deadmin":"Keep Admin"]</a><br>"
-						else
-							dat += "<b>As Silicon:</b> FORCED<br>"
-
-				dat += "</td>"
-			dat += "</tr></table>"
-
-		if(4) //NSV13 - Roleplay Tab - Start
-			dat += "<center>"
-			var/name
-			var/unspaced_slots = 0
-			for(var/datum/character_save/CS as anything in character_saves)
-				unspaced_slots++
-				if(unspaced_slots > 4)
-					dat += "<br>"
-					unspaced_slots = 0
-				name = CS.real_name
-				if(!name)
-					name = "Character [CS.slot_number]"
-				if(CS.slot_locked)
-					dat += "<a style='white-space:nowrap;' class='linkOff'>[name] (Locked)</a> "
-				else
-					dat += "<a style='white-space:nowrap;' href='?_src_=prefs;preference=changeslot;num=[CS.slot_number];' [CS.slot_number == default_slot ? "class='linkOn'" : ""]>[name]</a> "
-			dat += "</center>"
-
-			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
-			dat += "<h2>Fetish content prefs</h2>"
-			dat += "<b>Arousal:</b><a href='?_src_=prefs;preference=arousable'>[arousable == TRUE ? "Enabled" : "Disabled"]</a><BR>"
-			dat += "<b>Genital examine text</b>:<a href='?_src_=prefs;preference=genital_examine'>[(cit_toggles & GENITAL_EXAMINE) ? "Enabled" : "Disabled"]</a><BR>"
-			dat += "<b>Forced Feminization:</b> <a href='?_src_=prefs;preference=feminization'>[(cit_toggles & FORCED_FEM) ? "Allowed" : "Disallowed"]</a><br>"
-			dat += "<b>Forced Masculinization:</b> <a href='?_src_=prefs;preference=masculinization'>[(cit_toggles & FORCED_MASC) ? "Allowed" : "Disallowed"]</a><br>"
-			dat += "<b>Lewd Hypno:</b> <a href='?_src_=prefs;preference=hypno'>[(cit_toggles & HYPNO) ? "Allowed" : "Disallowed"]</a><br>"
-			dat += "<b>Bimbofication:</b> <a href='?_src_=prefs;preference=bimbo'>[(cit_toggles & BIMBOFICATION) ? "Allowed" : "Disallowed"]</a><br>"
-			dat += "</td>"
-			dat +="<td width='300px' height='300px' valign='top'>"
-			dat += "<h2>Other content prefs</h2>"
-			dat += "<b>Breast Enlargement:</b> <a href='?_src_=prefs;preference=breast_enlargement'>[(cit_toggles & BREAST_ENLARGEMENT) ? "Allowed" : "Disallowed"]</a><br>"
-			dat += "<b>Penis Enlargement:</b> <a href='?_src_=prefs;preference=penis_enlargement'>[(cit_toggles & PENIS_ENLARGEMENT) ? "Allowed" : "Disallowed"]</a><br>"
-			dat += "<b>Hypno:</b> <a href='?_src_=prefs;preference=never_hypno'>[(cit_toggles & NEVER_HYPNO) ? "Disallowed" : "Allowed"]</a><br>"
-			dat += "<b>Aphrodisiacs:</b> <a href='?_src_=prefs;preference=aphro'>[(cit_toggles & NO_APHRO) ? "Disallowed" : "Allowed"]</a><br>"
-			dat += "<b>Ass Slapping:</b> <a href='?_src_=prefs;preference=ass_slap'>[(cit_toggles & NO_ASS_SLAP) ? "Disallowed" : "Allowed"]</a><br>"
-			dat += "</td></tr></table>"
-
-			dat += "<table width='100%'><tr><td width='75%' valign='top'>"
+			dat += "<table><tr><td width='20%' height='300px' valign='top'>"
 			dat += "<h2>Flavor Text</h2>"
-
 			dat += "<a href='?_src_=prefs;preference=flavor_text;task=input'><b>Set Flavor Text</b></a><br>"
 			if(length(active_character.flavor_text) <= 40)
 				if(!length(active_character.flavor_text))
-					dat += "\[...\]"
+					dat += "\[...\]<br>"
 				else
-					dat += "[active_character.flavor_text]"
+					dat += "[active_character.flavor_text]<br>"
 			else
 				dat += "[copytext_char(active_character.flavor_text, 1, 40)]...<br>"
 
-			dat += "<br>"
-
+			dat += "<h2>Silicon Examine Text</h2>"
 			dat += "<a href='?_src_=prefs;preference=silicon_flavor_text;task=input'><b>Set Silicon Examine Text</b></a><br>"
 			if(length(active_character.silicon_flavor_text) <= 40)
 				if(!length(active_character.silicon_flavor_text))
-					dat += "\[...\]"
+					dat += "\[...\]<br>"
 				else
-					dat += "[active_character.silicon_flavor_text]"
+					dat += "[active_character.silicon_flavor_text]<br>"
 			else
 				dat += "[copytext_char(active_character.silicon_flavor_text, 1, 40)]...<br>"
 
-			dat += "</tr></table>"
+			dat += "ERP :<a href='?_src_=prefs;preference=erp_pref'>[erppref]</a><br>"
+			//dat += "Non-Con : <a href='?_src_=prefs;preference=noncon_pref'>[nonconpref]</a><br>"
 
-			dat += "<table width='100%'><tr>"
-			dat += "<td width='33%'>"
-
-			dat += "<h2>General Record</h2>"
-			dat += "<a href='?_src_=prefs;preference=general_record;task=input'><b>Set General Record</b></a><br>"
+			dat += "<h2>Records</h2>"
+			dat += "<a href='?_src_=prefs;preference=general_record;task=input'><b>General Record</b></a><br>"
 
 			if(length(active_character.general_record) <= 40)
 				if(!length(active_character.general_record))
-					dat += "\[...\]"
+					dat += "\[...\]<br>"
 				else
-					dat += "[html_encode(active_character.general_record)]"
+					dat += "[html_encode(active_character.general_record)]<br>"
 			else
-				dat += "[copytext_char(active_character.general_record, 1, 40)]..."
+				dat += "[copytext_char(active_character.general_record, 1, 40)]...<br>"
 
-			dat += "<br>"
-
-
-			dat += "<h2>Medical Record</h2>"
-			dat += "<a href='?_src_=prefs;preference=medical_record;task=input'><b>Set Medical Record</b></a><br>"
+			dat += "<a href='?_src_=prefs;preference=medical_record;task=input'><b>Medical Record</b></a><br>"
 
 			if(length(active_character.medical_record) <= 40)
 				if(!length(active_character.medical_record))
-					dat += "\[...\]"
+					dat += "\[...\]<br>"
 				else
-					dat += "[html_encode(active_character.medical_record)]"
+					dat += "[html_encode(active_character.medical_record)]<br>"
 			else
-				dat += "[copytext_char(active_character.medical_record, 1, 40)]..."
+				dat += "[copytext_char(active_character.medical_record, 1, 40)]...<br>"
 
-			dat += "<br>"
-
-
-			dat += "<h2>Security Record</h2>"
-			dat += "<a href='?_src_=prefs;preference=security_record;task=input'><b>Set Security Record</b></a><br>"
-
+			dat += "<a href='?_src_=prefs;preference=security_record;task=input'><b>Security Record</b></a><br>"
 			if(length(active_character.security_record) <= 40)
 				if(!length(active_character.security_record))
-					dat += "\[...\]"
+					dat += "\[...\]<br>"
 				else
-					dat += "[html_encode(active_character.security_record)]"
+					dat += "[html_encode(active_character.security_record)]<br>"
 			else
-				dat += "[copytext_char(active_character.security_record, 1, 40)]..."
+				dat += "[copytext_char(active_character.security_record, 1, 40)]...<br>"
 
-			dat += "<br>"
-			dat += "</td>"
-			dat += "</tr></table>"
+			dat += APPEARANCE_CATEGORY_COLUMN
 
-		if(5) //Character Appearance
-			dat += "<center>"
-			var/name
-			var/unspaced_slots = 0
-			for(var/datum/character_save/CS as anything in character_saves)
-				unspaced_slots++
-				if(unspaced_slots > 4)
-					dat += "<br>"
-					unspaced_slots = 0
-				name = CS.real_name
-				if(!name)
-					name = "Character [CS.slot_number]"
-				if(CS.slot_locked)
-					dat += "<a style='white-space:nowrap;' class='linkOff'>[name] (Locked)</a> "
-				else
-					dat += "<a style='white-space:nowrap;' href='?_src_=prefs;preference=changeslot;num=[CS.slot_number];' [CS.slot_number == default_slot ? "class='linkOn'" : ""]>[name]</a> "
-			dat += "</center>"
-
-			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
 			dat += "<h2>Body</h2>"
 			if(!(AGENDER in active_character.pref_species.species_traits))
 				dat += "<b>Gender:</b> <a href='?_src_=prefs;preference=gender'>[active_character.gender == MALE ? "Male" : "Female"]</a><BR>"
@@ -634,8 +289,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			//dat += "<table width='100%'><tr><td width='24%' valign='top'>"
 			dat += "<BR>"
 			dat += "<b>Species:</b><BR><a href='?_src_=prefs;preference=species;task=input'>[active_character.pref_species.name]</a><BR>"
-			dat += "<b>Random Body:</b><a href='?_src_=prefs;preference=all;task=random'>Randomize!</A> "
+			dat += "<b>Random Body:</b><a href='?_src_=prefs;preference=all;task=random'>Randomize!</A><BR>"
 			dat += "<b>Always Random Body:</b><a href='?_src_=prefs;preference=all'>[active_character.be_random_body ? "Yes" : "No"]</A><br>"
+
+			dat += "</td>"
+
 			var/use_skintones = active_character.pref_species.use_skintones
 			if(use_skintones)
 				dat += APPEARANCE_CATEGORY_COLUMN
@@ -945,7 +603,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "<b>Uplink Spawn Location:</b><BR><a href ='?_src_=prefs;preference=uplink_loc;task=input'>[active_character.uplink_spawn_loc == UPLINK_IMPLANT ? UPLINK_IMPLANT_WITH_PRICE : active_character.uplink_spawn_loc]</a><BR></td>"
 			dat += "</td>"
 
-			dat +="<td width='220px' height='300px' valign='top'>"
+			dat += "<td width='220px' height='300px' valign='top'>"
+			dat += "<h3>Lewd preferences</h3>"
+			dat += "<b>Lust tolerance:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=lust_tolerance;task=input'>[active_character.features["lust_tolerance"]]</a>"
+			dat += "<b>Sexual potency:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=sexual_potency;task=input'>[active_character.features["sexual_potency"]]</a>"
+			dat += "</td>"
+			dat += APPEARANCE_CATEGORY_COLUMN
 			if(NOGENITALS in active_character.pref_species.species_traits)
 				dat += "<b>Your species ([active_character.pref_species.name]) does not support genitals!</b><br>"
 			else
@@ -1004,6 +667,333 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				dat += "</td>"
 			dat += "</td>"
 			dat += "</tr></table>"
+
+		if(GAME_PREFERENCES_TAB) // Game Preferences
+			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
+			dat += "<h2>General Settings</h2>"
+			dat += "<b>UI Style:</b> <a href='?_src_=prefs;task=input;preference=ui'>[UI_style]</a><br>"
+			dat += "<b>Outline:</b> <a href='?_src_=prefs;preference=outline_enabled'>[toggles & PREFTOGGLE_OUTLINE_ENABLED ? "Enabled" : "Disabled"]</a><br>"
+			dat += "<b>Outline Color:</b> <span style='border:1px solid #161616; background-color: [outline_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=outline_color'>Change</a><BR>"
+			dat += "<b>tgui Monitors:</b> <a href='?_src_=prefs;preference=tgui_lock'>[(toggles2 & PREFTOGGLE_2_LOCKED_TGUI) ? "Primary" : "All"]</a><br>"
+			dat += "<b>tgui Style:</b> <a href='?_src_=prefs;preference=tgui_fancy'>[(toggles2 & PREFTOGGLE_2_FANCY_TGUI) ? "Fancy" : "No Frills"]</a><br>"
+			dat += "<b>Show Runechat Chat Bubbles:</b> <a href='?_src_=prefs;preference=chat_on_map'>[toggles & PREFTOGGLE_RUNECHAT_GLOBAL ? "Enabled" : "Disabled"]</a><br>"
+			dat += "<b>See Runechat for non-mobs:</b> <a href='?_src_=prefs;preference=see_chat_non_mob'>[toggles & PREFTOGGLE_RUNECHAT_NONMOBS ? "Enabled" : "Disabled"]</a><br>"
+			dat += "<b>See Runechat emotes:</b> <a href='?_src_=prefs;preference=see_rc_emotes'>[toggles & PREFTOGGLE_RUNECHAT_EMOTES ? "Enabled" : "Disabled"]</a><br>"
+			dat += "<b>See Balloon alerts: </b> <a href='?_src_=prefs;preference=see_balloon_alerts;task=input'>[see_balloon_alerts]</a>"
+			dat += "<br>"
+			dat += "<b>Action Buttons:</b> <a href='?_src_=prefs;preference=action_buttons'>[(toggles2 & PREFTOGGLE_2_LOCKED_BUTTONS) ? "Locked In Place" : "Unlocked"]</a><br>"
+			dat += "<b>Hotkey Mode:</b> <a href='?_src_=prefs;preference=hotkeys'>[(toggles2 & PREFTOGGLE_2_HOTKEYS) ? "Hotkeys" : "Default"]</a><br>"
+			dat += "<br>"
+			dat += "<b>PDA Color:</b> <span style='border:1px solid #161616; background-color: [pda_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=pda_color;task=input'>Change</a><BR>"
+			dat += "<b>PDA Style:</b> <a href='?_src_=prefs;task=input;preference=pda_style'>[pda_style]</a><br>"
+			dat += "<br>"
+			dat += "<b>Crew Objectives:</b> <a href='?_src_=prefs;preference=crewobj'>[(toggles2 & PREFTOGGLE_2_CREW_OBJECTIVES) ? "Yes" : "No"]</a><br>"
+			dat += "<br>"
+			dat += "<b>Ghost Ears:</b> <a href='?_src_=prefs;preference=ghost_ears'>[(chat_toggles & CHAT_GHOSTEARS) ? "All Speech" : "Nearest Creatures"]</a><br>"
+			dat += "<b>Ghost Radio:</b> <a href='?_src_=prefs;preference=ghost_radio'>[(chat_toggles & CHAT_GHOSTRADIO) ? "All Messages":"No Messages"]</a><br>"
+			dat += "<b>Ghost Sight:</b> <a href='?_src_=prefs;preference=ghost_sight'>[(chat_toggles & CHAT_GHOSTSIGHT) ? "All Emotes" : "Nearest Creatures"]</a><br>"
+			dat += "<b>Ghost Whispers:</b> <a href='?_src_=prefs;preference=ghost_whispers'>[(chat_toggles & CHAT_GHOSTWHISPER) ? "All Speech" : "Nearest Creatures"]</a><br>"
+			dat += "<b>Ghost PDA:</b> <a href='?_src_=prefs;preference=ghost_pda'>[(chat_toggles & CHAT_GHOSTPDA) ? "All Messages" : "Nearest Creatures"]</a><br>"
+			dat += "<b>Ghost Law Changes:</b> <a href='?_src_=prefs;preference=ghost_laws'>[(chat_toggles & CHAT_GHOSTLAWS) ? "All Law Changes" : "No Law Changes"]</a><br>"
+			dat += "<b>Window Flashing:</b> <a href='?_src_=prefs;preference=winflash'>[(toggles2 & PREFTOGGLE_2_WINDOW_FLASHING) ? "Enabled":"Disabled"]</a><br>"
+			dat += "<br>"
+			dat += "<b>Play Admin MIDIs:</b> <a href='?_src_=prefs;preference=hear_midis'>[(toggles & PREFTOGGLE_SOUND_MIDI) ? "Enabled":"Disabled"]</a><br>"
+			dat += "<b>Play Lobby Music:</b> <a href='?_src_=prefs;preference=lobby_music'>[(toggles & PREFTOGGLE_SOUND_LOBBY) ? "Enabled":"Disabled"]</a><br>"
+			dat += "<b>See Pull Requests:</b> <a href='?_src_=prefs;preference=pull_requests'>[(chat_toggles & CHAT_PULLR) ? "Enabled":"Disabled"]</a><br>"
+			dat += "<br>"
+			if(user.client)
+				if(unlock_content)
+					dat += "<b>BYOND Membership Publicity:</b> <a href='?_src_=prefs;preference=publicity'>[(toggles & PREFTOGGLE_MEMBER_PUBLIC) ? "Public" : "Hidden"]</a><br>"
+				if(unlock_content || check_rights_for(user.client, R_ADMIN))
+					dat += "<b>OOC Color:</b> <span style='border: 1px solid #161616; background-color: [ooccolor ? ooccolor : GLOB.normal_ooc_colour];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=ooccolor;task=input'>Change</a><br>"
+
+			dat += "</td>"
+
+			dat += "<td width='300px' height='300px' valign='top'>"
+
+			dat += "<h2>Special Role Settings</h2>"
+
+			if(is_banned_from(user.ckey, ROLE_SYNDICATE))
+				dat += "<font color=red><b>You are banned from antagonist roles.</b></font><br>"
+				src.be_special = list()
+
+
+			for (var/i in GLOB.special_roles)
+				if(is_banned_from(user.ckey, i))
+					dat += "<b>Be [capitalize(i)]:</b> <a href='?_src_=prefs;bancheck=[i]'>BANNED</a><br>"
+				else
+					var/days_remaining = null
+					if(ispath(GLOB.special_roles[i]) && CONFIG_GET(flag/use_age_restriction_for_jobs)) //If it's a game mode antag, check if the player meets the minimum age
+						var/mode_path = GLOB.special_roles[i]
+						var/datum/game_mode/temp_mode = new mode_path
+						days_remaining = temp_mode.get_remaining_days(user.client)
+
+					if(days_remaining)
+						dat += "<b>Be [capitalize(i)]:</b> <font color=red> \[IN [days_remaining] DAYS]</font><br>"
+					else
+						dat += "<b>Be [capitalize(i)]:</b> <a href='?_src_=prefs;preference=be_special;be_special_type=[i]'>[(i in be_special) ? "Enabled" : "Disabled"]</a><br>"
+
+			dat += "<b>Midround Antagonist:</b> <a href='?_src_=prefs;preference=allow_midround_antag'>[(toggles & PREFTOGGLE_MIDROUND_ANTAG) ? "Enabled" : "Disabled"]</a><br>"
+
+			dat += "<br>"
+
+			dat +="<td width='300px' height='300px' valign='top'>"
+
+			if(user.client.holder)
+				dat += "<h2>Admin Settings</h2>"
+				dat += "<b>Adminhelp Sounds:</b> <a href='?_src_=prefs;preference=hear_adminhelps'>[(toggles & PREFTOGGLE_SOUND_ADMINHELP)?"Enabled":"Disabled"]</a><br>"
+				dat += "<b>Prayer Sounds:</b> <a href = '?_src_=prefs;preference=hear_prayers'>[(toggles & PREFTOGGLE_SOUND_PRAYERS)?"Enabled":"Disabled"]</a><br>"
+				dat += "<b>Announce Login:</b> <a href='?_src_=prefs;preference=announce_login'>[(toggles & PREFTOGGLE_ANNOUNCE_LOGIN)?"Enabled":"Disabled"]</a><br>"
+				dat += "<br>"
+				dat += "<b>Combo HUD Lighting:</b> <a href = '?_src_=prefs;preference=combohud_lighting'>[(toggles & PREFTOGGLE_COMBOHUD_LIGHTING)?"Full-bright":"No Change"]</a><br>"
+				dat += "<br>"
+				dat += "<b>Hide Dead Chat:</b> <a href = '?_src_=prefs;preference=toggle_dead_chat'>[(chat_toggles & CHAT_DEAD)?"Shown":"Hidden"]</a><br>"
+				dat += "<b>Hide Radio Messages:</b> <a href = '?_src_=prefs;preference=toggle_radio_chatter'>[(chat_toggles & CHAT_RADIO)?"Shown":"Hidden"]</a><br>"
+				dat += "<b>Hide Prayers:</b> <a href = '?_src_=prefs;preference=toggle_prayers'>[(chat_toggles & CHAT_PRAYER)?"Shown":"Hidden"]</a><br>"
+				if(CONFIG_GET(flag/allow_admin_asaycolor))
+					dat += "<br>"
+					dat += "<b>ASAY Color:</b> <span style='border: 1px solid #161616; background-color: [asaycolor ? asaycolor : "#FF4500"];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=asaycolor;task=input'>Change</a><br>"
+
+				//deadmin
+				dat += "<h2>Deadmin While Playing</h2>"
+				if(CONFIG_GET(flag/auto_deadmin_players))
+					dat += "<b>Always Deadmin:</b> FORCED</a><br>"
+				else
+					dat += "<b>Always Deadmin:</b> <a href = '?_src_=prefs;preference=toggle_deadmin_always'>[(toggles & PREFTOGGLE_DEADMIN_ALWAYS)?"Enabled":"Disabled"]</a><br>"
+					if(!(toggles & PREFTOGGLE_DEADMIN_ALWAYS))
+						dat += "<br>"
+						if(!CONFIG_GET(flag/auto_deadmin_antagonists))
+							dat += "<b>As Antag:</b> <a href = '?_src_=prefs;preference=toggle_deadmin_antag'>[(toggles & PREFTOGGLE_DEADMIN_ANTAGONIST)?"Deadmin":"Keep Admin"]</a><br>"
+						else
+							dat += "<b>As Antag:</b> FORCED<br>"
+
+						if(!CONFIG_GET(flag/auto_deadmin_heads))
+							dat += "<b>As Command:</b> <a href = '?_src_=prefs;preference=toggle_deadmin_head'>[(toggles & PREFTOGGLE_DEADMIN_POSITION_HEAD)?"Deadmin":"Keep Admin"]</a><br>"
+						else
+							dat += "<b>As Command:</b> FORCED<br>"
+
+						if(!CONFIG_GET(flag/auto_deadmin_security))
+							dat += "<b>As Security:</b> <a href = '?_src_=prefs;preference=toggle_deadmin_security'>[(toggles & PREFTOGGLE_DEADMIN_POSITION_SECURITY)?"Deadmin":"Keep Admin"]</a><br>"
+						else
+							dat += "<b>As Security:</b> FORCED<br>"
+
+						if(!CONFIG_GET(flag/auto_deadmin_silicons))
+							dat += "<b>As Silicon:</b> <a href = '?_src_=prefs;preference=toggle_deadmin_silicon'>[(toggles & PREFTOGGLE_DEADMIN_POSITION_SILICON)?"Deadmin":"Keep Admin"]</a><br>"
+						else
+							dat += "<b>As Silicon:</b> FORCED<br>"
+
+			dat += "</td>"
+			dat += "</tr></table>"
+
+			if(unlock_content)
+				dat += "<b>Ghost Form:</b> <a href='?_src_=prefs;task=input;preference=ghostform'>[ghost_form]</a><br>"
+				dat += "<B>Ghost Orbit: </B> <a href='?_src_=prefs;task=input;preference=ghostorbit'>[ghost_orbit]</a><br>"
+
+			var/button_name = "If you see this something went wrong."
+			switch(ghost_accs)
+				if(GHOST_ACCS_FULL)
+					button_name = GHOST_ACCS_FULL_NAME
+				if(GHOST_ACCS_DIR)
+					button_name = GHOST_ACCS_DIR_NAME
+				if(GHOST_ACCS_NONE)
+					button_name = GHOST_ACCS_NONE_NAME
+
+			dat += "<b>Ghost Accessories:</b> <a href='?_src_=prefs;task=input;preference=ghostaccs'>[button_name]</a><br>"
+
+			switch(ghost_others)
+				if(GHOST_OTHERS_THEIR_SETTING)
+					button_name = GHOST_OTHERS_THEIR_SETTING_NAME
+				if(GHOST_OTHERS_DEFAULT_SPRITE)
+					button_name = GHOST_OTHERS_DEFAULT_SPRITE_NAME
+				if(GHOST_OTHERS_SIMPLE)
+					button_name = GHOST_OTHERS_SIMPLE_NAME
+
+			dat += "<b>Ghosts of Others:</b> <a href='?_src_=prefs;task=input;preference=ghostothers'>[button_name]</a><br>"
+			dat += "<br>"
+
+			dat += "<b>Income Updates:</b> <a href='?_src_=prefs;preference=income_pings'>[(chat_toggles & CHAT_BANKCARD) ? "Allowed" : "Muted"]</a><br>"
+			dat += "<br>"
+
+			dat += "<b>FPS:</b> <a href='?_src_=prefs;preference=clientfps;task=input'>[clientfps]</a><br>"
+
+			dat += "<b>Parallax (Fancy Space):</b> <a href='?_src_=prefs;preference=parallaxdown' oncontextmenu='window.location.href=\"?_src_=prefs;preference=parallaxup\";return false;'>"
+			switch (parallax)
+				if (PARALLAX_LOW)
+					dat += "Low"
+				if (PARALLAX_MED)
+					dat += "Medium"
+				if (PARALLAX_INSANE)
+					dat += "Insane"
+				if (PARALLAX_DISABLE)
+					dat += "Disabled"
+				else
+					dat += "High"
+			dat += "</a><br>"
+
+			dat += "<b>Ambient Occlusion:</b> <a href='?_src_=prefs;preference=ambientocclusion'>[toggles2 & PREFTOGGLE_2_AMBIENT_OCCLUSION ? "Enabled" : "Disabled"]</a><br>"
+			dat += "<b>Fit Viewport:</b> <a href='?_src_=prefs;preference=auto_fit_viewport'>[toggles2 & PREFTOGGLE_2_AUTO_FIT_VIEWPORT ? "Auto" : "Manual"]</a><br>"
+			if (CONFIG_GET(flag/widescreen)) //Nsv13 - widescreen
+				dat += "<b>Widescreen:</b> <a href='?_src_=prefs;preference=widescreenpref'>[toggles2 & PREFTOGGLE_2_WIDESCREEN ? "Enabled" : "Disabled"]</a><br>"
+
+			button_name = pixel_size
+			dat += "<b>Pixel Scaling:</b> <a href='?_src_=prefs;preference=pixel_size'>[(button_name) ? "Pixel Perfect [button_name]x" : "Stretch to fit"]</a><br>"
+
+			switch(scaling_method)
+				if(SCALING_METHOD_NORMAL)
+					button_name = "Nearest Neighbor"
+				if(SCALING_METHOD_DISTORT)
+					button_name = "Point Sampling"
+				if(SCALING_METHOD_BLUR)
+					button_name = "Bilinear"
+			dat += "<b>Scaling Method:</b> <a href='?_src_=prefs;preference=scaling_method'>[button_name]</a><br>"
+
+			if (CONFIG_GET(flag/maprotation))
+				var/p_map = preferred_map
+				if (!p_map)
+					p_map = "Default"
+					if (config.defaultmap)
+						p_map += " ([config.defaultmap.map_name])"
+				else
+					if (p_map in config.maplist)
+						var/datum/map_config/VM = config.maplist[p_map]
+						if (!VM)
+							p_map += " (No longer exists)"
+						else
+							p_map = VM.map_name
+					else
+						p_map += " (No longer exists)"
+				if(CONFIG_GET(flag/preference_map_voting))
+					dat += "<b>Preferred Map:</b> <a href='?_src_=prefs;preference=preferred_map;task=input'>[p_map]</a><br>"
+
+			dat += "</td>"
+
+			dat += "</td></tr><tr><td> </td></tr>" // i hate myself for this
+			dat += "<tr><td colspan='2' width='100%'><center><a style='font-size: 18px;' href='?_src_=prefs;preference=keybindings_menu'>Customize Keybinds</a></center></td></tr>"
+			dat += "</table>"
+
+		if(LOADOUT_TAB) //Loadout
+			var/list/type_blacklist = list()
+			if(length(active_character.equipped_gear))
+				for(var/i in 1 to length(active_character.equipped_gear))
+					var/datum/gear/G = GLOB.gear_datums[active_character.equipped_gear[i]]
+					if(G)
+						if(G.subtype_path in type_blacklist)
+							continue
+						type_blacklist += G.subtype_path
+					else
+						active_character.equipped_gear.Cut(i,i+1)
+
+			dat += "<center>"
+			var/name
+			var/unspaced_slots = 0
+			for(var/datum/character_save/CS as anything in character_saves)
+				unspaced_slots++
+				if(unspaced_slots > 4)
+					dat += "<br>"
+					unspaced_slots = 0
+				name = CS.real_name
+				if(!name)
+					name = "Character [CS.slot_number]"
+				if(CS.slot_locked)
+					dat += "<a style='white-space:nowrap;' class='linkOff'>[name] (Locked)</a> "
+				else
+					dat += "<a style='white-space:nowrap;' href='?_src_=prefs;preference=changeslot;num=[CS.slot_number];' [CS.slot_number == default_slot ? "class='linkOn'" : ""]>[name]</a> "
+			dat += "</center>"
+
+			var/fcolor =  "#3366CC"
+			var/metabalance = user.client.get_metabalance()
+			dat += "<table align='center' width='100%'>"
+			dat += "<tr><td colspan=4><center><b>Current balance: <font color='[fcolor]'>[metabalance]</font> [CONFIG_GET(string/metacurrency_name)]s.</b> \[<a href='?_src_=prefs;preference=gear;clear_loadout=1'>Clear Loadout</a>\]</center></td></tr>"
+			dat += "<tr><td colspan=4><center><b>"
+
+			var/firstcat = 1
+			for(var/category in GLOB.loadout_categories)
+				if(category == "Donator" && (!LAZYLEN(GLOB.patrons) || !CONFIG_GET(flag/donator_items)))
+					continue
+				if(firstcat)
+					firstcat = 0
+				else
+					dat += " |"
+				if(category == gear_tab)
+					dat += " <span class='linkOff'>[category]</span> "
+				else
+					dat += " <a href='?_src_=prefs;preference=gear;select_category=[category]'>[category]</a> "
+			dat += "</b></center></td></tr>"
+
+			var/datum/loadout_category/LC = GLOB.loadout_categories[gear_tab]
+			dat += "<tr><td colspan=4><hr></td></tr>"
+			dat += "<tr><td colspan=4><b><center>[LC.category]</center></b></td></tr>"
+			dat += "<tr><td colspan=4><hr></td></tr>"
+
+			dat += "<tr><td colspan=4><hr></td></tr>"
+			dat += "<tr><td><b>Name</b></td>"
+			if(LC.category != "Donator")
+				dat += "<td><b>Cost</b></td>"
+			dat += "<td><b>Restricted Jobs</b></td>"
+			dat += "<td><b>Description</b></td></tr>"
+			dat += "<tr><td colspan=4><hr></td></tr>"
+			for(var/gear_id in LC.gear)
+				var/datum/gear/G = LC.gear[gear_id]
+				var/ticked = (G.id in active_character.equipped_gear)
+
+				if((G.unlocktype == GEAR_DONATOR) && !(usr.ckey == G.ckey)) //NSV13 - donator items
+					continue
+				dat += "<tr style='vertical-align:top;'><td width=15%>[G.display_name]\n"
+				var/donator = G.sort_category == "Donator" // purchase box and cost coloumns doesn't appear on donator items
+				if(G.id in purchased_gear)
+					if(G.sort_category == "OOC")
+						dat += "<i>[G.unlocktype != GEAR_DONATOR ? "Unlocked" : "Purchased"].</i></td>" //NSV13 - donator items
+					else
+						dat += "<a style='white-space:normal;' [ticked ? "class='linkOn' " : ""]href='?_src_=prefs;preference=gear;toggle_gear=[G.id]'>Equip</a></td>"
+				else
+					dat += "<a style='white-space:normal;' href='?_src_=prefs;preference=gear;purchase_gear=[G.id]'>[donator ? "Donator" : "Purchase"]</a></td>"
+				dat += "<td width = 5% style='vertical-align:top'>[donator ? "" : "[G.cost]"]</td><td>"
+
+				if(G.allowed_roles)
+					dat += "<font size=2>"
+					for(var/role in G.allowed_roles)
+						dat += role + ",	 "
+					dat += "</font>"
+				dat += "</td><td><font size=2><i>[G.description]</i></font></td></tr>"
+			dat += "</table>"
+
+		if(CONTENT_PREFERENCES_TAB) //NSV13 - Roleplay Tab - Start
+			dat += "<center>"
+			var/name
+			var/unspaced_slots = 0
+			for(var/datum/character_save/CS as anything in character_saves)
+				unspaced_slots++
+				if(unspaced_slots > 4)
+					dat += "<br>"
+					unspaced_slots = 0
+				name = CS.real_name
+				if(!name)
+					name = "Character [CS.slot_number]"
+				if(CS.slot_locked)
+					dat += "<a style='white-space:nowrap;' class='linkOff'>[name] (Locked)</a> "
+				else
+					dat += "<a style='white-space:nowrap;' href='?_src_=prefs;preference=changeslot;num=[CS.slot_number];' [CS.slot_number == default_slot ? "class='linkOn'" : ""]>[name]</a> "
+			dat += "</center>"
+
+			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
+			dat += "<h2>Fetish content prefs</h2>"
+			dat += "<b>Allow Lewd Verbs:</b> <a href='?_src_=prefs;preference=verb_consent'>[(toggles & VERB_CONSENT) ? "Yes":"No"]</a><br>" // Skyrat - ERP Mechanic Addition
+			dat += "<b>Mute Lewd Verb Sounds:</b> <a href='?_src_=prefs;preference=mute_lewd_verb_sounds'>[(toggles & LEWD_VERB_SOUNDS) ? "Yes":"No"]</a><br>" // Skyrat - ERP Mechanic Addition
+			dat += "<b>Arousal:</b><a href='?_src_=prefs;preference=arousable'>[arousable == TRUE ? "Enabled" : "Disabled"]</a><BR>"
+			dat += "<b>Genital examine text</b>:<a href='?_src_=prefs;preference=genital_examine'>[(cit_toggles & GENITAL_EXAMINE) ? "Enabled" : "Disabled"]</a><BR>"
+			dat += "<b>Forced Feminization:</b> <a href='?_src_=prefs;preference=feminization'>[(cit_toggles & FORCED_FEM) ? "Allowed" : "Disallowed"]</a><br>"
+			dat += "<b>Forced Masculinization:</b> <a href='?_src_=prefs;preference=masculinization'>[(cit_toggles & FORCED_MASC) ? "Allowed" : "Disallowed"]</a><br>"
+			dat += "<b>Lewd Hypno:</b> <a href='?_src_=prefs;preference=hypno'>[(cit_toggles & HYPNO) ? "Allowed" : "Disallowed"]</a><br>"
+			dat += "<b>Bimbofication:</b> <a href='?_src_=prefs;preference=bimbo'>[(cit_toggles & BIMBOFICATION) ? "Allowed" : "Disallowed"]</a><br>"
+			dat += "</td>"
+			dat +="<td width='300px' height='300px' valign='top'>"
+			dat += "<h2>Other content prefs</h2>"
+			dat += "<b>Breast Enlargement:</b> <a href='?_src_=prefs;preference=breast_enlargement'>[(cit_toggles & BREAST_ENLARGEMENT) ? "Allowed" : "Disallowed"]</a><br>"
+			dat += "<b>Penis Enlargement:</b> <a href='?_src_=prefs;preference=penis_enlargement'>[(cit_toggles & PENIS_ENLARGEMENT) ? "Allowed" : "Disallowed"]</a><br>"
+			dat += "<b>Hypno:</b> <a href='?_src_=prefs;preference=never_hypno'>[(cit_toggles & NEVER_HYPNO) ? "Disallowed" : "Allowed"]</a><br>"
+			dat += "<b>Aphrodisiacs:</b> <a href='?_src_=prefs;preference=aphro'>[(cit_toggles & NO_APHRO) ? "Disallowed" : "Allowed"]</a><br>"
+			dat += "<b>Ass Slapping:</b> <a href='?_src_=prefs;preference=ass_slap'>[(cit_toggles & NO_ASS_SLAP) ? "Disallowed" : "Allowed"]</a><br>"
+			dat += "</td></tr></table>"
 
 		//NSV13 - Roleplay Tab - End
 	dat += "<hr><center>"
@@ -2159,6 +2149,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if("hear_midis")
 					toggles ^= PREFTOGGLE_SOUND_MIDI
 
+				if("verb_consent")
+					toggles ^= VERB_CONSENT
+
+				if("mute_lewd_verb_sounds")
+					toggles ^= LEWD_VERB_SOUNDS
+
 				if("lobby_music")
 					toggles ^= PREFTOGGLE_SOUND_LOBBY
 					if((toggles & PREFTOGGLE_SOUND_LOBBY) && user.client && isnewplayer(user))
@@ -2259,6 +2255,24 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if("bimbo")
 					cit_toggles ^= BIMBOFICATION
 				//NSV13 - God Fucking Help Me - Stop
+
+				if("erp_pref")
+					switch(erppref)
+						if("Yes")
+							erppref = "Ask"
+						if("Ask")
+							erppref = "No"
+						if("No")
+							erppref = "Yes"
+
+				if("noncon_pref")
+					switch(nonconpref)
+						if("Yes")
+							nonconpref = "Ask"
+						if("Ask")
+							nonconpref = "No"
+						if("No")
+							nonconpref = "Yes"
 
 				if("ambientocclusion")
 					toggles2 ^= PREFTOGGLE_2_AMBIENT_OCCLUSION

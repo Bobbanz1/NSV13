@@ -23,13 +23,13 @@
 	if(HUD_trait)
 		ADD_TRAIT(M, HUD_trait, ORGAN_TRAIT)
 
-/obj/item/organ/cyberimp/eyes/hud/Remove(var/mob/living/carbon/M, var/special = 0)
-	if(HUD_type)
+/obj/item/organ/cyberimp/eyes/hud/Remove(special = FALSE)
+	if(!QDELETED(owner) && HUD_type)
 		var/datum/atom_hud/H = GLOB.huds[HUD_type]
-		H.remove_hud_from(M)
+		H.remove_hud_from(owner)
 	if(HUD_trait)
-		REMOVE_TRAIT(M, HUD_trait, ORGAN_TRAIT)
-	..()
+		REMOVE_TRAIT(owner, HUD_trait, ORGAN_TRAIT)
+	return ..()
 
 /obj/item/organ/cyberimp/eyes/hud/medical
 	name = "Medical HUD implant"

@@ -294,7 +294,7 @@
 		if(nucleium_pp > 15)
 			if(prob(2))
 				to_chat(owner, "<span class='userdanger'>Your lungs violently disintergrate!</span>")
-				src.Remove(H, 1)
+				src.Remove(TRUE)
 				QDEL_NULL(src)
 				return
 		breath.adjust_moles(GAS_NUCLEIUM, -gas_breathed)

@@ -37,9 +37,9 @@
 		if(H.movement_type & FLYING)
 			H.dna.species.toggle_flight(H)
 
-/obj/item/organ/wings/Remove(mob/living/carbon/human/H,  special = 0)
-	..()
-	if(istype(H))
+/obj/item/organ/wings/Remove(special = FALSE)
+	var/mob/living/carbon/human/H = owner
+	if(H && istype(H))
 		H.dna.species.mutant_bodyparts -= basewings
 		H.dna.species.mutant_bodyparts -= "[basewings]open"
 		wing_type = H.dna.features[basewings]
@@ -49,6 +49,7 @@
 		QDEL_NULL(fly)
 		if(H.movement_type & FLYING)
 			H.dna.species.toggle_flight(H)
+	return ..()
 
 /obj/item/organ/wings/proc/toggleopen(mob/living/carbon/human/H) //opening and closing wings are purely cosmetic
 	if(!canopen)

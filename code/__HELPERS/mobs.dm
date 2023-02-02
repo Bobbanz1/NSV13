@@ -197,8 +197,7 @@ GLOBAL_LIST_INIT(skin_tones, sortList(list(
 	"arab" = "#c4915e",
 	"indian" = "#b87840",
 	"african1" = "#754523",
-	"african2" = "#471c18",
-	"orange" = "#ffc905" //Spray tan overdose.
+	"african2" = "#471c18"
 	)))
 
 GLOBAL_LIST_EMPTY(species_list)

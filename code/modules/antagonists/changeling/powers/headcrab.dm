@@ -38,7 +38,7 @@
 	..()
 
 	for(var/obj/item/organ/I in organs)
-		I.Remove(user, 1)
+		I.Remove(TRUE)
 
 	for(var/mob/living/A in view(2,user))
 		if(ishuman(A))

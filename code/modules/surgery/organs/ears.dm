@@ -105,13 +105,14 @@
 		H.dna.features["ears"] = "Cat"
 		H.update_body()
 
-/obj/item/organ/ears/cat/Remove(mob/living/carbon/human/H,  special = 0)
-	..()
-	if(istype(H))
+/obj/item/organ/ears/cat/Remove(special = FALSE)
+	if(!QDELETED(owner) && ishuman(owner))
+		var/mob/living/carbon/human/H = owner
 		color = H.hair_color
 		H.dna.features["ears"] = "None"
 		H.dna.species.mutant_bodyparts -= "ears"
 		H.update_body()
+	return ..()
 
 /obj/item/organ/ears/penguin
 	name = "penguin ears"
@@ -124,9 +125,10 @@
 		to_chat(H, "<span class='notice'>You suddenly feel like you've lost your balance.</span>")
 		waddle = H.AddComponent(/datum/component/waddling)
 
-/obj/item/organ/ears/penguin/Remove(mob/living/carbon/human/H,  special = 0)
+/obj/item/organ/ears/penguin/Remove(special = FALSE)
 	. = ..()
-	if(istype(H))
+	if(!QDELETED(owner) && ishuman(owner))
+		var/mob/living/carbon/human/H = owner
 		to_chat(H, "<span class='notice'>Your sense of balance comes back to you.</span>")
 		QDEL_NULL(waddle)
 

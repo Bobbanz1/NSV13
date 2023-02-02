@@ -617,7 +617,7 @@
 		if(!istype(organ) || (organ.organ_flags & ORGAN_VITAL))
 			continue
 		organ.organ_flags |= ORGAN_FROZEN
-		organ.Remove(H, special=TRUE)
+		organ.Remove(TRUE)
 		organ.forceMove(src)
 		unattached_flesh += organ
 

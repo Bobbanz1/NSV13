@@ -20,7 +20,7 @@
 		if(!istype(O))
 			continue
 
-		O.Remove(user)
+		O.Remove()
 		if(iscarbon(user))
 			var/mob/living/carbon/C = user
 			C.vomit(0, toxic = TRUE)

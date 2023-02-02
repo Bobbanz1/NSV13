@@ -36,7 +36,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 		"Purple"	= "#e300ff"//purple
 		))
 
-
+/*pretty much everything got moved to modular_skyrat (interactions)
 /mob/living/carbon/proc/has_penis()
 	var/obj/item/organ/genital/G = getorganslot(ORGAN_SLOT_PENIS)
 	if(G && istype(G, /obj/item/organ/genital/penis))
@@ -58,19 +58,8 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	if(getorganslot(ORGAN_SLOT_BREASTS))
 		return TRUE
 	return FALSE
-/*
-/mob/living/carbon/proc/has_ovipositor()
-	var/obj/item/organ/genital/G = getorganslot(ORGAN_SLOT_PENIS)
-	if(G && istype(G, /obj/item/organ/genital/ovipositor))
-		return TRUE
-	return FALSE
-
-/mob/living/carbon/human/proc/has_eggsack()
-	var/obj/item/organ/genital/G = getorganslot(ORGAN_SLOT_TESTICLES)
-	if(G && istype(G, /obj/item/organ/genital/eggsack))
-		return TRUE
-	return FALSE
 */
+
 /mob/living/carbon/proc/is_groin_exposed(list/L)
 	if(!L)
 		L = get_equipped_items()

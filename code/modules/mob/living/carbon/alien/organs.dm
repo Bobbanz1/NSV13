@@ -18,9 +18,10 @@
 	for(var/obj/effect/proc_holder/alien/P in alien_powers)
 		M.AddAbility(P)
 
-/obj/item/organ/alien/Remove(mob/living/carbon/M, special = 0)
-	for(var/obj/effect/proc_holder/alien/P in alien_powers)
-		M.RemoveAbility(P)
+/obj/item/organ/alien/Remove(special = FALSE)
+	if(owner)
+		for(var/obj/effect/proc_holder/alien/P in alien_powers)
+			owner.RemoveAbility(P)
 	return ..()
 
 /obj/item/organ/alien/prepare_eat()
@@ -96,12 +97,11 @@
 	var/mob/living/carbon/alien/A = M
 	A.updatePlasmaDisplay()
 
-/obj/item/organ/alien/plasmavessel/Remove(mob/living/carbon/M, special = 0)
-	. = ..()
-	if(!isalien(M))
-		return
-	var/mob/living/carbon/alien/A = M
-	A.updatePlasmaDisplay()
+/obj/item/organ/alien/plasmavessel/Remove(special = FALSE)
+	if(owner && isalien(owner))
+		var/mob/living/carbon/alien/A = owner
+		A.updatePlasmaDisplay()
+	return ..()
 
 #define QUEEN_DEATH_DEBUFF_DURATION 2400
 
@@ -119,9 +119,10 @@
 	ADD_TRAIT(M, TRAIT_XENO_IMMUNE, "xeno immune")
 	return ..()
 
-/obj/item/organ/alien/hivenode/Remove(mob/living/carbon/M, special = 0)
-	M.faction -= ROLE_ALIEN
-	REMOVE_TRAIT(M, TRAIT_XENO_IMMUNE, "xeno immune")
+/obj/item/organ/alien/hivenode/Remove(special = FALSE)
+	if(owner)
+		owner.faction -= ROLE_ALIEN
+		REMOVE_TRAIT(owner, TRAIT_XENO_IMMUNE, "xeno immune")
 	return ..()
 
 //When the alien queen dies, all aliens suffer a penalty as punishment for failing to protect her.

@@ -48,9 +48,10 @@
 	M.UnregisterSignal(M, COMSIG_MOB_SAY)
 	return ..()
 
-/obj/item/organ/tongue/Remove(mob/living/carbon/M, special = 0)
-	UnregisterSignal(M, COMSIG_MOB_SAY, .proc/handle_speech)
-	M.RegisterSignal(M, COMSIG_MOB_SAY, /mob/living/carbon/.proc/handle_tongueless_speech)
+/obj/item/organ/tongue/Remove(special = FALSE)
+	if(!QDELETED(owner))
+		UnregisterSignal(owner, COMSIG_MOB_SAY, .proc/handle_speech)
+		owner.RegisterSignal(owner, COMSIG_MOB_SAY, /mob/living/carbon/.proc/handle_tongueless_speech)
 	return ..()
 
 /obj/item/organ/tongue/could_speak_language(datum/language/dt)

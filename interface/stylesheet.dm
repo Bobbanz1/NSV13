@@ -93,6 +93,9 @@ h1.alert, h2.alert		{color: #000000;}
 .suicide				{color: #ff5050;	font-style: italic;}
 .green					{color: #03ff39;}
 .nicegreen					{color: #14a833;}
+.userlove				{color: #FF1493;	font-style: italic; font-weight: bold;	text-shadow: 0 0 6px #ff6dbc;}
+.love					{color: #ff006a;	font-style: italic;	text-shadow: 0 0 6px #ff6d6d;}
+.lewd					{color: #800080;}
 .shadowling				{color: #3b2769;}
 .cult					{color: #960000;}
 .cultlarge				{color: #960000; font-weight: bold; font-size: 3;}
@@ -187,6 +190,15 @@ h1.alert, h2.alert		{color: #000000;}
 .clown					{color: #FF69Bf;	font-size: 3; font-family: "Comic Sans MS", cursive, sans-serif; font-weight: bold;}
 .singing				{font-family: "Trebuchet MS", cursive, sans-serif; font-style: italic;}
 .his_grace				{color: #15D512;	font-family: "Courier New", cursive, sans-serif; font-style: italic;}
+.velvet					{color: #660015; 	font-weight: bold; animation: velvet 5000ms infinite;}
+@keyframes velvet {
+	0% { color: #400020; }
+	40% { color: #FF0000; }
+	50% { color: #FF8888; }
+	60% { color: #FF0000; }
+	100% { color: #400020; }
+}
+
 .hypnophrase			{color: #3bb5d3;	font-weight: bold; animation: hypnocolor 1500ms infinite;}
 @keyframes hypnocolor {
     0% { color: #0d0d0d; }

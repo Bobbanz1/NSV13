@@ -95,7 +95,7 @@
 		if(new_tail)
 			new_tail.Insert(H, drop_if_replaced = FALSE)
 		else
-			tail.Remove(H)
+			tail.Remove()
 
 /datum/species/human/felinid/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/M)
 	if(istype(chem, /datum/reagent/consumable/cocoa))

@@ -31,6 +31,7 @@ export const MESSAGE_TYPE_OOC = 'ooc';
 export const MESSAGE_TYPE_ADMINPM = 'adminpm';
 export const MESSAGE_TYPE_MENTORPM = 'mentorpm';
 export const MESSAGE_TYPE_COMBAT = 'combat';
+export const MESSAGE_TYPE_LEWD = 'lewd';
 export const MESSAGE_TYPE_ADMINCHAT = 'adminchat';
 export const MESSAGE_TYPE_MENTORCHAT = 'mentorchat';
 export const MESSAGE_TYPE_EVENTCHAT = 'eventchat';
@@ -102,6 +103,12 @@ export const MESSAGE_TYPES = [
     name: 'Combat Log',
     description: 'Urist McTraitor has stabbed you with a knife!',
     selector: '.danger',
+  },
+  {
+    type: MESSAGE_TYPE_LEWD,
+    name: 'Lewd messages',
+    description: 'You came!',
+    selector: '.userlove, .love, .lewd',
   },
   {
     type: MESSAGE_TYPE_UNKNOWN,

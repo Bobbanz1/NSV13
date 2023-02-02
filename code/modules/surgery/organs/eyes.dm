@@ -48,14 +48,16 @@
 	if(M.has_dna() && ishuman(M))
 		M.dna.species.handle_body(M) //updates eye icon
 
-/obj/item/organ/eyes/Remove(mob/living/carbon/M, special = 0)
+/obj/item/organ/eyes/Remove(special = FALSE)
 	..()
-	if(ishuman(M) && eye_color)
-		var/mob/living/carbon/human/HMN = M
-		HMN.eye_color = old_eye_color
-		HMN.regenerate_icons()
-	M.update_tint()
-	M.update_sight()
+	var/mob/living/carbon/C = .
+	if(C)
+		if(ishuman(C) && eye_color)
+			var/mob/living/carbon/human/HMN = C
+			HMN.eye_color = old_eye_color
+			HMN.regenerate_icons()
+		C.update_tint()
+		C.update_sight()
 
 
 /obj/item/organ/eyes/on_life()
@@ -184,12 +186,13 @@
 	M.become_blind("flashlight_eyes")
 
 
-/obj/item/organ/eyes/robotic/flashlight/Remove(var/mob/living/carbon/M, var/special = 0)
-	eye.on = FALSE
-	eye.update_brightness(M)
-	eye.forceMove(src)
-	M.cure_blind("flashlight_eyes")
-	..()
+/obj/item/organ/eyes/robotic/flashlight/Remove(special = FALSE)
+	if(!QDELETED(owner))
+		eye.on = FALSE
+		eye.update_brightness(owner)
+		eye.forceMove(src)
+		owner.cure_blind("flashlight_eyes")
+	return ..()
 
 // Welding shield implant
 /obj/item/organ/eyes/robotic/shield
@@ -226,7 +229,7 @@
 	terminate_effects()
 	. = ..()
 
-/obj/item/organ/eyes/robotic/glow/Remove(mob/living/carbon/M, special = FALSE)
+/obj/item/organ/eyes/robotic/glow/Remove(special = FALSE)
 	terminate_effects()
 	. = ..()
 
@@ -235,7 +238,7 @@
 		deactivate()
 	active = FALSE
 	clear_visuals(TRUE)
-	STOP_PROCESSING(SSfastprocess, src)
+	//STOP_PROCESSING(SSfastprocess, src)
 
 /obj/item/organ/eyes/robotic/glow/ui_action_click(owner, action)
 	if(istype(action, /datum/action/item_action/organ_action/toggle))

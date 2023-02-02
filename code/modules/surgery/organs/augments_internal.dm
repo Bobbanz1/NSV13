@@ -89,10 +89,10 @@
 	stored_items = list()
 
 
-/obj/item/organ/cyberimp/brain/anti_drop/Remove(var/mob/living/carbon/M, special = 0)
+/obj/item/organ/cyberimp/brain/anti_drop/Remove(special = FALSE)
 	if(active)
 		ui_action_click()
-	..()
+	return ..()
 
 /obj/item/organ/cyberimp/brain/anti_stun
 	name = "CNS Rebooter implant"
@@ -109,9 +109,9 @@
 
 	var/stun_cap_amount = 40
 
-/obj/item/organ/cyberimp/brain/anti_stun/Remove(mob/living/carbon/M, special = FALSE)
+/obj/item/organ/cyberimp/brain/anti_stun/Remove(special = FALSE)
 	. = ..()
-	UnregisterSignal(M, signalCache)
+	UnregisterSignal(owner, signalCache)
 
 /obj/item/organ/cyberimp/brain/anti_stun/Insert()
 	. = ..()
