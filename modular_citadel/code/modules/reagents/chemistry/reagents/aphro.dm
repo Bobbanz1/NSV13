@@ -1,60 +1,3 @@
-//body bluids
-/datum/reagent/consumable/semen
-	name = "Semen"
-	description = "Sperm from some animal. Useless for anything but insemination, really."
-	taste_description = "something salty"
-	taste_mult = 2 //Not very overpowering flavor
-	data = list("donor"=null,"viruses"=null,"donor_DNA"=null,"blood_type"=null,"resistances"=null,"trace_chem"=null,"mind"=null,"ckey"=null,"gender"=null,"real_name"=null)
-	reagent_state = LIQUID
-	color = "#FFFFFF" // rgb: 255, 255, 255
-	nutriment_factor = 0.5 * REAGENTS_METABOLISM
-	var/decal_path = /obj/effect/decal/cleanable/semen
-
-/datum/reagent/consumable/semen/reaction_turf(turf/T, reac_volume)
-	..()
-	if(!istype(T))
-		return
-	if(reac_volume < 10)
-		return
-
-	var/obj/effect/decal/cleanable/semen/S = locate() in T
-	if(!S)
-		S = new decal_path(T)
-	if(data["blood_DNA"])
-		S.add_blood_DNA(list(data["blood_DNA"] = data["blood_type"]))
-
-/obj/effect/decal/cleanable/semen
-	name = "semen"
-	desc = null
-	gender = PLURAL
-	density = 0
-	layer = ABOVE_NORMAL_TURF_LAYER
-	icon = 'icons/obj/genitals/effects.dmi'
-	icon_state = "semen1"
-	random_icon_states = list("semen1", "semen2", "semen3", "semen4")
-
-/obj/effect/decal/cleanable/semen/Initialize(mapload)
-	. = ..()
-	dir = GLOB.cardinals
-	add_blood_DNA(list("Non-human DNA" = "A+"))
-
-/obj/effect/decal/cleanable/semen/replace_decal(obj/effect/decal/cleanable/semen/S)
-	return ..()
-
-/datum/reagent/consumable/semen/femcum
-	name = "Female Ejaculate"
-	description = "Vaginal lubricant found in most mammals and other animals of similar nature. Where you found this is your own business."
-	taste_description = "something with a tang" // wew coders who haven't eaten out a girl.
-	color = "#AAAAAA77"
-	decal_path = /obj/effect/decal/cleanable/semen/femcum
-
-/obj/effect/decal/cleanable/semen/femcum
-	name = "female ejaculate"
-	icon_state = "fem1"
-	random_icon_states = list("fem1", "fem2", "fem3", "fem4")
-	blood_state = null
-	bloodiness = null
-
 //aphrodisiac & anaphrodisiac
 
 /datum/reagent/drug/aphrodisiac
@@ -73,7 +16,7 @@
 			to_chat(M, "<span class='userlove'>[aroused_message]</span>")
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			var/list/genits = H.adjust_arousal(current_cycle, aphro = TRUE) // redundant but should still be here
+			var/list/genits = H.adjust_arousal(current_cycle, "crocin", aphro = TRUE) // redundant but should still be here
 			for(var/g in genits)
 				var/obj/item/organ/genital/G = g
 				to_chat(M, "<span class='userlove'>[G.arousal_verb]!</span>")
@@ -106,7 +49,7 @@
 			REMOVE_TRAIT(M,TRAIT_NEVERBONER,APHRO_TRAIT)
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			var/list/genits = H.adjust_arousal(100, aphro = TRUE) // redundant but should still be here
+			var/list/genits = H.adjust_arousal(100, "hexacrocin", aphro = TRUE) // redundant but should still be here
 			for(var/g in genits)
 				var/obj/item/organ/genital/G = g
 				to_chat(M, "<span class='userlove'>[G.arousal_verb]!</span>")
@@ -147,7 +90,7 @@
 	if(M && M.client?.prefs.arousable && prob(16))
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			var/list/genits = H.adjust_arousal(-100, aphro = TRUE)
+			var/list/genits = H.adjust_arousal(-100, "camphor", aphro = TRUE)
 			if(genits.len)
 				to_chat(M, "<span class='notice'>You no longer feel aroused.")
 	..()
@@ -165,7 +108,7 @@
 		REMOVE_TRAIT(M,TRAIT_PERMABONER,APHRO_TRAIT)
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			var/list/genits = H.adjust_arousal(-100, aphro = TRUE)
+			var/list/genits = H.adjust_arousal(-100, "hexacamphor", aphro = TRUE)
 			if(genits.len)
 				to_chat(M, "<span class='notice'>You no longer feel aroused.")
 
@@ -176,36 +119,3 @@
 		to_chat(M, "<span class='userlove'>You feel like you'll never feel aroused again...</span>")
 		ADD_TRAIT(M,TRAIT_NEVERBONER,APHRO_TRAIT)
 	..()
-
-//recipes
-/datum/chemical_reaction/aphro
-	name = "crocin"
-	id = /datum/reagent/drug/aphrodisiac
-	results = list(/datum/reagent/drug/aphrodisiac = 6)
-	required_reagents = list(/datum/reagent/carbon = 2, /datum/reagent/hydrogen = 2, /datum/reagent/oxygen = 2, /datum/reagent/water = 1)
-	required_temp = 400
-	mix_message = "The mixture boils off a pink vapor..."//The water boils off, leaving the crocin
-
-/datum/chemical_reaction/aphroplus
-	name = "hexacrocin"
-	id = /datum/reagent/drug/aphrodisiacplus
-	results = list(/datum/reagent/drug/aphrodisiacplus = 1)
-	required_reagents = list(/datum/reagent/drug/aphrodisiac = 6, /datum/reagent/phenol = 1)
-	required_temp = 400
-	mix_message = "The mixture rapidly condenses and darkens in color..."
-
-/datum/chemical_reaction/anaphro
-	name = "camphor"
-	id = /datum/reagent/drug/anaphrodisiac
-	results = list(/datum/reagent/drug/anaphrodisiac = 6)
-	required_reagents = list(/datum/reagent/carbon = 2, /datum/reagent/hydrogen = 2, /datum/reagent/oxygen = 2, /datum/reagent/sulfur = 1)
-	required_temp = 400
-	mix_message = "The mixture boils off a yellow, smelly vapor..."//Sulfur burns off, leaving the camphor
-
-/datum/chemical_reaction/anaphroplus
-	name = "pentacamphor"
-	id = /datum/reagent/drug/anaphrodisiacplus
-	results = list(/datum/reagent/drug/anaphrodisiacplus = 1)
-	required_reagents = list(/datum/reagent/drug/aphrodisiac = 5, /datum/reagent/acetone = 1)
-	required_temp = 300
-	mix_message = "The mixture thickens and heats up slighty..."

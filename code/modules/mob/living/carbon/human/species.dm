@@ -1513,9 +1513,9 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			to_chat(user,"A force stays your hand, preventing you from slapping \the [target]'s ass!")
 			return FALSE
 		user.do_attack_animation(target)
-		target.adjust_arousal(20, maso = TRUE)
+		target.adjust_arousal(20,"masochism", maso = TRUE)
 		if(ishuman(target) && HAS_TRAIT(target, TRAIT_MASO) && target.has_dna() && prob(10))
-			target.mob_climax(forced_climax=TRUE)
+			target.mob_climax(forced_climax=TRUE, cause = "masochism")
 		if(!HAS_TRAIT(target, TRAIT_PERMABONER))
 			stop_wagging_tail(target)
 		playsound(target.loc, 'sound/weapons/slap.ogg', 50, 1, -1)
@@ -1790,7 +1790,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 					H.update_damage_overlays()
 					//NSV13 - God Fucking Help Me - Start
 					if(HAS_TRAIT(H, TRAIT_MASO) && prob(damage_amount))
-						H.mob_climax(forced_climax=TRUE)
+						H.mob_climax(forced_climax=TRUE, cause = "masochism")
 					//NSV13 - God Fucking Help Me - Stop
 			else//no bodypart, we deal damage with a more general method.
 				H.adjustBruteLoss(damage_amount)

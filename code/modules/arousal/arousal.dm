@@ -9,6 +9,7 @@
 	var/hidden_underwear = FALSE
 	var/hidden_undershirt = FALSE
 	var/hidden_socks = FALSE
+	var/arousal_rate = 1
 
 //Mob procs
 /mob/living/carbon/human/proc/underwear_toggle()
@@ -20,39 +21,36 @@
 		return
 	if(confirm == "Top")
 		hidden_undershirt = !hidden_undershirt
+		log_message("[hidden_undershirt ? "removed" : "put on" ] [p_their()] undershirt.", LOG_EMOTE)
 
 	if(confirm == "Bottom")
 		hidden_underwear = !hidden_underwear
+		log_message("[hidden_underwear ? "removed" : "put on"] [p_their()] underwear.", LOG_EMOTE)
 
 	if(confirm == "Socks")
 		hidden_socks = !hidden_socks
+		log_message("[hidden_socks ? "removed" : "put on"] [p_their()] socks.", LOG_EMOTE)
 
 	if(confirm == "All")
 		var/on_off = (hidden_undershirt || hidden_underwear || hidden_socks) ? FALSE : TRUE
 		hidden_undershirt = on_off
 		hidden_underwear = on_off
 		hidden_socks = on_off
+		log_message("[on_off ? "removed" : "put on"] all [p_their()] undergarments.", LOG_EMOTE)
 
 	update_body(TRUE)
 
-/mob/living/carbon/human/proc/adjust_arousal(strength,aphro = FALSE,maso = FALSE) // returns all genitals that were adjust
+/mob/living/carbon/human/proc/adjust_arousal(strength, cause = "manual toggle", aphro = FALSE,maso = FALSE) // returns all genitals that were adjust
 	var/list/obj/item/organ/genital/genit_list = list()
 	if(!client?.prefs.arousable || (aphro && (client?.prefs.cit_toggles & NO_APHRO)) || (maso && !HAS_TRAIT(src, TRAIT_MASO)))
 		return // no adjusting made here
-	if(strength>0)
-		for(var/obj/item/organ/genital/G in internal_organs)
-			if(!G.aroused_state && prob(strength*G.sensitivity))
-				G.set_aroused_state(TRUE)
-				G.update_appearance()
-				if(G.aroused_state)
-					genit_list += G
-	else
-		for(var/obj/item/organ/genital/G in internal_organs)
-			if(G.aroused_state && prob(strength*G.sensitivity))
-				G.set_aroused_state(FALSE)
-				G.update_appearance()
-				if(G.aroused_state)
-					genit_list += G
+	var/enabling = strength > 0
+	for(var/obj/item/organ/genital/G in internal_organs)
+		if(G.genital_flags & GENITAL_CAN_AROUSE && !G.aroused_state && prob(abs(strength)*G.sensitivity * arousal_rate))
+			G.set_aroused_state(enabling, cause)
+			G.update_appearance()
+			if(G.aroused_state)
+				genit_list += G
 	return genit_list
 
 /obj/item/organ/genital/proc/climaxable(mob/living/carbon/human/H, silent = FALSE) //returns the fluid source (ergo reagents holder) if found.
@@ -70,10 +68,13 @@
 	if(!target || !R)
 		return
 	var/turfing = isturf(target)
+	G.generate_fluid(R)
+	log_message("Climaxed using [G] with [target]", LOG_EMOTE)
 	if(spill && R.total_volume >= 5)
 		R.reaction(turfing ? target : target.loc, TOUCH, 1, 0)
 	if(!turfing)
 		R.trans_to(target, R.total_volume * (spill ? G.fluid_transfer_factor : 1))
+	G.last_orgasmed = world.time
 	R.clear_reagents()
 
 /mob/living/carbon/human/proc/mob_climax_outside(obj/item/organ/genital/G, mb_time = 30) //This is used for forced orgasms and other hands-free climaxes
@@ -191,7 +192,7 @@
 	return TRUE
 
 //Here's the main proc itself
-/mob/living/carbon/human/proc/mob_climax(forced_climax=FALSE) //Forced is instead of the other proc, makes you cum if you have the tools for it, ignoring restraints
+/mob/living/carbon/human/proc/mob_climax(forced_climax=FALSE,cause = "") //Forced is instead of the other proc, makes you cum if you have the tools for it, ignoring restraints
 	set waitfor = FALSE
 	if(mb_cd_timer > world.time)
 		if(!forced_climax) //Don't spam the message to the victim if forced to come too fast
@@ -205,6 +206,7 @@
 			to_chat(src, "<span class='warning'>You can't do that while dead!</span>")
 		return
 	if(forced_climax) //Something forced us to cum, this is not a masturbation thing and does not progress to the other checks
+		log_message("was forced to climax by [cause]",LOG_EMOTE)
 		for(var/obj/item/organ/genital/G in internal_organs)
 			if(!CHECK_BITFIELD(G.genital_flags, CAN_CLIMAX_WITH)) //Skip things like wombs and testicles
 				continue
