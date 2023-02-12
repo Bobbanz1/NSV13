@@ -23,6 +23,10 @@
 
 /obj/item/organ/genital/Initialize(mapload, do_update = TRUE)
 	. = ..()
+	if(fluid_id)
+		create_reagents(fluid_max_volume, NONE)
+		if(CHECK_BITFIELD(genital_flags, GENITAL_FUID_PRODUCTION))
+			reagents.add_reagent(fluid_id, fluid_max_volume)
 	if(do_update)
 		update()
 
@@ -157,6 +161,8 @@
 /obj/item/organ/genital/proc/modify_size(modifier, min = -INFINITY, max = INFINITY)
 	fluid_max_volume += modifier*2.5
 	fluid_rate += modifier/10
+	if(reagents)
+		reagents.maximum_volume = fluid_max_volume
 	return
 
 /obj/item/organ/genital/proc/update_size()
@@ -197,11 +203,11 @@
 
 /obj/item/organ/genital/Insert(mob/living/carbon/M, special = FALSE, drop_if_replaced = TRUE)
 	. = ..()
-	if(.)
-		update()
-		RegisterSignal(owner, COMSIG_MOB_DEATH, .proc/update_appearance_genitals)
-		if(genital_flags & GENITAL_THROUGH_CLOTHES)
-			owner.exposed_genitals += src
+	//if(.)
+	update()
+	RegisterSignal(owner, COMSIG_MOB_DEATH, .proc/update_appearance_genitals)
+	if(genital_flags & GENITAL_THROUGH_CLOTHES)
+		owner.exposed_genitals += src
 
 /obj/item/organ/genital/Remove(special = FALSE)
 	. = ..()
