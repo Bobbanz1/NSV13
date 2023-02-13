@@ -68,7 +68,8 @@
 						FP.update_icon()
 					update_inv_shoes()
 				//End bloody footprints
-				S.step_action()
+				if(istype(S)) //NSV13
+					S.step_action() //NSV13
 
 /mob/living/carbon/human/Process_Spacemove(movement_dir = 0) //Temporary laziness thing. Will change to handles by species reee.
 	if(dna.species.space_move(src))

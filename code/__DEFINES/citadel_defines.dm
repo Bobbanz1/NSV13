@@ -23,6 +23,7 @@
 #define GENITAL_CAN_AROUSE		(1<<8)
 #define GENITAL_UNDIES_HIDDEN	(1<<9)
 #define UPDATE_OWNER_APPEARANCE	(1<<10)
+#define CAN_CUM_INTO 			(1<<11) //Sandstorm change
 
 #define DEF_VAGINA_SHAPE	"Human"
 

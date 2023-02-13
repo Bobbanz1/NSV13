@@ -4,6 +4,9 @@ SUBSYSTEM_DEF(interactions)
 	init_order = INIT_ORDER_INTERACTIONS
 	var/list/interactions
 	VAR_PROTECTED/list/blacklisted_mobs = list(
+		/mob/dead,
+		/mob/dview,
+		/mob/camera,
 		/mob/living/simple_animal/pet,
 		/mob/living/simple_animal/cockroach,
 		/mob/living/simple_animal/butterfly,
