@@ -620,10 +620,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "</td>"
 			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
 			dat += "<h2>Clothing & Equipment</h2>"
+			/* skyrat change
 			dat += "<b>Underwear:</b><BR><a href ='?_src_=prefs;preference=underwear;task=input'>[active_character.underwear]</a><BR>"
 			dat += "<b>Underwear Color:</b><BR><span style='border: 1px solid #161616; background-color: #[active_character.underwear_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=underwear_color;task=input'>Change</a><BR>"
 			dat += "<b>Undershirt:</b><BR><a href ='?_src_=prefs;preference=undershirt;task=input'>[active_character.undershirt]</a><BR>"
 			dat += "<b>Socks:</b><BR><a href ='?_src_=prefs;preference=socks;task=input'>[active_character.socks]</a><BR>"
+			*/
 			dat += "<b>Backpack:</b><BR><a href ='?_src_=prefs;preference=bag;task=input'>[active_character.backbag]</a><BR>"
 			dat += "<b>Jumpsuit:</b><BR><a href ='?_src_=prefs;preference=suit;task=input'>[active_character.jumpsuit_style]</a><BR>"
 			dat += "<b>Uplink Spawn Location:</b><BR><a href ='?_src_=prefs;preference=uplink_loc;task=input'>[active_character.uplink_spawn_loc == UPLINK_IMPLANT ? UPLINK_IMPLANT_WITH_PRICE : active_character.uplink_spawn_loc]</a><BR></td>"
@@ -1521,6 +1523,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					active_character.facial_hair_color = random_short_color()
 				if("facial_hair_style")
 					active_character.facial_hair_style = random_facial_hair_style(active_character.gender)
+				/*
 				if("underwear")
 					active_character.underwear = random_underwear(active_character.gender)
 				if("underwear_color")
@@ -1529,6 +1532,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					active_character.undershirt = random_undershirt(active_character.gender)
 				if("socks")
 					active_character.socks = random_socks()
+				*/
 				if(BODY_ZONE_PRECISE_EYES)
 					active_character.eye_color = random_eye_color()
 				if("s_tone")
@@ -1660,6 +1664,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					else
 						active_character.facial_hair_style = previous_list_item(active_character.facial_hair_style, GLOB.facial_hair_styles_female_list)
 
+				/*
 				if("underwear")
 					var/new_underwear
 					if(active_character.gender == MALE)
@@ -1688,6 +1693,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					new_socks = input(user, "Choose your character's socks:", "Character Preference") as null|anything in GLOB.socks_list
 					if(new_socks)
 						active_character.socks = new_socks
+				*/
 
 				if("eyes")
 					var/new_eyes = input(user, "Choose your character's eye colour:", "Character Preference","#"+active_character.eye_color) as color|null
@@ -2122,9 +2128,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						active_character.gender = FEMALE
 					else
 						active_character.gender = MALE
-					active_character.underwear = random_underwear(active_character.gender)
-					active_character.undershirt = random_undershirt(active_character.gender)
-					active_character.socks = random_socks()
+					//active_character.underwear = random_underwear(active_character.gender)
+					//active_character.undershirt = random_undershirt(active_character.gender)
+					//active_character.socks = random_socks()
 					active_character.facial_hair_style = random_facial_hair_style(active_character.gender)
 					active_character.hair_style = random_hair_style(active_character.gender)
 

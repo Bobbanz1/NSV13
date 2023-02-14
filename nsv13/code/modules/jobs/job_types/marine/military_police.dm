@@ -83,7 +83,7 @@ GLOBAL_LIST_INIT(available_depts, list(SEC_DEPT_ENGINEERING, SEC_DEPT_MEDICAL, S
 			destination = /area/security/checkpoint/science
 			spawn_point = locate(/obj/effect/landmark/start/depsec/science) in GLOB.department_security_spawns
 			accessory = /obj/item/clothing/accessory/armband/science
-		if(SEC_DEPT_MUNITIONS) 
+		if(SEC_DEPT_MUNITIONS)
 			ears = /obj/item/radio/headset/munitions/munitions_security_alt
 			dep_access = list(ACCESS_MUNITIONS, ACCESS_MUNITIONS_STORAGE)
 			accessory = /obj/item/clothing/accessory/armband/munitions
@@ -94,7 +94,7 @@ GLOBAL_LIST_INIT(available_depts, list(SEC_DEPT_ENGINEERING, SEC_DEPT_MEDICAL, S
 	if(ears)
 		if(H.ears)
 			qdel(H.ears)
-		H.equip_to_slot_or_del(new ears(H),ITEM_SLOT_EARS)
+		H.equip_to_slot_or_del(new ears(H),ITEM_SLOT_EARS_LEFT)
 
 	var/obj/item/card/id/W = H.wear_id
 	W.access |= dep_access

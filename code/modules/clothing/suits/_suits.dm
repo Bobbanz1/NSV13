@@ -26,10 +26,12 @@
 		var/mob/living/carbon/human/M = loc
 		if(ishuman(M) && M.w_uniform)
 			var/obj/item/clothing/under/U = M.w_uniform
-			if(istype(U) && U.attached_accessory)
-				var/obj/item/clothing/accessory/A = U.attached_accessory
-				if(A.above_suit)
-					. += U.accessory_overlay
+			//SANDSTORM EDIT
+			if(istype(U) && length(U.attached_accessories))
+				for(var/obj/item/clothing/accessory/attached in U.attached_accessories)
+					if(attached.above_suit)
+						. += U.accessory_overlays
+			//SANDSTORM EDIT END
 
 /obj/item/clothing/suit/update_clothes_damaged_state(damaging = TRUE)
 	..()

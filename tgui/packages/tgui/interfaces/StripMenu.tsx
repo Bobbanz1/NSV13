@@ -48,11 +48,16 @@ const SLOTS: Record<string, string> = {
   "corgi_collar": "Collar",
   "parrot_headset": "Headset",
   "eyes": "Eyewear",
-  "ears": "Earwear",
+  "ears_extra": "Right ear",
+  "ears": "Left ear",
   "suit": "Suit",
   "suit_storage": "Suit storage",
   "shoes": "Shoes",
+  "socks": "Socks",
   "gloves": "Gloves",
+  "wrists": "Wrists",
+  "underwear": "Underwear",
+  "undershirt": "shirt",
   "jumpsuit": "Uniform",
   "belt": "Belt",
   "left_pocket": "Left pocket",
@@ -101,6 +106,9 @@ const DEFAULT_LAYOUT: Layout = [
       id: "eyes",
     },
     {
+      id: "ears_extra",
+    },
+    {
       id: "ears",
     },
   ],
@@ -115,7 +123,19 @@ const DEFAULT_LAYOUT: Layout = [
       id: "shoes",
     },
     {
+      id: "socks",
+    },
+    {
       id: "gloves",
+    },
+    {
+      id: "wrists",
+    },
+    {
+      id: "underwear",
+    },
+    {
+      id: "undershirt",
     },
     {
       id: "jumpsuit",

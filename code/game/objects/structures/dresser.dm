@@ -19,6 +19,7 @@
 	new /obj/item/stack/sheet/mineral/wood(drop_location(), 10)
 	qdel(src)
 
+/* skyrat edit - the dresser is useless with our inventory system
 /obj/structure/dresser/attack_hand(mob/user)
 	. = ..()
 	if(.)
@@ -56,3 +57,4 @@
 
 		add_fingerprint(H)
 		H.update_body(TRUE)
+*/

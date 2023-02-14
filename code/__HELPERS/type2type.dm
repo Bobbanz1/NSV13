@@ -346,7 +346,7 @@
 		if(ITEM_SLOT_BACK, ITEM_SLOT_OCLOTHING, ITEM_SLOT_ICLOTHING, ITEM_SLOT_BELT, ITEM_SLOT_ID)
 			return BODY_ZONE_CHEST
 
-		if(ITEM_SLOT_GLOVES, ITEM_SLOT_HANDS, ITEM_SLOT_HANDCUFFED)
+		if(ITEM_SLOT_GLOVES, ITEM_SLOT_HANDS, ITEM_SLOT_HANDCUFFED, ITEM_SLOT_WRISTS) // Sandstorm edit
 			return pick(BODY_ZONE_PRECISE_L_HAND, BODY_ZONE_PRECISE_R_HAND)
 
 		if(ITEM_SLOT_HEAD, ITEM_SLOT_NECK, ITEM_SLOT_NECK, ITEM_SLOT_EARS)
@@ -570,3 +570,45 @@ Takes a string and a datum. The string is well, obviously the string being check
 			return null
 		r += ascii2text(c)
 	return r
+
+//CITADEL CODE - START
+/proc/slot_to_string(slot)
+	switch(slot)
+		if(ITEM_SLOT_BACK)
+			return "Backpack"
+		if(ITEM_SLOT_MASK)
+			return "Mask"
+		if(ITEM_SLOT_HANDS)
+			return "Hands"
+		if(ITEM_SLOT_BELT)
+			return "Belt"
+		// Sandstorm edit
+		if(ITEM_SLOT_EARS_LEFT)
+			return "Left ear"
+		if(ITEM_SLOT_EARS_RIGHT)
+			return "Right ear"
+		if(ITEM_SLOT_UNDERWEAR)
+			return "Underwear"
+		if(ITEM_SLOT_SOCKS)
+			return "Socks"
+		if(ITEM_SLOT_SHIRT)
+			return "Shirt"
+		if(ITEM_SLOT_WRISTS)
+			return "Wrist"
+		//
+		if(ITEM_SLOT_EYES)
+			return "Glasses"
+		if(ITEM_SLOT_GLOVES)
+			return "Gloves"
+		if(ITEM_SLOT_NECK)
+			return "Neck"
+		if(ITEM_SLOT_HEAD)
+			return "Head"
+		if(ITEM_SLOT_FEET)
+			return "Shoes"
+		if(ITEM_SLOT_OCLOTHING)
+			return "Suit"
+		if(ITEM_SLOT_ICLOTHING)
+			return "Uniform"
+		if(ITEM_SLOT_BACKPACK)
+			return "In backpack"

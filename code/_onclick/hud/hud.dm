@@ -103,6 +103,9 @@ GLOBAL_LIST_INIT(available_ui_styles, sortList(list(
 	pull_icon = null
 
 	QDEL_LIST(toggleable_inventory)
+	//skyrat edit
+	QDEL_LIST(extra_inventory)
+	//
 	QDEL_LIST(hotkeybuttons)
 	throw_icon = null
 	QDEL_LIST(infodisplay)
@@ -158,6 +161,10 @@ GLOBAL_LIST_INIT(available_ui_styles, sortList(list(
 				screenmob.client.screen += static_inventory
 			if(toggleable_inventory.len && screenmob.hud_used && screenmob.hud_used.inventory_shown)
 				screenmob.client.screen += toggleable_inventory
+			//skyrat edit
+			if(extra_inventory.len && screenmob.hud_used && screenmob.hud_used.extra_shown)
+				screenmob.client.screen += extra_inventory
+			//
 			if(hotkeybuttons.len && !hotkey_ui_hidden)
 				screenmob.client.screen += hotkeybuttons
 			if(infodisplay.len)
@@ -178,6 +185,10 @@ GLOBAL_LIST_INIT(available_ui_styles, sortList(list(
 				screenmob.client.screen += team_finder_arrows
 			if(toggleable_inventory.len)
 				screenmob.client.screen -= toggleable_inventory
+			//skyrat edit
+			if(extra_inventory.len)
+				screenmob.client.screen -= extra_inventory
+			//
 			if(hotkeybuttons.len)
 				screenmob.client.screen -= hotkeybuttons
 			if(infodisplay.len)
@@ -198,6 +209,10 @@ GLOBAL_LIST_INIT(available_ui_styles, sortList(list(
 				screenmob.client.screen -= static_inventory
 			if(toggleable_inventory.len)
 				screenmob.client.screen -= toggleable_inventory
+			//skyrat edit
+			if(extra_inventory.len)
+				screenmob.client.screen -= extra_inventory
+			//
 			if(hotkeybuttons.len)
 				screenmob.client.screen -= hotkeybuttons
 			if(infodisplay.len)
@@ -235,6 +250,7 @@ GLOBAL_LIST_INIT(available_ui_styles, sortList(list(
 		return
 	var/mob/screenmob = viewmob || mymob
 	hidden_inventory_update(screenmob)
+	extra_inventory_update(screenmob)
 
 /datum/hud/robot/show_hud(version = 0, mob/viewmob)
 	. = ..()
@@ -254,7 +270,7 @@ GLOBAL_LIST_INIT(available_ui_styles, sortList(list(
 	if (initial(ui_style) || ui_style == new_ui_style)
 		return
 
-	for(var/atom/item in static_inventory + toggleable_inventory + hotkeybuttons + infodisplay + screenoverlays + inv_slots)
+	for(var/atom/item in static_inventory + toggleable_inventory + extra_inventory + hotkeybuttons + infodisplay + screenoverlays + inv_slots) //skyrat edit
 		if (item.icon == ui_style)
 			item.icon = new_ui_style
 

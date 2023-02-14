@@ -2,22 +2,27 @@
 // +1 for "while()" loops, for some reason
 #define INFINITE_LOOP_DETECTION_THRESHOLD 1048574
 
-//Human Overlays Indexes/////////
-#define MUTATIONS_LAYER			33		//! mutations. Tk headglows, cold resistance glow, etc
-#define GENITALS_BEHIND_LAYER	32		//Some genitalia needs to be behind everything, such as with taurs (Taurs use body_behind_layer
-#define BODY_BEHIND_LAYER		31		//! certain mutantrace features (tail when looking south) that must appear behind the body parts
-#define BODYPARTS_LAYER			30		//! Initially "AUGMENTS", this was repurposed to be a catch-all bodyparts flag
-#define BODY_ADJ_LAYER			29		//! certain mutantrace features (snout, body markings) that must appear above the body parts
-#define GENITALS_FRONT_LAYER	28		//Draws some genitalia above clothes and the TAUR body if need be.
-#define BODY_LAYER				27		//! underwear, undershirts, socks, eyes, lips(makeup)
-#define FRONT_MUTATIONS_LAYER	26		//! mutations that should appear above body, body_adj and bodyparts layer (e.g. laser eyes)
-#define DAMAGE_LAYER			25		//! damage indicators (cuts and burns)
-#define UNIFORM_LAYER			24
-#define ID_LAYER				23 		//! lmao at the idiot who put both ids and hands on the same layer
-#define HANDS_PART_LAYER		22
-#define GLOVES_LAYER			21
-#define SHOES_LAYER				20
-#define EARS_LAYER				19
+//Human Overlays Indexes////////
+#define MUTATIONS_LAYER			38		//mutations. Tk headglows, cold resistance glow, etc
+#define GENITALS_BEHIND_LAYER	37		//Some genitalia needs to be behind everything, such as with taurs (Taurs use body_behind_layer
+#define BODY_BEHIND_LAYER		36		//certain mutantrace features (tail when looking south) that must appear behind the body parts
+#define BODYPARTS_LAYER			35		//Initially "AUGMENTS", this was repurposed to be a catch-all bodyparts flag
+#define BODY_ADJ_LAYER			34		//certain mutantrace features (snout, body markings) that must appear above the body parts
+#define GENITALS_FRONT_LAYER	33		//Draws some genitalia above clothes and the TAUR body if need be.
+#define BODY_LAYER				32		//underwear, undershirts, socks, eyes, lips(makeup)
+#define FRONT_MUTATIONS_LAYER	31		//mutations that should appear above body, body_adj and bodyparts layer (e.g. laser eyes)
+#define UNDERWEAR_LAYER			30
+#define SOCKS_LAYER				29
+#define SHIRT_LAYER				28
+#define UNIFORM_LAYER			27
+#define ID_LAYER				26
+#define HANDS_PART_LAYER		25
+#define DAMAGE_LAYER			24		//damage indicators (cuts and burns)
+#define SHOES_LAYER				23
+#define GLOVES_LAYER			22
+#define WRISTS_LAYER			21
+#define EAR_RIGHT_LAYER			20
+#define EAR_LEFT_LAYER			19
 #define SUIT_LAYER				18
 #define GENITALS_EXPOSED_LAYER	17
 #define GLASSES_LAYER			16
@@ -36,7 +41,7 @@
 #define HALO_LAYER				3		//! blood cult ascended halo, because there's currently no better solution for adding/removing
 #define TYPING_LAYER			2
 #define FIRE_LAYER				1		//! If you're on fire
-#define TOTAL_LAYERS			33		//! KEEP THIS UP-TO-DATE OR SHIT WILL BREAK ;_;
+#define TOTAL_LAYERS			38		//! KEEP THIS UP-TO-DATE OR SHIT WILL BREAK ;_;
 
 
 //Human Overlay Index Shortcuts for alternate_worn_layer, layers

@@ -110,6 +110,19 @@
 	  */
 	var/list/chameleon_extras
 
+	//skyrat edit
+	///Slot for underwear like boxers and panties
+	var/underwear = null
+	///Slot for socks, yes, the thing that usually goes before your shoes
+	var/socks = null
+	///Slot for the undershirt (which is quite a foreign concept to me) or bras
+	var/shirt = null
+	///Slot for the opposite ear.
+	var/ears_extra = null
+	///Slot for the part of your arms that isn't quite hands yet.
+	var/wrists = null
+	//
+
 /**
   * Called at the start of the equip proc
   *
@@ -171,13 +184,25 @@
 	if(neck)
 		H.equip_to_slot_or_del(new neck(H),ITEM_SLOT_NECK, TRUE)
 	if(ears)
-		H.equip_to_slot_or_del(new ears(H),ITEM_SLOT_EARS, TRUE)
+		H.equip_to_slot_or_del(new ears(H), ITEM_SLOT_EARS_LEFT, TRUE) // Sandstorm edit
 	if(glasses)
 		H.equip_to_slot_or_del(new glasses(H),ITEM_SLOT_EYES, TRUE)
 	if(id)
 		H.equip_to_slot_or_del(new id(H),ITEM_SLOT_ID, TRUE)
 	if(suit_store)
 		H.equip_to_slot_or_del(new suit_store(H),ITEM_SLOT_SUITSTORE, TRUE)
+	// Sandstorm edit
+	if(ears_extra)
+		H.equip_to_slot_or_del(new ears_extra(H), ITEM_SLOT_EARS_RIGHT, TRUE)
+	if(underwear)
+		H.equip_to_slot_or_del(new underwear(H), ITEM_SLOT_UNDERWEAR, TRUE)
+	if(socks)
+		H.equip_to_slot_or_del(new socks(H), ITEM_SLOT_SOCKS, TRUE)
+	if(shirt)
+		H.equip_to_slot_or_del(new shirt(H), ITEM_SLOT_SHIRT, TRUE)
+	if(wrists)
+		H.equip_to_slot_or_del(new wrists(H), ITEM_SLOT_WRISTS, TRUE)
+	//
 
 	if(accessory)
 		var/obj/item/clothing/under/U = H.w_uniform
@@ -260,6 +285,18 @@
 		H.shoes.add_fingerprint(H,1)
 	if(H.gloves)
 		H.gloves.add_fingerprint(H,1)
+	//skyrat edit
+	if(H.wrists)
+		H.wrists.add_fingerprint(H, ignoregloves = TRUE)
+	if(H.w_socks)
+		H.w_socks.add_fingerprint(H, ignoregloves = TRUE)
+	if(H.w_underwear)
+		H.w_underwear.add_fingerprint(H, ignoregloves = TRUE)
+	if(H.w_shirt)
+		H.w_shirt.add_fingerprint(H, ignoregloves = TRUE)
+	if(H.ears_extra)
+		H.ears_extra.add_fingerprint(H, ignoregloves = TRUE)
+	//
 	if(H.ears)
 		H.ears.add_fingerprint(H,1)
 	if(H.glasses)
@@ -280,7 +317,7 @@
 
 /// Return a list of all the types that are required to disguise as this outfit type
 /datum/outfit/proc/get_chameleon_disguise_info()
-	var/list/types = list(uniform, suit, back, belt, gloves, shoes, head, mask, neck, ears, glasses, id, l_pocket, r_pocket, suit_store, r_hand, l_hand)
+	var/list/types = list(uniform, underwear, socks, shirt, ears_extra, suit, back, belt, gloves, wrists, shoes, head, mask, neck, ears, glasses, id, l_pocket, r_pocket, suit_store, r_hand, l_hand) //skyrat edit
 	types += chameleon_extras
 	listclearnulls(types)
 	return types
@@ -312,6 +349,11 @@
 	.["box"] = box
 	.["implants"] = implants
 	.["accessory"] = accessory
+	.["underwear"] = underwear
+	.["socks"] = socks
+	.["shirt"] = shirt
+	.["ears_extra"] = ears_extra
+	.["wrists"] = wrists
 
 /datum/outfit/proc/save_to_file(mob/admin)
 	var/stored_data = get_json_data()
@@ -344,6 +386,11 @@
 	r_hand = text2path(outfit_data["r_hand"])
 	l_hand = text2path(outfit_data["l_hand"])
 	internals_slot = outfit_data["internals_slot"]
+	underwear = outfit_data["underwear"]
+	socks = outfit_data["socks"]
+	shirt = outfit_data["shirt"]
+	ears_extra = outfit_data["ears_extra"]
+	wrists = outfit_data["wrists"]
 	var/list/backpack = outfit_data["backpack_contents"]
 	backpack_contents = list()
 	for(var/item in backpack)
@@ -391,4 +438,14 @@
 		glasses = H.glasses.type
 	if(H.belt)
 		belt = H.belt.type
+	if(H.underwear)
+		underwear = H.underwear.type
+	if(H.socks)
+		socks = H.socks.type
+	if(H.shirt)
+		shirt = H.shirt.type
+	if(H.ears_extra)
+		ears_extra = H.ears_extra.type
+	if(H.wrists)
+		wrists = H.wrist.type
 	return TRUE

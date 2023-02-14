@@ -390,16 +390,22 @@
 	var/slot_priority = W.slot_equipment_priority
 
 	if(!slot_priority)
+		// Sandstorm edit
 		slot_priority = list( \
 			ITEM_SLOT_BACK, ITEM_SLOT_ID,\
+			ITEM_SLOT_UNDERWEAR,\
+			ITEM_SLOT_SOCKS,\
+			ITEM_SLOT_SHIRT,\
 			ITEM_SLOT_ICLOTHING, ITEM_SLOT_OCLOTHING,\
 			ITEM_SLOT_MASK, ITEM_SLOT_HEAD, ITEM_SLOT_NECK,\
-			ITEM_SLOT_FEET, ITEM_SLOT_GLOVES,\
-			ITEM_SLOT_EARS, ITEM_SLOT_EYES,\
+			ITEM_SLOT_FEET, ITEM_SLOT_WRISTS, ITEM_SLOT_GLOVES,\
+			ITEM_SLOT_EARS_LEFT, ITEM_SLOT_EARS_RIGHT,\
+			ITEM_SLOT_EYES,\
 			ITEM_SLOT_BELT, ITEM_SLOT_SUITSTORE,\
 			ITEM_SLOT_LPOCKET, ITEM_SLOT_RPOCKET,\
 			ITEM_SLOT_DEX_STORAGE\
 		)
+		//
 
 	for(var/slot in slot_priority)
 		if(equip_to_slot_if_possible(W, slot, 0, 1, 1)) //qdel_on_fail = 0; disable_warning = 1; redraw_mob = 1

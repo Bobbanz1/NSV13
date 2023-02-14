@@ -18,12 +18,20 @@
 			return belt
 		if(ITEM_SLOT_ID)
 			return wear_id
-		if(ITEM_SLOT_EARS)
+		if(ITEM_SLOT_EARS_LEFT) // Sandstorm edit
 			return ears
+		// Sandstorm edit
+		if(ITEM_SLOT_EARS_RIGHT)
+			return ears_extra
+		//
 		if(ITEM_SLOT_EYES)
 			return glasses
 		if(ITEM_SLOT_GLOVES)
 			return gloves
+		// Sandstorm edit
+		if(ITEM_SLOT_WRISTS)
+			return wrists
+		//
 		if(ITEM_SLOT_HEAD)
 			return head
 		if(ITEM_SLOT_FEET)
@@ -32,6 +40,14 @@
 			return wear_suit
 		if(ITEM_SLOT_ICLOTHING)
 			return w_uniform
+		// Sandstorm edit
+		if(ITEM_SLOT_UNDERWEAR)
+			return w_underwear
+		if(ITEM_SLOT_SOCKS)
+			return w_socks
+		if(ITEM_SLOT_SHIRT)
+			return w_shirt
+		//
 		if(ITEM_SLOT_LPOCKET)
 			return l_store
 		if(ITEM_SLOT_RPOCKET)
@@ -51,13 +67,17 @@
 		legcuffed,
 		wear_suit,
 		gloves,
+		wrists,
 		shoes,
 		belt,
 		wear_id,
 		l_store,
 		r_store,
-		w_uniform
-		)
+		w_uniform,
+		w_underwear,
+		w_socks,
+		w_shirt,
+		) //skyrat edit
 
 /mob/living/carbon/human/proc/get_head_slots()
 	return list(
@@ -66,7 +86,8 @@
 		wear_neck,
 		glasses,
 		ears,
-		)
+		ears_extra,
+		) //skyrat edit
 
 /mob/living/carbon/human/proc/get_storage_slots()
 	return list(
@@ -91,9 +112,14 @@
 			wear_id = I
 			sec_hud_set_ID()
 			update_inv_wear_id()
-		if(ITEM_SLOT_EARS)
+		// Sandstorm edit
+		if(ITEM_SLOT_EARS_LEFT)
 			ears = I
 			update_inv_ears()
+		if(ITEM_SLOT_EARS_RIGHT)
+			ears_extra = I
+			update_inv_ears_extra()
+		//
 		if(ITEM_SLOT_EYES)
 			glasses = I
 			var/obj/item/clothing/glasses/G = I
@@ -110,6 +136,11 @@
 		if(ITEM_SLOT_GLOVES)
 			gloves = I
 			update_inv_gloves()
+		// Sandstorm edit
+		if(ITEM_SLOT_WRISTS)
+			wrists = I
+			update_inv_wrists()
+		//
 		if(ITEM_SLOT_FEET)
 			shoes = I
 			update_inv_shoes()
@@ -125,6 +156,17 @@
 			w_uniform = I
 			update_suit_sensors()
 			update_inv_w_uniform()
+		// Sandstorm edit
+		if(ITEM_SLOT_UNDERWEAR)
+			w_underwear = I
+			update_inv_w_underwear()
+		if(ITEM_SLOT_SOCKS)
+			w_socks = I
+			update_inv_w_socks()
+		if(ITEM_SLOT_SHIRT)
+			w_shirt = I
+			update_inv_w_shirt()
+		//
 		if(ITEM_SLOT_LPOCKET)
 			l_store = I
 			update_inv_pockets()
@@ -140,7 +182,7 @@
 	//Item is handled and in slot, valid to call callback, for this proc should always be true
 	if(!not_handled)
 		I.equipped(src, slot)
-
+	update_genitals() //SKYRAT EDIT ADDITION
 	return not_handled //For future deeper overrides
 
 /mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE, was_thrown = FALSE)
@@ -175,6 +217,24 @@
 		update_suit_sensors()
 		if(!QDELETED(src))
 			update_inv_w_uniform()
+	//skyrat edit
+	else if(I == w_underwear)
+		w_underwear = null
+		if(!QDELETED(src))
+			update_inv_w_underwear()
+	else if(I == w_socks)
+		w_socks = null
+		if(!QDELETED(src))
+			update_inv_w_socks()
+	else if(I == w_shirt)
+		w_shirt = null
+		if(!QDELETED(src))
+			update_inv_w_shirt()
+	else if(I == wrists)
+		wrists = null
+		if(!QDELETED(src))
+			update_inv_wrists()
+	//
 	else if(I == gloves)
 		gloves = null
 		if(!QDELETED(src))
@@ -197,6 +257,12 @@
 		ears = null
 		if(!QDELETED(src))
 			update_inv_ears()
+	//skyrat edit
+	else if(I == ears_extra)
+		ears_extra = null
+		if(!QDELETED(src))
+			update_inv_ears_extra()
+	//
 	else if(I == shoes)
 		shoes = null
 		if(!QDELETED(src))

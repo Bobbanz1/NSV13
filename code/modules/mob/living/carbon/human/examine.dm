@@ -27,14 +27,41 @@
 		apparent_species = ", \an [dna.species.name]"
 	. = list("<span class='info'>*---------*\nThis is <EM>[!obscure_name ? display_name : "Unknown"][apparent_species]</EM>!")
 
+	//Underwear
+	var/shirt_hidden = undershirt_hidden()
+	var/undies_hidden = underwear_hidden()
+	var/socks_hidden = socks_hidden()
+	if(w_underwear && !undies_hidden)
+		. += "[t_He] [t_is] wearing [w_underwear.get_examine_string(user)]."
+	if(w_socks && !socks_hidden)
+		. += "[t_He] [t_is] wearing [w_socks.get_examine_string(user)]."
+	if(w_shirt && !shirt_hidden)
+		. += "[t_He] [t_is] wearing [w_shirt.get_examine_string(user)]."
+	//Wrist slot because you're epic
+	if(wrists && !(ITEM_SLOT_WRISTS in obscured))
+		. += "[t_He] [t_is] wearing [wrists.get_examine_string(user)]."
+	//End of skyrat changes
+
 	//uniform
 	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING))
 		//accessory
 		var/accessory_msg
 		if(istype(w_uniform, /obj/item/clothing/under))
 			var/obj/item/clothing/under/U = w_uniform
-			if(U.attached_accessory)
-				accessory_msg += " with [icon2html(U.attached_accessory, user)] \a [U.attached_accessory]"
+			if(length(U.attached_accessories))
+				var/list/weehoo = list()
+				var/dumb_icons = ""
+				for(var/obj/item/clothing/accessory/attached_accessory in U.attached_accessories)
+					weehoo += "\a [attached_accessory]"
+					dumb_icons = "[dumb_icons][icon2html(attached_accessory, user)]"
+				if(length(weehoo))
+					accessory_msg += " with [dumb_icons]"
+					if(length(U.attached_accessories) >= 2)
+						accessory_msg += jointext(weehoo, ", ", 1, length(weehoo) - 1)
+						accessory_msg += " and [weehoo[length(weehoo)]]"
+					else
+						accessory_msg += weehoo[1]
+
 
 		. += "[t_He] [t_is] wearing [w_uniform.get_examine_string(user)][accessory_msg]."
 	//head
@@ -87,8 +114,18 @@
 			. += "<span class='warning'><B>[t_His] eyes are glowing an unnatural red!</B></span>"
 
 	//ears
-	if(ears && !(obscured & ITEM_SLOT_EARS))
-		. += "[t_He] [t_has] [ears.get_examine_string(user)] on [t_his] ears."
+	if(ears && !(ITEM_SLOT_EARS_LEFT in obscured)) // Sandstorm edit
+		. += "[t_He] [t_has] [ears.get_examine_string(user)] on [t_his] left ear."
+
+	// Sandstorm edit
+	if(ears_extra && !(ITEM_SLOT_EARS_RIGHT in obscured))
+		. += "[t_He] [t_has] [ears_extra.get_examine_string(user)] on [t_his] right ear."
+
+	//wearing two ear items makes you look like an idiot
+	if((istype(ears, /obj/item/radio/headset) && !(ITEM_SLOT_EARS_LEFT in obscured)) && (istype(ears_extra, /obj/item/radio/headset) && !(ITEM_SLOT_EARS_RIGHT in obscured)))
+		. += "<span class='warning'>[t_He] looks quite tacky wearing both \an [ears.name] and \an [ears_extra.name] on [t_his] head.</span>"
+
+	//
 
 	//ID
 	if(wear_id)

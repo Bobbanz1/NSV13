@@ -351,7 +351,7 @@ BLIND     // can't see anything
 	if(!istype(user) || !user.canUseTopic(src, BE_CLOSE, ismonkey(user)))
 		return
 	else
-		if(attached_accessory)
+		if(length(attached_accessories)) //SKYRAT EDIT
 			remove_accessory(user)
 		else
 			rolldown()

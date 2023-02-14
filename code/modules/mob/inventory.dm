@@ -406,7 +406,8 @@
 	if(hidden_slots & HIDEEYES)
 		obscured |= ITEM_SLOT_EYES
 	if(hidden_slots & HIDEEARS)
-		obscured |= ITEM_SLOT_EARS
+		obscured |= ITEM_SLOT_EARS_LEFT
+		obscured |= ITEM_SLOT_EARS_RIGHT
 	if(hidden_slots & HIDEGLOVES)
 		obscured |= ITEM_SLOT_GLOVES
 	if(hidden_slots & HIDEJUMPSUIT)

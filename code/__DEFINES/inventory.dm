@@ -18,7 +18,7 @@
 #define ITEM_SLOT_ICLOTHING		(1<<1)
 #define ITEM_SLOT_GLOVES		(1<<2)
 #define ITEM_SLOT_EYES			(1<<3)
-#define ITEM_SLOT_EARS			(1<<4)
+#define ITEM_SLOT_EARS_LEFT		(1<<4) //skyrat edit
 #define ITEM_SLOT_MASK			(1<<5)
 #define ITEM_SLOT_HEAD			(1<<6)
 #define ITEM_SLOT_FEET			(1<<7)
@@ -32,13 +32,30 @@
 #define ITEM_SLOT_SUITSTORE		(1<<15)
 #define ITEM_SLOT_LPOCKET		(1<<16)
 #define ITEM_SLOT_RPOCKET		(1<<17)
-#define ITEM_SLOT_HANDCUFFED	(1<<18)
-#define ITEM_SLOT_LEGCUFFED		(1<<19)
+// -- Sandstorm edit --
+/// Underwear slot
+#define ITEM_SLOT_UNDERWEAR (1<<18)
+/// Socks slot
+#define ITEM_SLOT_SOCKS (1<<19)
+/// Shirt slot
+#define ITEM_SLOT_SHIRT (1<<20)
+/// Right ear slot
+#define ITEM_SLOT_EARS_RIGHT (1<<21)
+/// Wrist slot
+#define ITEM_SLOT_WRISTS (1<<22)
+// -- End edit --
+/// Handcuff slot
+#define ITEM_SLOT_HANDCUFFED (1<<23)
+/// Legcuff slot (bolas, beartraps)
+#define ITEM_SLOT_LEGCUFFED (1<<24)
 
-#define SLOTS_AMT				20 // Keep this up to date!
+#define SLOTS_AMT				25 // Keep this up to date!
 
 //SLOT GROUP HELPERS
 #define ITEM_SLOT_POCKETS		(ITEM_SLOT_LPOCKET|ITEM_SLOT_RPOCKET)
+
+//EARS HELPER
+#define ITEM_SLOT_EARS (ITEM_SLOT_EARS_LEFT|ITEM_SLOT_EARS_RIGHT)
 
 //Bit flags for the flags_inv variable, which determine when a piece of clothing hides another. IE a helmet hiding glasses.
 //Make sure to update check_obscured_slots() if you add more.
@@ -54,6 +71,10 @@
 #define HIDEHAIR		(1<<8)
 #define HIDEFACIALHAIR	(1<<9)
 #define HIDENECK		(1<<10)
+//sandstorm edit
+#define HIDEUNDERWEAR	(1<<11) //hides underwear, socks and shirt
+#define HIDEWRISTS		(1<<12) //hides wrists
+//
 
 //bitflags for clothing coverage - also used for limbs
 #define HEAD		(1<<0)

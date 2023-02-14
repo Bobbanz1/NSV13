@@ -20,7 +20,14 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	/datum/strippable_item/hand/left,
 	/datum/strippable_item/hand/right,
 	/datum/strippable_item/mob_item_slot/handcuffs,
-	/datum/strippable_item/mob_item_slot/legcuffs
+	/datum/strippable_item/mob_item_slot/legcuffs,
+
+	// Sandstorm content
+	/datum/strippable_item/mob_item_slot/ears_extra,
+	/datum/strippable_item/mob_item_slot/wrists,
+	/datum/strippable_item/mob_item_slot/socks,
+	/datum/strippable_item/mob_item_slot/underwear,
+	/datum/strippable_item/mob_item_slot/undershirt,
 )))
 
 GLOBAL_LIST_INIT(strippable_human_layout, list(
@@ -38,13 +45,18 @@ GLOBAL_LIST_INIT(strippable_human_layout, list(
 		new /datum/strippable_item_layout("corgi_collar"),
 		new /datum/strippable_item_layout("parrot_headset"),
 		new /datum/strippable_item_layout("eyes"),
+		new /datum/strippable_item_layout("ears_extra"),
 		new /datum/strippable_item_layout("ears")
 	),
 	list(
 		new /datum/strippable_item_layout("suit"),
 		new /datum/strippable_item_layout("suit_storage", TRUE),
 		new /datum/strippable_item_layout("shoes"),
+		new /datum/strippable_item_layout("socks"),
 		new /datum/strippable_item_layout("gloves"),
+		new /datum/strippable_item_layout("wrists"),
+		new /datum/strippable_item_layout("underwear"),
+		new /datum/strippable_item_layout("undershirt"),
 		new /datum/strippable_item_layout("jumpsuit"),
 		new /datum/strippable_item_layout("belt", TRUE),
 		new /datum/strippable_item_layout("left_pocket", TRUE),
@@ -71,7 +83,7 @@ GLOBAL_LIST_INIT(strippable_human_layout, list(
 
 /datum/strippable_item/mob_item_slot/ears
 	key = STRIPPABLE_ITEM_EARS
-	item_slot = ITEM_SLOT_EARS
+	item_slot = ITEM_SLOT_EARS_LEFT
 
 /datum/strippable_item/mob_item_slot/jumpsuit
 	key = STRIPPABLE_ITEM_JUMPSUIT

@@ -284,7 +284,7 @@
 	if(!istype(master_mob) || !istype(H))
 		return
 	if(master_mob.ears)
-		H.equip_to_slot_or_del(new master_mob.ears.type, ITEM_SLOT_EARS)
+		H.equip_to_slot_or_del(new master_mob.ears.type, ITEM_SLOT_EARS_LEFT) // Sandstorm edit
 	if(master_mob.w_uniform)
 		H.equip_to_slot_or_del(new master_mob.w_uniform.type, ITEM_SLOT_ICLOTHING)
 	if(master_mob.shoes)

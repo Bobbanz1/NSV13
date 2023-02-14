@@ -17,11 +17,45 @@
 	if(usr.hud_used.inventory_shown && targetmob.hud_used)
 		usr.hud_used.inventory_shown = FALSE
 		usr.client.screen -= targetmob.hud_used.toggleable_inventory
+		// Sandstorm edit
+		usr.client.screen -= targetmob.hud_used.extra_inventory
+		// Sandstorm edit END
 	else
 		usr.hud_used.inventory_shown = TRUE
 		usr.client.screen += targetmob.hud_used.toggleable_inventory
+		// Sandstorm edit
+		if(usr.hud_used.extra_shown)
+			usr.client.screen += targetmob.hud_used.extra_inventory
+		// Sandstorm edit END
 
 	targetmob.hud_used.hidden_inventory_update(usr)
+	// Sandstorm edit
+	targetmob.hud_used.extra_inventory_update(usr)
+	// Sandstorm edit END
+
+// Sandstorm edit
+/atom/movable/screen/human/toggle/extra
+	name = "toggle extra"
+	icon_state = "toggle_extra"
+
+/atom/movable/screen/human/toggle/extra/Click()
+
+	var/mob/targetmob = usr
+
+	if(isobserver(usr))
+		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
+			var/mob/M = usr.client.eye
+			targetmob = M
+
+	if(usr.hud_used.extra_shown && targetmob.hud_used)
+		usr.hud_used.extra_shown = FALSE
+		usr.client.screen -= targetmob.hud_used.extra_inventory
+	else
+		usr.hud_used.extra_shown = TRUE
+		usr.client.screen += targetmob.hud_used.extra_inventory
+
+	targetmob.hud_used.extra_inventory_update(usr)
+//
 
 /atom/movable/screen/human/equip
 	name = "equip"
@@ -247,11 +281,11 @@
 	toggleable_inventory += inv_box
 
 	inv_box = new /atom/movable/screen/inventory()
-	inv_box.name = "ears"
+	inv_box.name = "left ear" // Sandstorm edit
 	inv_box.icon = ui_style
 	inv_box.icon_state = "ears"
 	inv_box.screen_loc = ui_ears
-	inv_box.slot_id = ITEM_SLOT_EARS
+	inv_box.slot_id = ITEM_SLOT_EARS_LEFT // Sandstorm Edit
 	inv_box.hud = src
 	toggleable_inventory += inv_box
 
@@ -272,6 +306,54 @@
 	inv_box.slot_id = ITEM_SLOT_FEET
 	inv_box.hud = src
 	toggleable_inventory += inv_box
+
+	// Sandstorm edit
+	using = new /atom/movable/screen/human/toggle/extra()
+	using.icon = ui_style_modular(ui_style)
+	using.screen_loc = ui_inventory_extra
+	using.hud = src
+	toggleable_inventory += using
+
+	inv_box = new /atom/movable/screen/inventory()
+	inv_box.name = "underwear"
+	inv_box.icon = ui_style_modular(ui_style)
+	inv_box.icon_state = "underwear"
+	inv_box.screen_loc = ui_boxers
+	inv_box.slot_id = ITEM_SLOT_UNDERWEAR // Sandstorm edit
+	extra_inventory += inv_box
+
+	inv_box = new /atom/movable/screen/inventory()
+	inv_box.name = "socks"
+	inv_box.icon = ui_style_modular(ui_style)
+	inv_box.icon_state = "socks"
+	inv_box.screen_loc = ui_socks
+	inv_box.slot_id = ITEM_SLOT_SOCKS // Sandstorm edit
+	extra_inventory += inv_box
+
+	inv_box = new /atom/movable/screen/inventory()
+	inv_box.name = "shirt"
+	inv_box.icon = ui_style_modular(ui_style)
+	inv_box.icon_state = "shirt"
+	inv_box.screen_loc = ui_shirt
+	inv_box.slot_id = ITEM_SLOT_SHIRT // Sandstorm edit
+	extra_inventory += inv_box
+
+	inv_box = new /atom/movable/screen/inventory()
+	inv_box.name = "right ear"
+	inv_box.icon = ui_style_modular(ui_style)
+	inv_box.icon_state = "ears_extra"
+	inv_box.screen_loc = ui_ears_extra
+	inv_box.slot_id = ITEM_SLOT_EARS_RIGHT // Sandstorm edit
+	extra_inventory += inv_box
+
+	inv_box = new /atom/movable/screen/inventory()
+	inv_box.name = "wrists"
+	inv_box.icon = ui_style_modular(ui_style)
+	inv_box.icon_state = "wrists"
+	inv_box.screen_loc = ui_wrists
+	inv_box.slot_id = ITEM_SLOT_WRISTS
+	extra_inventory += inv_box
+	//
 
 	inv_box = new /atom/movable/screen/inventory()
 	inv_box.name = "belt"
@@ -331,7 +413,7 @@
 	zone_select.hud = src
 	static_inventory += zone_select
 
-	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory))
+	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory + extra_inventory)) // Sandstorm edit
 		if(inv.slot_id)
 			inv.hud = src
 			inv_slots[TOBITSHIFT(inv.slot_id) + 1] = inv
@@ -346,7 +428,7 @@
 	if(!istype(H) || !H.dna.species)
 		return
 	var/datum/species/S = H.dna.species
-	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory))
+	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory + extra_inventory)) // Sandstorm edit
 		if(inv.slot_id)
 			if(inv.slot_id in S.no_equip)
 				inv.alpha = 128
@@ -400,6 +482,42 @@
 		if(H.head)		screenmob.client.screen -= H.head
 
 
+// Sandstorm edit
+/datum/hud/human/extra_inventory_update(mob/viewer)
+	if(!mymob)
+		return
+	var/mob/living/carbon/human/H = mymob
+
+	var/mob/screenmob = viewer || H
+
+	if(screenmob.hud_used.extra_shown && screenmob.hud_used.inventory_shown && screenmob.hud_used.hud_shown)
+		if(H.ears_extra)
+			H.ears_extra.screen_loc = ui_ears_extra
+			screenmob.client.screen += H.ears_extra
+		if(H.w_underwear)
+			H.w_underwear.screen_loc = ui_boxers
+			screenmob.client.screen += H.w_underwear
+		if(H.w_socks)
+			H.w_socks.screen_loc = ui_socks
+			screenmob.client.screen += H.w_socks
+		if(H.w_shirt)
+			H.w_shirt.screen_loc = ui_shirt
+			screenmob.client.screen += H.w_shirt
+		if(H.wrists)
+			H.wrists.screen_loc = ui_wrists
+			screenmob.client.screen += H.wrists
+	else
+		if(H.ears_extra)
+			screenmob.client.screen -= H.ears_extra
+		if(H.w_underwear)
+			screenmob.client.screen -= H.w_underwear
+		if(H.w_socks)
+			screenmob.client.screen -= H.w_socks
+		if(H.w_shirt)
+			screenmob.client.screen -= H.w_shirt
+		if(H.wrists)
+			screenmob.client.screen -= H.wrists
+//
 
 /datum/hud/human/persistent_inventory_update(mob/viewer)
 	if(!mymob)

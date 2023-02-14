@@ -195,11 +195,3 @@
 
 // True value of max save slots (3 is default, 8 is byond member, +1 to either if you have the extra slot loadout entry). Potential max is 9
 #define TRUE_MAX_SAVE_SLOTS 9
-
-//NSV13
-//the names of the customization tabs
-#define SETTINGS_TAB			0
-#define GAME_PREFERENCES_TAB	1
-#define APPEARANCE_TAB			2
-#define LOADOUT_TAB				3
-#define CONTENT_PREFERENCES_TAB	4

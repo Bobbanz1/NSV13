@@ -12,8 +12,11 @@
 	var/can_adjust = TRUE
 	var/adjusted = NORMAL_STYLE
 	var/alt_covers_chest = FALSE // for adjusted/rolled-down jumpsuits, FALSE = exposes chest and arms, TRUE = exposes arms only
-	var/obj/item/clothing/accessory/attached_accessory
-	var/mutable_appearance/accessory_overlay
+	//SANDSTORM EDIT - Removed the old attached accessory system. We use a list of accessories instead.
+	var/max_accessories = 3
+	var/list/obj/item/clothing/accessory/attached_accessories = list()
+	var/list/mutable_appearance/accessory_overlays = list()
+	//SANDSTORM EDIT END
 	var/freshly_laundered = FALSE
 
 /obj/item/clothing/under/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
@@ -95,19 +98,25 @@
 		freshly_laundered = FALSE
 		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "fresh_laundry", /datum/mood_event/fresh_laundry)
 
-	if(attached_accessory && slot != ITEM_SLOT_HANDS && ishuman(user))
-		var/mob/living/carbon/human/H = user
-		attached_accessory.on_uniform_equip(src, user)
-		if(attached_accessory.above_suit)
-			H.update_inv_wear_suit()
+	// Sandstorm edit
+	for(var/obj/item/clothing/accessory/attached_accessory in attached_accessories)
+		if(attached_accessory && slot != ITEM_SLOT_HANDS && ishuman(user))
+			var/mob/living/carbon/human/H = user
+			attached_accessory.on_uniform_equip(src, user)
+			if(attached_accessory.above_suit)
+				H.update_inv_wear_suit()
+	//
 
 /obj/item/clothing/under/dropped(mob/user)
-	..()
-	var/mob/living/carbon/human/H = user
-	if(attached_accessory)
+	// Sandstorm edit
+	for(var/obj/item/clothing/accessory/attached_accessory in attached_accessories)
 		attached_accessory.on_uniform_dropped(src, user)
-		if(ishuman(H) && attached_accessory.above_suit)
-			H.update_inv_wear_suit()
+		if(ishuman(user))
+			var/mob/living/carbon/human/H = user
+			if(attached_accessory.above_suit)
+				H.update_inv_wear_suit()
+	//
+	..()
 
 	if(ishuman(H) || ismonkey(H))
 		if(H.w_uniform == src)
@@ -121,9 +130,9 @@
 	. = FALSE
 	if(istype(I, /obj/item/clothing/accessory))
 		var/obj/item/clothing/accessory/A = I
-		if(attached_accessory)
+		if(length(attached_accessories) >= max_accessories)
 			if(user)
-				to_chat(user, "<span class='warning'>[src] already has an accessory.</span>")
+				to_chat(user, "<span class='warning'>[src] already has [length(attached_accessories)] accessories.</span>")
 			return
 		else
 
@@ -137,10 +146,14 @@
 			if(user && notifyAttach)
 				to_chat(user, "<span class='notice'>You attach [I] to [src].</span>")
 
-			var/accessory_color = attached_accessory.icon_state
-			accessory_overlay = mutable_appearance('icons/mob/accessories.dmi', "[accessory_color]")
-			accessory_overlay.alpha = attached_accessory.alpha
-			accessory_overlay.color = attached_accessory.color
+			//SKYRAT EDIT
+			accessory_overlay = mutable_appearance('icons/mob/accessories.dmi', "blank")
+			for(var/obj/item/clothing/accessory/attached_accessory in attached_accessories)
+				var/mutable_appearance/Y = mutable_appearance(attached_accessory.mob_overlay_icon, attached_accessory.icon_state, ABOVE_HUD_LAYER)
+				Y.alpha = attached_accessory.alpha
+				Y.color = attached_accessory.color
+				accessory_overlay.add_overlay(Y)
+			//SKYRAT EDIT END
 
 			if(ishuman(loc))
 				var/mob/living/carbon/human/H = loc
@@ -158,9 +171,11 @@
 	if(!can_use(user))
 		return
 
-	if(attached_accessory)
-		var/obj/item/clothing/accessory/A = attached_accessory
-		attached_accessory.detach(src, user)
+	//SKYRAT EDIT
+	if(length(attached_accessories))
+		var/obj/item/clothing/accessory/A = attached_accessories[length(attached_accessories)]
+	//SKYRAT EDIT END
+		A.detach(src, user)
 		if(user.put_in_hands(A))
 			to_chat(user, "<span class='notice'>You detach [A] from [src].</span>")
 		else
@@ -215,8 +230,10 @@
 				. += "Its vital tracker appears to be enabled."
 			if(SENSOR_COORDS)
 				. += "Its vital tracker and tracking beacon appear to be enabled."
-	if(attached_accessory)
-		. += "\A [attached_accessory] is attached to it."
+	if(length(attached_accessories))
+		for(var/obj/item/clothing/accessory/attached_accessory in attached_accessories)
+			. += "\A [attached_accessory] is attached to it."
+	//SKYRAT EDIT END
 
 /obj/item/clothing/under/rank
 	dying_key = DYE_REGISTRY_UNDER
@@ -269,7 +286,7 @@
 	left = new(base)
 	left.Shift(WEST, 3)
 	base.Insert(left, dir = WEST)
-	
+
 	right = new(left)
 	right.Flip(EAST)
 	base.Insert(right, dir = EAST)
