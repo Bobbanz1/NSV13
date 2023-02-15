@@ -3,7 +3,7 @@
 /datum/gear/accessory
 	subtype_path = /datum/gear/accessory
 	slot = ITEM_SLOT_NECK
-	sort_category = "Accessories"
+	sort_category = LOADOUT_SUBCATEGORY_BACKPACK_ACCESSORIES
 
 /datum/gear/accessory/scarf
 	subtype_path = /datum/gear/accessory/scarf

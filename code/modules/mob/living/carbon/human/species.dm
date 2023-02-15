@@ -2094,19 +2094,43 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			burning_items += H.wear_mask
 		if(H.wear_neck && !(obscured & ITEM_SLOT_NECK))
 			burning_items += H.wear_neck
-		if(H.ears && !(obscured & ITEM_SLOT_EARS))
+		if(H.ears && !(obscured & ITEM_SLOT_EARS_LEFT))
 			burning_items += H.ears
+		if(H.ears_extra && !(obscured & ITEM_SLOT_EARS_RIGHT))
+			burning_items += H.ears_extra
 		if(H.head)
 			burning_items += H.head
 
 		//CHEST//
+		var/obj/item/clothing/chest_clothes = null
+		//skyrat edit
+		if(H.w_underwear && (H.w_underwear.body_parts_covered & CHEST))
+			chest_clothes = H.w_underwear
+		if(H.w_socks && (H.w_socks.body_parts_covered & CHEST))
+			chest_clothes = H.w_socks
+		if(H.w_shirt && (H.w_shirt.body_parts_covered & CHEST))
+			chest_clothes = H.w_shirt
+		//
 		if(H.w_uniform && !(obscured & ITEM_SLOT_ICLOTHING))
-			burning_items += H.w_uniform
+			chest_clothes = H.w_uniform
 		if(H.wear_suit)
-			burning_items += H.wear_suit
+			chest_clothes = H.wear_suit
+
+		if(chest_clothes)
+			burning_items += chest_clothes
 
 		//ARMS & HANDS//
 		var/obj/item/clothing/arm_clothes = null
+		//skyrat edit
+		if(H.wrists)
+			arm_clothes = H.wrists
+		if(H.w_underwear && (H.w_underwear.body_parts_covered & ARMS))
+			arm_clothes = H.w_underwear
+		if(H.w_socks && (H.w_socks.body_parts_covered & ARMS))
+			arm_clothes = H.w_socks
+		if(H.w_shirt && (H.w_shirt.body_parts_covered & ARMS))
+			arm_clothes = H.w_shirt
+		//
 		if(H.gloves && !(obscured & ITEM_SLOT_GLOVES))
 			arm_clothes = H.gloves
 		else if(H.wear_suit && ((H.wear_suit.body_parts_covered & HANDS) || (H.wear_suit.body_parts_covered & ARMS)))
@@ -2118,6 +2142,14 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 		//LEGS & FEET//
 		var/obj/item/clothing/leg_clothes = null
+		//skyrat edit
+		if(H.w_underwear && (H.w_underwear.body_parts_covered & LEGS))
+			leg_clothes = H.w_underwear
+		if(H.w_socks && (H.w_socks.body_parts_covered & LEGS))
+			leg_clothes = H.w_socks
+		if(H.w_shirt && (H.w_shirt.body_parts_covered & LEGS))
+			leg_clothes = H.w_shirt
+		//
 		if(H.shoes && !(obscured & ITEM_SLOT_FEET))
 			leg_clothes = H.shoes
 		else if(H.wear_suit && ((H.wear_suit.body_parts_covered & FEET) || (H.wear_suit.body_parts_covered & LEGS)))

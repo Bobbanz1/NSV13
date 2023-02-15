@@ -69,7 +69,7 @@
 		if(ears)
 			ears.talk_into(src, message, , spans, language, message_mods)
 			//skyrat edit
-			else if (ears_extra)
+			if (ears_extra)
 				ears_extra.talk_into(src, message, , spans, language, message_mods)
 			//
 		return ITALICS | REDUCE_RANGE
@@ -77,7 +77,7 @@
 		if(ears)
 			ears.talk_into(src, message, message_mods[RADIO_EXTENSION], spans, language, message_mods)
 			//skyrat edit
-			else if (ears_extra)
+			if (ears_extra)
 				ears_extra.talk_into(src, message, message_mods[RADIO_EXTENSION], spans, language, message_mods)
 			//
 			return ITALICS | REDUCE_RANGE

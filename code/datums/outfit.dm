@@ -438,14 +438,14 @@
 		glasses = H.glasses.type
 	if(H.belt)
 		belt = H.belt.type
-	if(H.underwear)
-		underwear = H.underwear.type
-	if(H.socks)
-		socks = H.socks.type
-	if(H.shirt)
-		shirt = H.shirt.type
+	if(H.w_underwear)
+		underwear = H.w_underwear.type
+	if(H.w_socks)
+		socks = H.w_socks.type
+	if(H.w_shirt)
+		shirt = H.w_shirt.type
 	if(H.ears_extra)
 		ears_extra = H.ears_extra.type
 	if(H.wrists)
-		wrists = H.wrist.type
+		wrists = H.wrists.type
 	return TRUE

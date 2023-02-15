@@ -26,8 +26,8 @@
 			. += mutable_appearance('icons/effects/item_damage.dmi', "damageduniform")
 		if(HAS_BLOOD_DNA(src))
 			. += mutable_appearance('icons/effects/blood.dmi', "uniformblood")
-		if(accessory_overlay)
-			. += accessory_overlay
+		if(accessory_overlays)
+			. += accessory_overlays
 
 /obj/item/clothing/under/attackby(obj/item/I, mob/user, params)
 	if((has_sensor == BROKEN_SENSORS) && istype(I, /obj/item/stack/cable_coil))
@@ -115,16 +115,15 @@
 			var/mob/living/carbon/human/H = user
 			if(attached_accessory.above_suit)
 				H.update_inv_wear_suit()
+			if(H.w_uniform == src)
+				if(!HAS_TRAIT(user, TRAIT_SUIT_SENSORS))
+					return
+				REMOVE_TRAIT(user, TRAIT_SUIT_SENSORS, TRACKED_SENSORS_TRAIT)
+				if(!HAS_TRAIT(user, TRAIT_SUIT_SENSORS) && !HAS_TRAIT(user, TRAIT_NANITE_SENSORS))
+					GLOB.suit_sensors_list -= user
 	//
 	..()
 
-	if(ishuman(H) || ismonkey(H))
-		if(H.w_uniform == src)
-			if(!HAS_TRAIT(user, TRAIT_SUIT_SENSORS))
-				return
-			REMOVE_TRAIT(user, TRAIT_SUIT_SENSORS, TRACKED_SENSORS_TRAIT)
-			if(!HAS_TRAIT(user, TRAIT_SUIT_SENSORS) && !HAS_TRAIT(user, TRAIT_NANITE_SENSORS))
-				GLOB.suit_sensors_list -= user
 
 /obj/item/clothing/under/proc/attach_accessory(obj/item/I, mob/user, notifyAttach = 1)
 	. = FALSE
@@ -147,12 +146,12 @@
 				to_chat(user, "<span class='notice'>You attach [I] to [src].</span>")
 
 			//SKYRAT EDIT
-			accessory_overlay = mutable_appearance('icons/mob/accessories.dmi', "blank")
+			accessory_overlays = mutable_appearance('icons/mob/accessories.dmi', "blank")
 			for(var/obj/item/clothing/accessory/attached_accessory in attached_accessories)
-				var/mutable_appearance/Y = mutable_appearance(attached_accessory.mob_overlay_icon, attached_accessory.icon_state, ABOVE_HUD_LAYER)
-				Y.alpha = attached_accessory.alpha
-				Y.color = attached_accessory.color
-				accessory_overlay.add_overlay(Y)
+				var/mutable_appearance/accessory_overlay = mutable_appearance(attached_accessory.worn_icon, attached_accessory.icon_state, ABOVE_HUD_LAYER)
+				accessory_overlay.alpha = attached_accessory.alpha
+				accessory_overlay.color = attached_accessory.color
+				accessory_overlays += accessory_overlay
 			//SKYRAT EDIT END
 
 			if(ishuman(loc))

@@ -1475,6 +1475,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						save_preferences()
 					else
 						to_chat(user,"<span class='warning'>Your donation has expired or is not yet valid! Donation status is refreshed at round end.</span>")
+				if(GEAR_CUSTOMIZATION)
+					purchased_gear += TG.id
+					save_preferences()
 			// end NSV13
 		if(href_list["toggle_gear"])
 			var/datum/gear/TG = GLOB.gear_datums[href_list["toggle_gear"]]

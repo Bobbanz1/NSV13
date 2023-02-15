@@ -233,13 +233,17 @@
 	armor = list("melee" = 10, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 75, "acid" = 50, "stamina" = 0) //Weak melee protection, because you can wear it on your head
 	slot_equipment_priority = list( \
 		ITEM_SLOT_BACK, ITEM_SLOT_ID,\
+		ITEM_SLOT_UNDERWEAR,\
+		ITEM_SLOT_SOCKS,\
+		ITEM_SLOT_SHIRT,\
 		ITEM_SLOT_ICLOTHING, ITEM_SLOT_OCLOTHING,\
 		ITEM_SLOT_MASK, ITEM_SLOT_HEAD, ITEM_SLOT_NECK,\
-		ITEM_SLOT_FEET, ITEM_SLOT_GLOVES,\
-		ITEM_SLOT_EARS, ITEM_SLOT_EYES,\
+		ITEM_SLOT_FEET, ITEM_SLOT_WRISTS, ITEM_SLOT_GLOVES,\
+		ITEM_SLOT_EARS_LEFT, ITEM_SLOT_EARS_RIGHT,\
+		ITEM_SLOT_EYES,\
 		ITEM_SLOT_BELT, ITEM_SLOT_SUITSTORE,\
 		ITEM_SLOT_LPOCKET, ITEM_SLOT_RPOCKET,\
-		ITEM_SLOT_DEX_STORAGE
+		ITEM_SLOT_DEX_STORAGE\
 	)
 
 /obj/item/reagent_containers/glass/bucket/attackby(obj/O, mob/user, params)

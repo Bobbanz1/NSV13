@@ -294,6 +294,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_NEVERBONER		"never_aroused"
 #define TRAIT_NYMPHO			"nymphomania"
 #define TRAIT_MASO              "masochism"
+#define TRAIT_HUMAN_NO_RENDER	"human_no_render"
 /// NSV13 - God fucking Help Me - Stop
 
 ///Trait applied to turfs when an atmos holosign is placed on them. It will stop firedoors from closing.

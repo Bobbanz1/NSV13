@@ -342,8 +342,10 @@ BLIND     // can't see anything
 	set_sensors(usr)
 
 /obj/item/clothing/under/attack_hand(mob/user)
-	if(attached_accessory && ispath(attached_accessory.pocket_storage_component_path) && loc == user)
-		attached_accessory.attack_hand(user)
+	if(length(attached_accessories))
+		for(var/obj/item/clothing/accessory/thing in attached_accessories)
+			if(ispath(thing.pocket_storage_component_path) && loc == user)
+				thing.attack_hand(user)
 		return
 	..()
 

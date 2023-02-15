@@ -464,6 +464,7 @@ GLOBAL_LIST_INIT(pda_styles, sortList(list(MONO, VT, ORBITRON, SHARE)))
 //NSV13 - Gear purchase types
 #define GEAR_METACOIN 1
 #define GEAR_DONATOR  2
+#define GEAR_CUSTOMIZATION 3
 //Religion
 
 #define HOLY_ROLE_DEACON 1 //role below priests, for losing most powers of priests but still being holy.

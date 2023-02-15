@@ -76,6 +76,13 @@ There are several things that need to be remembered:
 		update_body(TRUE)
 		update_hair()
 		update_inv_w_uniform()
+		//skyrat edit
+		update_inv_w_underwear()
+		update_inv_w_socks()
+		update_inv_w_shirt()
+		update_inv_ears_extra()
+		update_inv_wrists()
+		//
 		update_inv_wear_id()
 		update_inv_gloves()
 		update_inv_glasses()
@@ -147,6 +154,123 @@ There are several things that need to be remembered:
 	apply_overlay(UNIFORM_LAYER)
 	update_mutant_bodyparts()
 
+// Sandstorm edit
+/mob/living/carbon/human/update_inv_w_underwear(block_recursive_calls = FALSE)
+	if(!HAS_TRAIT(src, TRAIT_HUMAN_NO_RENDER))
+		remove_overlay(UNDERWEAR_LAYER)
+
+		if(client && hud_used)
+			var/atom/movable/screen/inventory/inv = hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_UNDERWEAR) + 1]
+			inv.update_icon()
+
+		if(istype(w_underwear, /obj/item/clothing/underwear))
+			var/obj/item/clothing/underwear/U = w_underwear
+			U.screen_loc = ui_boxers
+			if(client && hud_used && hud_used.hud_shown && hud_used.extra_shown)
+				if(hud_used.inventory_shown)
+					client.screen += w_underwear
+			update_observer_view(w_underwear,1)
+
+			if(w_uniform && (w_uniform.flags_inv & HIDEUNDERWEAR))
+				return
+
+			var/alt_worn = U.worn_icon || 'modular_sand/icons/mob/clothing/underwear.dmi'
+			var/variant_flag = NONE
+			if((dna?.species.bodytype & BODYTYPE_DIGITIGRADE) && U.supports_variations & DIGITIGRADE_VARIATION)
+				alt_worn = 'modular_sand/icons/mob/clothing/underwear_digi.dmi'
+				variant_flag |= DIGITIGRADE_VARIATION
+
+			var/mutable_appearance/underwear_overlay
+
+			var/gendered = (dna?.species.sexes && dna.features["body_model"] == FEMALE) ? U.fitted : NO_FEMALE_UNIFORM
+			underwear_overlay = U.build_worn_icon(UNDERWEAR_LAYER, alt_worn, FALSE, gendered, null, variant_flag, FALSE)
+
+			if(OFFSET_UNDERWEAR in dna.species.offset_features)
+				underwear_overlay.pixel_x += dna.species.offset_features[OFFSET_UNDERWEAR][1]
+				underwear_overlay.pixel_y += dna.species.offset_features[OFFSET_UNDERWEAR][2]
+			overlays_standing[UNDERWEAR_LAYER] = underwear_overlay
+
+		apply_overlay(UNDERWEAR_LAYER)
+		update_mutant_bodyparts(block_recursive_calls)
+
+/mob/living/carbon/human/update_inv_w_socks(block_recursive_calls = FALSE)
+	if(!HAS_TRAIT(src, TRAIT_HUMAN_NO_RENDER))
+		remove_overlay(SOCKS_LAYER)
+
+		if(client && hud_used)
+			var/atom/movable/screen/inventory/inv = hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_SOCKS) + 1]
+			inv.update_icon()
+
+		if(istype(w_socks, /obj/item/clothing/underwear))
+			var/obj/item/clothing/underwear/U = w_socks
+			U.screen_loc = ui_socks
+			if(client && hud_used && hud_used.hud_shown && hud_used.extra_shown)
+				if(hud_used.inventory_shown)
+					client.screen += w_socks
+			update_observer_view(w_socks,1)
+
+			if(w_uniform && (w_uniform.flags_inv & HIDEUNDERWEAR))
+				return
+
+			var/alt_worn = U.worn_icon || 'modular_sand/icons/mob/clothing/underwear.dmi'
+			var/variant_flag = NONE
+
+			if((dna?.species.bodytype & BODYTYPE_DIGITIGRADE) && U.supports_variations & DIGITIGRADE_VARIATION)
+				alt_worn = 'modular_sand/icons/mob/clothing/underwear_digi.dmi'
+				variant_flag |= DIGITIGRADE_VARIATION
+
+			var/mutable_appearance/underwear_overlay
+
+			var/gendered = (dna?.species.sexes && dna.features["body_model"] == FEMALE) ? U.fitted : NO_FEMALE_UNIFORM
+			underwear_overlay = U.build_worn_icon(SOCKS_LAYER, alt_worn, FALSE, gendered, null, variant_flag, FALSE)
+
+			if(OFFSET_SOCKS in dna.species.offset_features)
+				underwear_overlay.pixel_x += dna.species.offset_features[OFFSET_SOCKS][1]
+				underwear_overlay.pixel_y += dna.species.offset_features[OFFSET_SOCKS][2]
+			overlays_standing[SOCKS_LAYER] = underwear_overlay
+
+		apply_overlay(SOCKS_LAYER)
+		update_mutant_bodyparts(block_recursive_calls)
+
+/mob/living/carbon/human/update_inv_w_shirt(block_recursive_calls = FALSE)
+	if(!HAS_TRAIT(src, TRAIT_HUMAN_NO_RENDER))
+		remove_overlay(SHIRT_LAYER)
+
+		if(client && hud_used)
+			var/atom/movable/screen/inventory/inv = hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_SHIRT) + 1]
+			inv.update_icon()
+
+		if(istype(w_shirt, /obj/item/clothing/underwear))
+			var/obj/item/clothing/underwear/U = w_shirt
+			U.screen_loc = ui_shirt
+			if(client && hud_used && hud_used.hud_shown && hud_used.extra_shown)
+				if(hud_used.inventory_shown)
+					client.screen += w_shirt
+			update_observer_view(w_shirt,1)
+
+			if(w_uniform && (w_uniform.flags_inv & HIDEUNDERWEAR))
+				return
+
+			var/alt_worn = U.worn_icon || 'modular_sand/icons/mob/clothing/underwear.dmi'
+			var/variant_flag = NONE
+
+			if((dna?.species.bodytype & BODYTYPE_DIGITIGRADE) && U.supports_variations & DIGITIGRADE_VARIATION)
+				alt_worn = 'modular_sand/icons/mob/clothing/underwear_digi.dmi'
+				variant_flag |= DIGITIGRADE_VARIATION
+
+			var/mutable_appearance/underwear_overlay
+
+			var/gendered = (dna?.species.sexes && dna.features["body_model"] == FEMALE) ? U.fitted : NO_FEMALE_UNIFORM
+			underwear_overlay = U.build_worn_icon(SHIRT_LAYER, alt_worn, FALSE, gendered, null, variant_flag, FALSE)
+
+			if(OFFSET_UNDERWEAR in dna.species.offset_features)
+				underwear_overlay.pixel_x += dna.species.offset_features[OFFSET_SHIRT][1]
+				underwear_overlay.pixel_y += dna.species.offset_features[OFFSET_SHIRT][2]
+			overlays_standing[SHIRT_LAYER] = underwear_overlay
+
+		apply_overlay(SHIRT_LAYER)
+		update_mutant_bodyparts(block_recursive_calls)
+//
 
 /mob/living/carbon/human/update_inv_wear_id()
 	remove_overlay(ID_LAYER)
@@ -214,6 +338,40 @@ There are several things that need to be remembered:
 	overlays_standing[GLOVES_LAYER] = gloves_overlay
 	apply_overlay(GLOVES_LAYER)
 
+// Sandstorm edit
+/mob/living/carbon/human/update_inv_wrists()
+	if(!HAS_TRAIT(src, TRAIT_HUMAN_NO_RENDER))
+		remove_overlay(WRISTS_LAYER)
+
+		if(client && hud_used && hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_WRISTS) + 1])
+			var/atom/movable/screen/inventory/inv = hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_WRISTS) + 1]
+			inv.update_icon()
+
+		if(!wrists && bloody_hands)
+			var/mutable_appearance/bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -WRISTS_LAYER)
+			if(get_num_arms(FALSE) < 2)
+				if(has_left_hand(FALSE))
+					bloody_overlay.icon_state = "bloodyhands_left"
+				else if(has_right_hand(FALSE))
+					bloody_overlay.icon_state = "bloodyhands_right"
+
+			overlays_standing[WRISTS_LAYER] = bloody_overlay
+
+		var/mutable_appearance/wrists_overlay = overlays_standing[WRISTS_LAYER]
+		if(wrists)
+			wrists.screen_loc = ui_wrists
+			if(client && hud_used && hud_used.hud_shown && hud_used.extra_shown)
+				if(hud_used.inventory_shown)
+					client.screen += wrists
+			update_observer_view(wrists,1)
+			overlays_standing[WRISTS_LAYER] = wrists.build_worn_icon(default_layer = WRISTS_LAYER, default_icon_file = 'modular_sand/icons/mob/clothing/wrists.dmi')
+			wrists_overlay = overlays_standing[WRISTS_LAYER]
+			if(OFFSET_WRISTS in dna.species.offset_features)
+				wrists_overlay.pixel_x += dna.species.offset_features[OFFSET_WRISTS][1]
+				wrists_overlay.pixel_y += dna.species.offset_features[OFFSET_WRISTS][2]
+		overlays_standing[WRISTS_LAYER] = wrists_overlay
+		apply_overlay(WRISTS_LAYER)
+//
 
 /mob/living/carbon/human/update_inv_glasses()
 	remove_overlay(GLASSES_LAYER)
@@ -249,34 +407,62 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_inv_ears()
-	remove_overlay(EARS_LAYER)
+	remove_overlay(EAR_LEFT_LAYER)
 
 	if(!get_bodypart(BODY_ZONE_HEAD)) //decapitated
 		return
 
 	if(client && hud_used)
-		var/atom/movable/screen/inventory/inv = hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_EARS) + 1]
+		var/atom/movable/screen/inventory/inv = hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_EARS_LEFT) + 1]
 		inv.update_icon()
 
 	if(ears)
+		/*
 		var/icon_file = 'icons/mob/ears.dmi'
 		if(istype(ears, /obj/item))
 			var/obj/item/E = ears
 			if(E.sprite_sheets & (dna?.species.bodyflag))
 				icon_file = dna.species.get_custom_icons("ears")
+		*/
 		ears.screen_loc = ui_ears	//move the item to the appropriate screen loc
 		if(client && hud_used && hud_used.hud_shown)
 			if(hud_used.inventory_shown)			//if the inventory is open
 				client.screen += ears					//add it to the client's screen
 		update_observer_view(ears,1)
 
-		overlays_standing[EARS_LAYER] = ears.build_worn_icon(default_layer = EARS_LAYER, default_icon_file = icon_file)
-		var/mutable_appearance/ears_overlay = overlays_standing[EARS_LAYER]
+		overlays_standing[EAR_LEFT_LAYER] = ears.build_worn_icon(default_layer = EAR_LEFT_LAYER, default_icon_file = 'modular_sand/icons/mob/clothing/ears.dmi')
+		var/mutable_appearance/ears_overlay = overlays_standing[EAR_LEFT_LAYER]
 		if(OFFSET_EARS in dna.species.offset_features)
 			ears_overlay.pixel_x += dna.species.offset_features[OFFSET_EARS][1]
 			ears_overlay.pixel_y += dna.species.offset_features[OFFSET_EARS][2]
-		overlays_standing[EARS_LAYER] = ears_overlay
-	apply_overlay(EARS_LAYER)
+		overlays_standing[EAR_LEFT_LAYER] = ears_overlay
+	apply_overlay(EAR_LEFT_LAYER)
+
+/mob/living/carbon/human/update_inv_ears_extra()
+	if(!HAS_TRAIT(src, TRAIT_HUMAN_NO_RENDER))
+		remove_overlay(EAR_RIGHT_LAYER)
+
+		if(!get_bodypart(BODY_ZONE_HEAD)) //decapitated
+			return
+
+		if(client && hud_used)
+			var/atom/movable/screen/inventory/inv = hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_EARS_RIGHT) + 1]
+			inv.update_icon()
+
+		if(ears_extra)
+			ears_extra.screen_loc = ui_ears_extra	//move the item to the appropriate screen loc
+			if(client && hud_used && hud_used.hud_shown && hud_used.extra_shown)
+				if(hud_used.inventory_shown)			//if the inventory is open
+					client.screen += ears_extra			//add it to the client's screen
+			update_observer_view(ears_extra,1)
+
+			overlays_standing[EAR_RIGHT_LAYER] = ears_extra.build_worn_icon(default_layer = EAR_RIGHT_LAYER, default_icon_file = 'modular_sand/icons/mob/clothing/ears_extra.dmi')
+			var/mutable_appearance/ears_overlay = overlays_standing[EAR_RIGHT_LAYER]
+			if(OFFSET_EARS in dna.species.offset_features)
+				ears_overlay.pixel_x += dna.species.offset_features[OFFSET_EARS][1]
+				ears_overlay.pixel_y += dna.species.offset_features[OFFSET_EARS][2]
+			overlays_standing[EAR_RIGHT_LAYER] = ears_overlay
+		apply_overlay(EAR_RIGHT_LAYER)
 
 /mob/living/carbon/human/update_inv_neck()
 	remove_overlay(NECK_LAYER)

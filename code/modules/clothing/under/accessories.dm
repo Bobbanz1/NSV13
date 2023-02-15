@@ -4,6 +4,9 @@
 	icon = 'icons/obj/clothing/accessories.dmi'
 	icon_state = "plasma"
 	item_state = ""	//no inhands
+	//skyrat edit
+	worn_icon = 'icons/mob/accessories.dmi'
+	//
 	slot_flags = 0
 	w_class = WEIGHT_CLASS_SMALL
 	var/above_suit = FALSE
@@ -69,17 +72,18 @@
 		pixel_y = 0
 	layer = initial(layer)
 	plane = initial(plane)
-	U.accessory_overlay = null
+	U.accessory_overlays = null
 	U.cut_overlays()
 	U.attached_accessories -= src
+	U.accessory_overlays = list()
 	if(length(U.attached_accessories))
-		U.accessory_overlay = mutable_appearance('icons/mob/accessories.dmi', "blank", WRISTS_LAYER, U.plane)
+		U.accessory_overlays = mutable_appearance('icons/mob/accessories.dmi', "blank", WRISTS_LAYER, U.plane)
 		for(var/obj/item/clothing/accessory/attached_accessory in U.attached_accessories)
 			attached_accessory.force_unto(U)
-			var/mutable_appearance/Y = mutable_appearance(attached_accessory.mob_overlay_icon, attached_accessory.icon_state, WRISTS_LAYER, U.plane)
-			Y.alpha = attached_accessory.alpha
-			Y.color = attached_accessory.color
-			U.accessory_overlay.add_overlay(Y)
+			var/mutable_appearance/accessory_overlay = mutable_appearance(attached_accessory.worn_icon, attached_accessory.icon_state, WRISTS_LAYER, U.plane)
+			accessory_overlay.alpha = attached_accessory.alpha
+			accessory_overlay.color = attached_accessory.color
+			U.accessory_overlays += accessory_overlay
 //SKYRAT EDIT
 /obj/item/clothing/accessory/proc/force_unto(obj/item/clothing/under/U)
 	layer = FLOAT_LAYER

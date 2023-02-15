@@ -223,7 +223,7 @@
 				H.update_inv_w_socks()
 			else if(H.w_underwear && wash_obj(H.w_shirt))
 				H.update_inv_w_shirt()
-			if(H.ears && washears && wash_obj(H.ears) && wash_obj(H.ears_extra)) //skyrat edit
+			if(H.ears && wash_obj(H.ears) && wash_obj(H.ears_extra)) //skyrat edit
 				H.update_inv_ears()
 				//skyrat edit
 				H.update_inv_ears_extra()
