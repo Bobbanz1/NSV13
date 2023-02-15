@@ -10,7 +10,7 @@
 /atom/movable/screen
 	name = ""
 	icon = 'icons/mob/screen_gen.dmi'
-	layer = HUD_LAYER
+	//layer = HUD_LAYER
 	plane = HUD_PLANE
 	animate_movement = SLIDE_STEPS
 	speech_span = SPAN_ROBOT
@@ -100,7 +100,7 @@
 	var/icon_empty // Icon when empty. For now used only by humans.
 	var/icon_full  // Icon when contains an item. For now used only by humans.
 	var/list/object_overlays = list()
-	layer = HUD_LAYER
+	//layer = HUD_LAYER
 	plane = HUD_PLANE
 
 /atom/movable/screen/inventory/Click(location, control, params)
@@ -127,14 +127,14 @@
 
 /atom/movable/screen/inventory/MouseEntered()
 	..()
-	add_overlays()
+	//add_overlays()
 	//Apply the outline affect
 	add_stored_outline()
 
 /atom/movable/screen/inventory/MouseExited()
 	..()
-	cut_overlay(object_overlays)
-	object_overlays.Cut()
+	//cut_overlay(object_overlays)
+	//object_overlays.Cut()
 	remove_stored_outline()
 
 /atom/movable/screen/inventory/proc/add_stored_outline()
