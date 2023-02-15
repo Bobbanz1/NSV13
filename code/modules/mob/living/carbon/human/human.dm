@@ -476,6 +476,28 @@
 					return FALSE
 	return TRUE
 
+/mob/living/carbon/human/check_obscured_slots()
+	. = ..()
+	if(wear_suit)
+		if(wear_suit.flags_inv & HIDEGLOVES)
+			LAZYOR(., ITEM_SLOT_GLOVES)
+			LAZYOR(., ITEM_SLOT_WRISTS)
+		if(wear_suit.flags_inv & HIDEJUMPSUIT)
+			LAZYOR(., ITEM_SLOT_ICLOTHING)
+			LAZYOR(., ITEM_SLOT_SHIRT)
+			LAZYOR(., ITEM_SLOT_UNDERWEAR)
+		if(wear_suit.flags_inv & HIDESHOES)
+			LAZYOR(., ITEM_SLOT_FEET)
+			LAZYOR(., ITEM_SLOT_SOCKS)
+	if(w_uniform)
+		if(underwear_hidden())
+			LAZYOR(., ITEM_SLOT_UNDERWEAR)
+		if(undershirt_hidden())
+			LAZYOR(., ITEM_SLOT_SHIRT)
+	if(shoes)
+		if(socks_hidden())
+			LAZYOR(., ITEM_SLOT_SOCKS)
+
 /mob/living/carbon/human/assess_threat(judgment_criteria, lasercolor = "", datum/callback/weaponcheck=null)
 	if(judgment_criteria & JUDGE_EMAGGED)
 		return 10 //Everyone is a criminal!

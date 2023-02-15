@@ -52,6 +52,7 @@
 	var/datum/martial_art/boxing/style = new
 
 /obj/item/clothing/gloves/boxing/equipped(mob/user, slot)
+	. = ..()
 	if(!ishuman(user))
 		return
 	if(slot == ITEM_SLOT_GLOVES)

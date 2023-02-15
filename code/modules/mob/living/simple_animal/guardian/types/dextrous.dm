@@ -49,7 +49,7 @@
 		return 1
 	return 0
 
-/mob/living/simple_animal/hostile/guardian/dextrous/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
+/mob/living/simple_animal/hostile/guardian/dextrous/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, clothing_check = FALSE, list/return_warning)
 	switch(slot)
 		if(ITEM_SLOT_DEX_STORAGE)
 			if(internal_storage)

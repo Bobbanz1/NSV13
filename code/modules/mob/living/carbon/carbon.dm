@@ -983,3 +983,17 @@
 	if(mood)
 		if(mood.sanity < SANITY_UNSTABLE)
 			return TRUE
+
+/mob/living/carbon/check_obscured_slots()
+	if(head)
+		if(head.flags_inv & HIDEMASK)
+			LAZYOR(., ITEM_SLOT_MASK)
+		if(head.flags_inv & HIDEEYES)
+			LAZYOR(., ITEM_SLOT_EYES)
+		if(head.flags_inv & HIDEEARS)
+			LAZYOR(., ITEM_SLOT_EARS_LEFT)
+			LAZYOR(., ITEM_SLOT_EARS_RIGHT)
+
+	if(wear_mask)
+		if(wear_mask.flags_inv & HIDEEYES)
+			LAZYOR(., ITEM_SLOT_EYES)

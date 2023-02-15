@@ -455,6 +455,7 @@
 	var/datum/martial_art/wrestling/style = new
 
 /obj/item/storage/belt/champion/wrestling/equipped(mob/user, slot)
+	. = ..()
 	if(!ishuman(user))
 		return
 	if(slot == ITEM_SLOT_BELT)

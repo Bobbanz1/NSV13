@@ -3686,6 +3686,7 @@
 #include "modular_sand\code\datums\interactions\interaction_datums\wholesome\kiss.dm"
 #include "modular_sand\code\datums\traits\neutral.dm"
 #include "modular_sand\code\game\objects\effects\decals\cleanable\lewd_decals.dm"
+#include "modular_sand\code\game\objects\items\fleshlight.dm"
 #include "modular_sand\code\game\objects\items\lovedice.dm"
 #include "modular_sand\code\modules\arousal\arousal.dm"
 #include "modular_sand\code\modules\arousal\creampie.dm"

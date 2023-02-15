@@ -90,6 +90,7 @@
 		Die()
 
 /obj/item/clothing/mask/facehugger/equipped(mob/M)
+	. = ..()
 	Attach(M)
 
 /obj/item/clothing/mask/facehugger/proc/on_entered(datum/source, atom/target)

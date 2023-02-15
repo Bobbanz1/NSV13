@@ -320,7 +320,7 @@
 	var/obj/item/W = get_active_held_item()
 	if(istype(W))
 		//IF HELD TRY APPLY TO SLOT
-		if(equip_to_slot_if_possible(W, slot,0,0,0))
+		if(equip_to_slot_if_possible(W, slot, FALSE, FALSE, FALSE, TRUE))
 			W.apply_outline()
 			return TRUE
 	//IF NO ITEM IS HELD, APPLY TO SLOT
@@ -328,90 +328,16 @@
 		// Activate the item
 		var/obj/item/I = get_item_by_slot(slot)
 		if(istype(I))
+			if(slot in check_obscured_slots())
+				to_chat(src, "<span class='warning'>You are unable to unequip that while wearing other garments over it!</span>")
+				return FALSE
 			I.attack_hand(src)
 
 	return FALSE
 
-/**
-  * Try to equip an item to a slot on the mob
-  *
-  * This is a SAFE proc. Use this instead of equip_to_slot()!
-  *
-  * set qdel_on_fail to have it delete W if it fails to equip
-  *
-  * set disable_warning to disable the 'you are unable to equip that' warning.
-  *
-  * unset redraw_mob to prevent the mob icons from being redrawn at the end.
-  */
-/mob/proc/equip_to_slot_if_possible(obj/item/W, slot, qdel_on_fail = FALSE, disable_warning = FALSE, redraw_mob = TRUE, bypass_equip_delay_self = FALSE)
-	if(!istype(W))
-		return FALSE
-	if(!W.mob_can_equip(src, null, slot, disable_warning, bypass_equip_delay_self))
-		if(qdel_on_fail)
-			qdel(W)
-		else if(!disable_warning)
-			to_chat(src, "<span class='warning'>You are unable to equip that!</span>")
-		return FALSE
-	equip_to_slot(W, slot, redraw_mob) //This proc should not ever fail.
-	return TRUE
-
-/**
-  * Actually equips an item to a slot (UNSAFE)
-  *
-  * This is an UNSAFE proc. It merely handles the actual job of equipping. All the checks on
-  * whether you can or can't equip need to be done before! Use mob_can_equip() for that task.
-  *
-  *In most cases you will want to use equip_to_slot_if_possible()
-  */
-/mob/proc/equip_to_slot(obj/item/W, slot)
+/// Checks for slots that are currently obscured by other garments.
+/mob/proc/check_obscured_slots()
 	return
-
-/**
-  * Equip an item to the slot or delete
-  *
-  * This is just a commonly used configuration for the equip_to_slot_if_possible() proc, used to
-  * equip people when the round starts and when events happen and such.
-  *
-  * Also bypasses equip delay checks, since the mob isn't actually putting it on.
-  */
-/mob/proc/equip_to_slot_or_del(obj/item/W, slot)
-	return equip_to_slot_if_possible(W, slot, TRUE, TRUE, FALSE, TRUE)
-
-/**
-  * Auto equip the passed in item the appropriate slot based on equipment priority
-  *
-  * puts the item "W" into an appropriate slot in a human's inventory
-  *
-  * returns 0 if it cannot, 1 if successful
-  */
-/mob/proc/equip_to_appropriate_slot(obj/item/W)
-	if(!istype(W))
-		return 0
-	var/slot_priority = W.slot_equipment_priority
-
-	if(!slot_priority)
-		// Sandstorm edit
-		slot_priority = list( \
-			ITEM_SLOT_BACK, ITEM_SLOT_ID,\
-			ITEM_SLOT_UNDERWEAR,\
-			ITEM_SLOT_SOCKS,\
-			ITEM_SLOT_SHIRT,\
-			ITEM_SLOT_ICLOTHING, ITEM_SLOT_OCLOTHING,\
-			ITEM_SLOT_MASK, ITEM_SLOT_HEAD, ITEM_SLOT_NECK,\
-			ITEM_SLOT_FEET, ITEM_SLOT_WRISTS, ITEM_SLOT_GLOVES,\
-			ITEM_SLOT_EARS_LEFT, ITEM_SLOT_EARS_RIGHT,\
-			ITEM_SLOT_EYES,\
-			ITEM_SLOT_BELT, ITEM_SLOT_SUITSTORE,\
-			ITEM_SLOT_LPOCKET, ITEM_SLOT_RPOCKET,\
-			ITEM_SLOT_DEX_STORAGE\
-		)
-		//
-
-	for(var/slot in slot_priority)
-		if(equip_to_slot_if_possible(W, slot, 0, 1, 1)) //qdel_on_fail = 0; disable_warning = 1; redraw_mob = 1
-			return 1
-
-	return 0
 
 // Convinience proc.  Collects crap that fails to equip either onto the mob's back, or drops it.
 // Used in job equipping so shit doesn't pile up at the start loc.

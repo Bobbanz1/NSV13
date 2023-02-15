@@ -122,6 +122,7 @@
 	var/datum/language/piratespeak/L = new
 
 /obj/item/clothing/head/pirate/equipped(mob/user, slot)
+	. = ..()
 	if(!ishuman(user))
 		return
 	if(slot == ITEM_SLOT_HEAD)

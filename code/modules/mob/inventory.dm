@@ -158,7 +158,7 @@
 
 //Returns if a certain item can be equipped to a certain slot.
 // Currently invalid for two-handed items - call obj/item/mob_can_equip() instead.
-/mob/proc/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
+/mob/proc/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, clothing_check = FALSE, list/return_warning)
 	return FALSE
 
 /mob/proc/can_put_in_hand(I, hand_index)
@@ -334,53 +334,70 @@
 		I.dropped(src, was_thrown)
 	return TRUE
 
+//SANDSTORM - START
+//This is a SAFE proc. Use this instead of equip_to_slot()!
+//set qdel_on_fail to have it delete W if it fails to equip
+//set disable_warning to disable the 'you are unable to equip that' warning.
+//unset redraw_mob to prevent the mob from being redrawn at the end.
+/mob/proc/equip_to_slot_if_possible(obj/item/W, slot, qdel_on_fail = FALSE, disable_warning = FALSE, redraw_mob = TRUE, bypass_equip_delay_self = FALSE, clothing_check = FALSE)
+	if(!istype(W))
+		return FALSE
+	var/list/warning = list("<span class='warning'>You are unable to equip that!</span>")
+	if(!W.mob_can_equip(src, null, slot, disable_warning, bypass_equip_delay_self, clothing_check, warning))
+		if(qdel_on_fail)
+			qdel(W)
+		else if(!disable_warning)
+			to_chat(src, warning[1])
+		return FALSE
+	equip_to_slot(W, slot, redraw_mob) //This proc should not ever fail.
+	return TRUE
+
+//This is an UNSAFE proc. It merely handles the actual job of equipping. All the checks on whether you can or can't equip need to be done before! Use mob_can_equip() for that task.
+//In most cases you will want to use equip_to_slot_if_possible()
+/mob/proc/equip_to_slot(obj/item/W, slot)
+	return
+
+//This is just a commonly used configuration for the equip_to_slot_if_possible() proc, used to equip people when the round starts and when events happen and such.
+//Also bypasses equip delay checks, since the mob isn't actually putting it on.
+/mob/proc/equip_to_slot_or_del(obj/item/W, slot)
+	return equip_to_slot_if_possible(W, slot, TRUE, TRUE, FALSE, TRUE)
+
+//puts the item "W" into an appropriate slot in a human's inventory
+//returns 0 if it cannot, 1 if successful
+/mob/proc/equip_to_appropriate_slot(obj/item/W, clothing_check = FALSE)
+	if(!istype(W))
+		return 0
+	var/slot_priority = W.slot_equipment_priority
+
+	if(!slot_priority)
+		// Sandstorm edit
+		slot_priority = list( \
+			ITEM_SLOT_BACK, ITEM_SLOT_ID,\
+			ITEM_SLOT_UNDERWEAR,\
+			ITEM_SLOT_SOCKS,\
+			ITEM_SLOT_SHIRT,\
+			ITEM_SLOT_ICLOTHING, ITEM_SLOT_OCLOTHING,\
+			ITEM_SLOT_MASK, ITEM_SLOT_HEAD, ITEM_SLOT_NECK,\
+			ITEM_SLOT_FEET, ITEM_SLOT_WRISTS, ITEM_SLOT_GLOVES,\
+			ITEM_SLOT_EARS_LEFT, ITEM_SLOT_EARS_RIGHT,\
+			ITEM_SLOT_EYES,\
+			ITEM_SLOT_BELT, ITEM_SLOT_SUITSTORE,\
+			ITEM_SLOT_LPOCKET, ITEM_SLOT_RPOCKET,\
+			ITEM_SLOT_DEX_STORAGE\
+		)
+		//
+
+	for(var/slot in slot_priority)
+		if(equip_to_slot_if_possible(W, slot, FALSE, TRUE, TRUE, FALSE, clothing_check)) //qdel_on_fail = 0; disable_warning = 1; redraw_mob = 1
+			return 1
+
+	return 0
+//
+
 //Outdated but still in use apparently. This should at least be a human proc.
 //Daily reminder to murder this - Remie.
 /mob/living/proc/get_equipped_items(include_pockets = FALSE)
 	return
-
-/mob/living/carbon/get_equipped_items(include_pockets = FALSE)
-	var/list/items = list()
-	if(back)
-		items += back
-	if(head)
-		items += head
-	if(wear_mask)
-		items += wear_mask
-	if(wear_neck)
-		items += wear_neck
-	if(handcuffed)
-		items += handcuffed
-	if(legcuffed)
-		items += legcuffed
-	return items
-
-/mob/living/carbon/human/get_equipped_items(include_pockets = FALSE)
-	var/list/items = ..()
-	if(belt)
-		items += belt
-	if(ears)
-		items += ears
-	if(glasses)
-		items += glasses
-	if(gloves)
-		items += gloves
-	if(shoes)
-		items += shoes
-	if(wear_id)
-		items += wear_id
-	if(wear_suit)
-		items += wear_suit
-	if(w_uniform)
-		items += w_uniform
-	if(include_pockets)
-		if(l_store)
-			items += l_store
-		if(r_store)
-			items += r_store
-		if(s_store)
-			items += s_store
-	return items
 
 /mob/living/proc/unequip_everything()
 	var/list/items = list()
@@ -390,7 +407,7 @@
 	drop_all_held_items()
 
 
-/mob/living/carbon/proc/check_obscured_slots(transparent_protection)
+/mob/living/carbon/check_obscured_slots(transparent_protection)
 	var/obscured = NONE
 	var/hidden_slots = NONE
 
@@ -410,10 +427,14 @@
 		obscured |= ITEM_SLOT_EARS_RIGHT
 	if(hidden_slots & HIDEGLOVES)
 		obscured |= ITEM_SLOT_GLOVES
+		obscured |= ITEM_SLOT_WRISTS
 	if(hidden_slots & HIDEJUMPSUIT)
 		obscured |= ITEM_SLOT_ICLOTHING
+		obscured |= ITEM_SLOT_SHIRT
+		obscured |= ITEM_SLOT_UNDERWEAR
 	if(hidden_slots & HIDESHOES)
 		obscured |= ITEM_SLOT_FEET
+		obscured |= ITEM_SLOT_SOCKS
 	if(hidden_slots & HIDESUITSTORAGE)
 		obscured |= ITEM_SLOT_SUITSTORE
 
@@ -425,7 +446,7 @@
 		to_chat(M, "<span class='warning'>You are not holding anything to equip!</span>")
 		return FALSE
 
-	if(M.equip_to_appropriate_slot(src))
+	if(M.equip_to_appropriate_slot(src, TRUE))
 		M.update_inv_hands()
 		return TRUE
 	else

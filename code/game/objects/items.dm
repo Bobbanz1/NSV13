@@ -70,6 +70,7 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	var/w_class = WEIGHT_CLASS_NORMAL
 	/// This is used to determine on which inventory slots an item can fit.
 	var/slot_flags = 0
+	var/current_equipped_slot
 
 	pass_flags = PASSTABLE
 	pressure_resistance = 4
@@ -438,6 +439,10 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		return
 	if(anchored)
 		return
+	if(loc == user && current_equipped_slot && current_equipped_slot != ITEM_SLOT_HANDS)
+		if(current_equipped_slot in user.check_obscured_slots())
+			to_chat(src, "<span class='warning'>You are unable to unequip that while wearing other garments over it!</span>")
+			return FALSE
 
 	if(resistance_flags & ON_FIRE)
 		var/mob/living/carbon/C = user
@@ -459,7 +464,7 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 				C.update_damage_overlays()
 			return
 
-	if(acid_level > 20 && !ismob(loc))// so we can still remove the clothes on us that have acid.
+	if(acid_level > 20 && ismob(loc))// so we can still remove the clothes on us that have acid. //NSV13
 		var/mob/living/carbon/C = user
 		if(istype(C))
 			if(!C.gloves || (!(C.gloves.resistance_flags & (UNACIDABLE|ACID_PROOF))))
@@ -504,6 +509,10 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		return
 	if(anchored)
 		return
+	if(loc == user && current_equipped_slot && current_equipped_slot != ITEM_SLOT_HANDS)
+		if(current_equipped_slot in user.check_obscured_slots())
+			to_chat(src, "<span class='warning'>You are unable to unequip that while wearing other garments over it!</span>")
+			return FALSE
 
 	SEND_SIGNAL(loc, COMSIG_TRY_STORAGE_TAKE, src, user.loc, TRUE)
 
@@ -662,6 +671,7 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 
 /obj/item/proc/dropped(mob/user)
 	SHOULD_CALL_PARENT(TRUE)
+	current_equipped_slot = null
 	for(var/X in actions)
 		var/datum/action/A = X
 		A.Remove(user)
@@ -697,8 +707,10 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 // for items that can be placed in multiple slots
 // note this isn't called during the initial dressing of a player
 /obj/item/proc/equipped(mob/user, slot)
+	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ITEM_EQUIPPED, user, slot)
 	SEND_SIGNAL(user, COMSIG_MOB_EQUIPPED_ITEM, src, slot)
+	current_equipped_slot = slot
 	for(var/X in actions)
 		var/datum/action/A = X
 		if(item_action_slot_check(slot, user)) //some items only give their actions buttons when in a specific slot.
@@ -719,11 +731,11 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 //if this is being done by a mob other than M, it will include the mob equipper, who is trying to equip the item to mob M. equipper will be null otherwise.
 //If you are making custom procs but would like to retain partial or complete functionality of this one, include a 'return ..()' to where you want this to happen.
 //Set disable_warning to TRUE if you wish it to not give you outputs.
-/obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
+/obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, clothing_check = FALSE, list/return_warning)
 	if(!M)
 		return FALSE
 
-	return M.can_equip(src, slot, disable_warning, bypass_equip_delay_self)
+	return M.can_equip(src, slot, disable_warning, bypass_equip_delay_self, clothing_check, return_warning)
 
 /obj/item/verb/verb_pickup()
 	set src in oview(1)

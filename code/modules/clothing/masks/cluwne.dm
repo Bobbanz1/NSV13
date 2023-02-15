@@ -51,6 +51,7 @@
     return SPEECH_MESSAGE
 
 /obj/item/clothing/mask/cluwne/equipped(mob/user, slot)
+    . = ..()
     if(!user.has_dna())
         return
     if(slot == ITEM_SLOT_MASK)
@@ -83,6 +84,7 @@
         play_laugh1()
 
 /obj/item/clothing/mask/cluwne/happy_cluwne/equipped(mob/user, slot)
+    . = ..()
     if(!ishuman(user))
         return
     var/mob/living/carbon/human/H = user
