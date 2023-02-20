@@ -28876,6 +28876,9 @@
 /obj/structure/cable{
 	icon_state = "4-8"
 	},
+/obj/structure/cable{
+	icon_state = "1-4"
+	},
 /turf/open/floor/carpet/ship/blue{
 	color = "#9999DD";
 	name = "nanoweave carpet (bluer)"
@@ -31131,13 +31134,6 @@
 /obj/machinery/airalarm/directional/west,
 /turf/open/floor/engine,
 /area/maintenance/fore)
-"vOx" = (
-/obj/machinery/relativity_breaker,
-/turf/open/floor/carpet/ship/blue{
-	color = "#9999DD";
-	name = "nanoweave carpet (bluer)"
-	},
-/area/crew_quarters/heads/xo)
 "vOM" = (
 /obj/structure/table/wood,
 /obj/item/reagent_containers/food/snacks/cakeslice/plain{
@@ -33296,6 +33292,16 @@
 /obj/machinery/atmospherics/pipe/simple/supply/hidden/layer2,
 /turf/open/openspace,
 /area/engine/engine_smes)
+"xpH" = (
+/obj/structure/cable{
+	icon_state = "0-2"
+	},
+/obj/machinery/relativity_modifier,
+/turf/open/floor/carpet/ship/blue{
+	color = "#9999DD";
+	name = "nanoweave carpet (bluer)"
+	},
+/area/crew_quarters/heads/xo)
 "xpL" = (
 /obj/structure/table/wood,
 /obj/structure/cable{
@@ -71807,7 +71813,7 @@ cAp
 bBU
 bww
 aaQ
-qLO
+xpH
 tXM
 nNs
 fFC
@@ -72578,7 +72584,7 @@ fwr
 bBU
 eIc
 qLO
-vOx
+qLO
 rwB
 oMB
 eVg
