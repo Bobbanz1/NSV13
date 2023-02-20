@@ -31131,6 +31131,13 @@
 /obj/machinery/airalarm/directional/west,
 /turf/open/floor/engine,
 /area/maintenance/fore)
+"vOx" = (
+/obj/machinery/relativity_breaker,
+/turf/open/floor/carpet/ship/blue{
+	color = "#9999DD";
+	name = "nanoweave carpet (bluer)"
+	},
+/area/crew_quarters/heads/xo)
 "vOM" = (
 /obj/structure/table/wood,
 /obj/item/reagent_containers/food/snacks/cakeslice/plain{
@@ -72571,7 +72578,7 @@ fwr
 bBU
 eIc
 qLO
-qLO
+vOx
 rwB
 oMB
 eVg

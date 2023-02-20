@@ -3,97 +3,74 @@
 	desc = "A device that generates a field that reduces the mass of the vessel it's activated within."
 	icon = 'icons/obj/machines/NavBeacon.dmi'
 	icon_state = "beacon-inactive"
-	use_power = NO_POWER_USE
+	density = TRUE
+	anchored = TRUE
+	idle_power_usage = 50
+	active_power_usage = 0
 	var/on = FALSE
-	var/incremental_rate = 5000000	// amount of power to drain per tick
-	var/power_drained = 0 		// has drained this much power
-	var/max_power = 400000000		// maximum power that can be drained before exploding
+	var/power_allocation = 0 //how much power we are pumping into the system
+	var/incremental_rate = 0 // amount of power to drain per tick 5 MW
+	var/power_drained = 0 // has drained this much power
+	var/max_power_allocation = 5 // total maximum power allocation we can devour without CE authorization
+	var/overclock_max_power_allocation = 400 MW // 400 MW is the grand maximum this thing can draw
+	var/intended_mass = MASS_MEDIUM_LARGE // What ship mass this version is meant for
 	var/obj/structure/cable/C = null
-	var/obj/structure/overmap/linked
+	var/obj/structure/overmap/OM
+	var/obj/structure/cable/attached // the attached cable
+	var/save_forward
+	var/save_backward
+	var/save_side
+	var/save_max_angular
 
 /obj/machinery/relativity_breaker/Initialize(mapload)
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/relativity_breaker/LateInitialize()
-	linked = get_overmap()
-	return linked
+	. = ..()
+	OM = get_overmap()
+	if(OM)
+		save_forward = OM.forward_maxthrust
+		save_backward = OM.backward_maxthrust
+		save_side = OM.side_maxthrust
+		save_max_angular = OM.max_angular_acceleration
 
-/obj/machinery/relativity_breaker/proc/try_use_power()
+/obj/machinery/relativity_breaker/process()
+	if(OM)
+		handle_power_allocation()
+
+		if(!try_use_power(power_allocation))
+			on = FALSE
+			update_visuals()
+			return FALSE
+
+		if(is_operational)
+			handle_mass_reduction()
+			update_visuals()
+			return TRUE
+
+/obj/machinery/relativity_breaker/proc/try_use_power(amount)
 	var/turf/T = get_turf(src)
-	C = T.get_cable_node()
-	if(C?.surplus() > power_input)
-		C.powernet.load += power_input
+	attached = T.get_cable_node()
+	if(attached?.surplus() > amount)
+		attached.powernet.load += amount
 		return TRUE
 	return FALSE
 
-/obj/machinery/relativity_breaker/process()
-	if(on)
-		if(power_input > 0 && try_use_power())
-			radiation_pulse( src, radiationAmountOnProcess ) // Let's turn one form of energy into another form of energy. Using science!
-		else
-			on = FALSE
-			update_visuals()
+/obj/machinery/relativity_breaker/proc/handle_power_allocation()
+	active_power_usage = power_allocation
+
+/obj/machinery/relativity_breaker/proc/handle_mass_reduction()
+	if(OM?.mass == intended_mass)
+		return
 
 /obj/machinery/relativity_breaker/proc/update_visuals()
 	if(panel_open)
 		icon_state = "machine_maintenance"
 	else if( on )
-		icon_state = "machine_active"
+		icon_state = "beacon-active"
 	else
 		icon_state = "machine_inactive"
-
-/obj/machinery/relativity_breaker/examine(mob/user)
-	. = ..()
-	var/turf/T = get_turf(src)
-	C = T.get_cable_node()
-	if ( C?.surplus() > power_input )
-		. += "<span class='notice'>Its LED display states: [display_power(power_input)]</span>"
-	else
-		. += "<span class='warning'>Its LED display flashes: [display_power(power_input)]</span>"
-
-/obj/machinery/relativity_breaker/emag_act(mob/user)
-	if ( !emagged )
-		log_game("[key_name(user)] emagged [src].")
-		// Emagging amplifies vibrations instead of reducing them!
-		to_chat(user, "<span class='warning'>[src] inverts its manipulators, producing sparks!</span>")
-		playsound(src.loc, "sparks", 50, 1)
-		do_sparks(4, FALSE, src)
-		emagged = TRUE
-		recalculatePartEfficiency()
-
-/obj/machinery/relativity_breaker/ui_data(mob/user)
-	var/list/data = list()
-	data["max_strength"] = (1 - EfficiencyToStrength(max_manipulator_rating)) * 100
-	data["min_strength"] = (1 - EfficiencyToStrength(min_manipulator_rating)) * 100
-	data["strength"] = (1 - EfficiencyToStrength(manipulator_setting)) * 100
-	data["max_range"] = EfficiencyToRange(max_scanner_rating)
-	data["min_range"] = EfficiencyToRange(min_scanner_rating)
-	data["range"] = EfficiencyToRange(scanner_setting)
-	data["power_usage"] = display_power(power_input)
-	data["on"] = on
-	return data
-
-
-/obj/machinery/relativity_breaker/ui_act(action, params)
-	. = ..()
-	if(.)
-		return
-	if(panel_open)
-		return TRUE
-	switch(action)
-		if("strength")
-			manipulator_setting = clamp(StrengthToEfficiency(1 - (params["value"] / 100)), min_manipulator_rating, max_manipulator_rating)
-			RefreshParts()
-			return TRUE
-		if("range")
-			scanner_setting = clamp(RangeToEfficiency(params["value"]), min_scanner_rating, max_scanner_rating)
-			RefreshParts()
-			return TRUE
-		if("toggle_on")
-			toggle_machine()
-			return TRUE
-	return FALSE
 
 /obj/machinery/relativity_breaker/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -102,13 +79,44 @@
 		ui.open()
 		ui.set_autoupdate(TRUE)
 
-/obj/machinery/computer/emergency_shuttle/ui_state(mob/user)
-	return GLOB.default_state
+/obj/machinery/relativity_breaker/ui_act(action, params)
+	if(..())
+		return
+	var/adjust = text2num(params["adjust"])
+	if(action == "power_allocation")
+		if(adjust && isnum(adjust))
+			power_allocation = adjust
+			if(power_allocation > max_power_allocation)
+				power_allocation = max_power_allocation
+				return
+			if(power_allocation < 0)
+				power_allocation = 0
+				return
+	switch(action)
+		if("toggle_machine")
+			toggle_machine()
+			return TRUE
+	return FALSE
+
+/obj/machinery/relativity_breaker/ui_data(mob/user)
+	var/list/data = list()
+	data["power_allocation"] = power_allocation
+	data["max_power_allocation"] = max_power_allocation
+	data["on"] = on
+
+	data["available_power"] = 0
+	var/turf/T = get_turf(src)
+	attached = T.get_cable_node()
+	if(attached)
+		if(attached.powernet)
+			data["available_power"] = attached.surplus()
+
+	return data
 
 /obj/machinery/relativity_breaker/proc/toggle_machine()
 	var/turf/T = get_turf(src)
 	C = T.get_cable_node()
-	if ( on || C?.surplus() > power_input )
+	if(on || C?.surplus() > power_allocation)
 		on = !on
 		update_visuals()
 
@@ -129,7 +137,7 @@
 	return TRUE
 
 
-// Techwebs
+/* Techwebs
 
 /datum/design/board/relativity_breaker
 	name = "Machine Design (Relativity Field Generator Board)"
@@ -148,3 +156,4 @@
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 10000)
 	export_price = 5000
 
+*/
