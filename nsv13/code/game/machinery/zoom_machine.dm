@@ -39,6 +39,7 @@
 
 		if(!try_use_power(power_allocation))
 			on = FALSE
+			handle_mass_reduction()
 			update_visuals()
 			return FALSE
 
