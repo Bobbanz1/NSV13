@@ -22044,6 +22044,10 @@
 /obj/structure/cable/white{
 	icon_state = "4-8"
 	},
+/obj/structure/cable/white{
+	icon_state = "0-4"
+	},
+/obj/machinery/relativity_modifier,
 /turf/open/floor/carpet/ship/orange_carpet,
 /area/engine/engineering/reactor_control)
 "ozc" = (

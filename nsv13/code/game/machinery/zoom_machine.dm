@@ -10,6 +10,17 @@
  */
 #define LINEAR_SCALE(B, P, I, S) (B + (P / I) * S)
 
+/**
+ * Exponential Scaling function
+ *
+ * Params:
+ *
+ * * B: Base value
+ * * P: Inputted Power value
+ * * S: Factor Scale Value
+ */
+#define EXPONENTIAL_SCALE(B, P, S) (B + log(P) * S)
+
 /obj/machinery/relativity_modifier
 	name = "Higgs Reduction Field Generator"
 	desc = "A device that generates a field that reduces the mass of the vessel it's activated within."
@@ -31,21 +42,34 @@
 	var/save_max_angular // The original maximum angular acceleration of the ship
 
 	var/obj/structure/cable/attached // The attached cable
-	var/incremental_value = 0.05 // Value we use to increment the speed/manueverability of the ship
-	var/incremental_power_threshold = 5 MW // Power threshold we use to increment the speed/manueverability of the ship
+	var/incremental_power_threshold = 5 MW // Power threshold we use to increment the speed/maneuverability of the ship
 	var/power_allocation = 0 // How much power we are pumping into the system
 	var/max_power_allocation = 5 MW // Total maximum power allocation we can devour without CE authorization
 	var/max_possible_allocation = 400 MW // 400 MW is the complete maximum this thing can draw if you override the safeties
-	var/thrust_normality = 5 MW // How much power we need to reach the normal maneuverability of the ship
+
+	var/const/thrust_normality = 5 MW // How much power we need to reach the normal maneuverability of the ship
+	var/incremental_value = 0.05 // Value we use to increment the speed/maneuverability of the ship
+	//var/near_thrust_normality
 
 /obj/machinery/relativity_modifier/Initialize(mapload)
 	. = ..()
+	//near_thrust_normality = thrust_normality - 1
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/relativity_modifier/LateInitialize()
 	. = ..()
 	OM = get_overmap()
 	addtimer(CALLBACK(src, .proc/collect_ship_stats), 30 SECONDS)
+
+/obj/machinery/relativity_modifier/Destroy()
+	. = ..()
+	attached = null
+	if(OM) //If destroyed, then return the vessel back to its original maneuverability, hopefully
+		OM.forward_maxthrust = save_forward
+		OM.backward_maxthrust = save_backward
+		OM.side_maxthrust = save_side
+		OM.max_angular_acceleration = save_max_angular
+		OM = null
 
 /obj/machinery/relativity_modifier/process()
 	if(on && OM)
@@ -85,6 +109,13 @@
 	active_power_usage = power_allocation
 	return
 
+/**
+ * Handles the mass reduction of the vessel
+ * Uses a linear scale to determine how maneuverable the ship is
+ *
+ * Params:
+ * * allocated: How much power we are pumping into the system
+ */
 /obj/machinery/relativity_modifier/proc/handle_mass_reduction(var/allocated)
 	if(on)
 		if(OM?.mass == intended_mass)
@@ -94,20 +125,29 @@
 					OM.backward_maxthrust = 0
 					OM.side_maxthrust = 0
 					OM.max_angular_acceleration = 0
+					return
 
 				if(1 to (thrust_normality-1))
 					OM.forward_maxthrust = LINEAR_SCALE(save_forward, allocated, incremental_power_threshold, incremental_value)
 					OM.backward_maxthrust = LINEAR_SCALE(save_backward, allocated, incremental_power_threshold, incremental_value)
 					OM.side_maxthrust = LINEAR_SCALE(save_side, allocated, incremental_power_threshold, incremental_value)
 					OM.max_angular_acceleration = LINEAR_SCALE(save_max_angular, allocated, incremental_power_threshold, incremental_value)
+					return
 
+				if(thrust_normality)
+					OM.forward_maxthrust = save_forward
+					OM.backward_maxthrust = save_backward
+					OM.side_maxthrust = save_side
+					OM.max_angular_acceleration = save_max_angular
+					return
 			return
 
-	else if(!on && OM?.mass == intended_mass)
-		OM.forward_maxthrust = save_forward
-		OM.backward_maxthrust = save_backward
-		OM.side_maxthrust = save_side
-		OM.max_angular_acceleration = save_max_angular
+	else
+		//Hopefully this will prevent the ship from being stuck in a state where it can't move if the device is turned off
+		OM?.forward_maxthrust = save_forward
+		OM?.backward_maxthrust = save_backward
+		OM?.side_maxthrust = save_side
+		OM?.max_angular_acceleration = save_max_angular
 		return
 
 /obj/machinery/relativity_modifier/proc/update_visuals()
@@ -235,3 +275,4 @@
 
 */
 #undef LINEAR_SCALE
+#undef EXPONENTIAL_SCALE
