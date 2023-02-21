@@ -31,29 +31,29 @@
 	idle_power_usage = 50
 	active_power_usage = 0
 	req_one_access = list(ACCESS_CE, ACCESS_CAPTAIN)
-	var/on = FALSE
+	var/on = FALSE // Whether or not the machine is on
 	var/override_safeties = FALSE // Whether or not we are overriding the power draw limit
 
-	var/obj/structure/overmap/OM
+	var/obj/structure/overmap/OM // local reference to the overmap vessel
 	var/intended_mass = MASS_MEDIUM_LARGE // What ship mass this version is meant for
+
+	/// MANEUVERABILITY VARIABLES ///
+	var/const/thrust_normality = 5 MW // How much power we need to reach the normal maneuverability of the ship
+	var/incremental_value = 0.05 // Value we use to increment the speed/maneuverability of the ship
 	var/save_forward // The original maximum forward thrust of the ship
 	var/save_backward // The original maximum backward thrust of the ship
 	var/save_side // The original maximum side thrust of the ship
 	var/save_max_angular // The original maximum angular acceleration of the ship
 
+	/// POWER VARIABLES ///
 	var/obj/structure/cable/attached // The attached cable
 	var/incremental_power_threshold = 5 MW // Power threshold we use to increment the speed/maneuverability of the ship
 	var/power_allocation = 0 // How much power we are pumping into the system
 	var/max_power_allocation = 5 MW // Total maximum power allocation we can devour without CE authorization
 	var/max_possible_allocation = 400 MW // 400 MW is the complete maximum this thing can draw if you override the safeties
 
-	var/const/thrust_normality = 5 MW // How much power we need to reach the normal maneuverability of the ship
-	var/incremental_value = 0.05 // Value we use to increment the speed/maneuverability of the ship
-	//var/near_thrust_normality
-
 /obj/machinery/relativity_modifier/Initialize(mapload)
 	. = ..()
-	//near_thrust_normality = thrust_normality - 1
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/relativity_modifier/LateInitialize()
@@ -64,7 +64,7 @@
 /obj/machinery/relativity_modifier/Destroy()
 	. = ..()
 	attached = null
-	if(OM) //If destroyed, then return the vessel back to its original maneuverability, hopefully
+	if(OM) //If destroyed, then return the vessel back to its original maneuverability, potentially
 		OM.forward_maxthrust = save_forward
 		OM.backward_maxthrust = save_backward
 		OM.side_maxthrust = save_side
@@ -76,19 +76,21 @@
 		handle_power_allocation()
 
 		if(!try_use_power(power_allocation))
-			on = FALSE
-			handle_mass_reduction(power_allocation)
+			on = FALSE // If we can't draw power, then turn off the machine
+			handle_mass_reduction(power_allocation) // Hopefully returns the ship to its original maneuverability
 			update_visuals()
 			return FALSE
 
 		if(is_operational)
+			// If we can draw power, then start messing with the ship's maneuverability
 			handle_mass_reduction(power_allocation)
 			update_visuals()
 			return TRUE
 
 /**
- * Collects the overmap vessel's original movement variables
- * before we start messing with them
+ * Collects the overmap vessel's original movement variables before we start messing with them
+ * This is so we can return the ship to its original maneuverability if we turn off the machine
+ * Only runs once, 30 seconds after the machine is initialized in order to give time for the overmap to initialize
  */
 /obj/machinery/relativity_modifier/proc/collect_ship_stats()
 	if(OM)
@@ -144,6 +146,7 @@
 
 	else
 		//Hopefully this will prevent the ship from being stuck in a state where it can't move if the device is turned off
+		//Knowing my luck, it probably won't
 		OM?.forward_maxthrust = save_forward
 		OM?.backward_maxthrust = save_backward
 		OM?.side_maxthrust = save_side
