@@ -23,7 +23,7 @@
 
 /obj/machinery/relativity_modifier
 	name = "Higgs Reduction Field Generator"
-	desc = "A device that generates a field that reduces the mass of the vessel it's activated within."
+	desc = "A device that generates a field capable of breaking all known laws against Speeding onboard the vessel it's activated."
 	icon = 'icons/obj/machines/NavBeacon.dmi'
 	icon_state = "beacon-inactive"
 	density = TRUE
