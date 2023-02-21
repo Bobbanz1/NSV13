@@ -1,4 +1,14 @@
-#define LINEAR_SCALE(P, I, V) ((P / I) * V)
+/**
+ * Linear Scaling function
+ *
+ * Params:
+ *
+ * * B: Base value
+ * * P: Inputted Power value
+ * * I: Incremental Power Threshold Value
+ * * S: Factor Scale Value
+ */
+#define LINEAR_SCALE(B, P, I, S) (B + (P / I) * S)
 
 /obj/machinery/relativity_modifier
 	name = "Higgs Reduction Field Generator"
@@ -43,12 +53,12 @@
 
 		if(!try_use_power(power_allocation))
 			on = FALSE
-			handle_mass_reduction()
+			handle_mass_reduction(power_allocation)
 			update_visuals()
 			return FALSE
 
 		if(is_operational)
-			handle_mass_reduction()
+			handle_mass_reduction(power_allocation)
 			update_visuals()
 			return TRUE
 
@@ -75,24 +85,25 @@
 	active_power_usage = power_allocation
 	return
 
-/obj/machinery/relativity_modifier/proc/handle_mass_reduction()
-	if(OM?.mass == intended_mass && on)
-		switch(power_allocation)
-			if(0)
-				OM.forward_maxthrust = 0
-				OM.backward_maxthrust = 0
-				OM.side_maxthrust = 0
-				OM.max_angular_acceleration = 0
+/obj/machinery/relativity_modifier/proc/handle_mass_reduction(var/allocated)
+	if(on)
+		if(OM?.mass == intended_mass)
+			switch(allocated)
+				if(0)
+					OM.forward_maxthrust = 0
+					OM.backward_maxthrust = 0
+					OM.side_maxthrust = 0
+					OM.max_angular_acceleration = 0
 
-			if(1 to thrust_normality-1)
-				OM.forward_maxthrust = LINEAR_SCALE(power_allocation, incremental_power_threshold, incremental_value)
-				OM.backward_maxthrust = LINEAR_SCALE
-				OM.side_maxthrust = LINEAR_SCALE
-				OM.max_angular_acceleration = LINEAR_SCALE
+				if(1 to (thrust_normality-1))
+					OM.forward_maxthrust = LINEAR_SCALE(save_forward, allocated, incremental_power_threshold, incremental_value)
+					OM.backward_maxthrust = LINEAR_SCALE(save_backward, allocated, incremental_power_threshold, incremental_value)
+					OM.side_maxthrust = LINEAR_SCALE(save_side, allocated, incremental_power_threshold, incremental_value)
+					OM.max_angular_acceleration = LINEAR_SCALE(save_max_angular, allocated, incremental_power_threshold, incremental_value)
 
-		return
+			return
 
-	else if(!on)
+	else if(!on && OM?.mass == intended_mass)
 		OM.forward_maxthrust = save_forward
 		OM.backward_maxthrust = save_backward
 		OM.side_maxthrust = save_side
@@ -124,6 +135,16 @@
 	else
 		data["max_power_allocation"] = max_possible_allocation
 
+	data["saved_forward"] = save_forward
+	data["saved_backward"] = save_backward
+	data["saved_side"] = save_side
+	data["saved_max_angular"] = save_max_angular
+
+	data["forward_maxthrust"] = OM.forward_maxthrust
+	data["backward_maxthrust"] = OM.backward_maxthrust
+	data["side_maxthrust"] = OM.side_maxthrust
+	data["max_angular_acceleration"] = OM.max_angular_acceleration
+
 	data["available_power"] = 0
 	var/turf/T = get_turf(src)
 	attached = T.get_cable_node()
@@ -140,9 +161,14 @@
 	if(action == "power_allocation")
 		if(isnum(adjust))
 			power_allocation = adjust
-			if(power_allocation > max_power_allocation)
+			if(power_allocation > max_power_allocation && !override_safeties)
 				power_allocation = max_power_allocation
 				return
+
+			else if(power_allocation > max_possible_allocation)
+				power_allocation = max_possible_allocation
+				return
+
 			if(power_allocation < 0)
 				power_allocation = 0
 				return

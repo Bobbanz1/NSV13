@@ -40,6 +40,14 @@ export const RelativityModifier = (props, context) => {
             inline
             onClick={() => act('override_safety')} />
         </Section>
+        <Section title="Vessel Manueverability">
+          <Box bold textAlign={"center"}>
+            Forward Thrust: {data.forward_maxthrust}% / {data.saved_forward}% <br />
+            Reverse Thrust: {data.backward_maxthrust}% / {data.saved_backward}% <br />
+            Side Thrust: {data.side_maxthrust}% / {data.saved_side}% <br />
+            Max Angular Acceleration: {data.saved_max_angular}% / {data.max_angular_acceleration}% <br />
+          </Box>
+        </Section>
         <Section title="Allocation Controls">
           Power Allocation:
           <Slider
