@@ -1,3 +1,5 @@
+#define LINEAR_SCALE(P, I, V) ((P / I) * V)
+
 /obj/machinery/relativity_modifier
 	name = "Higgs Reduction Field Generator"
 	desc = "A device that generates a field that reduces the mass of the vessel it's activated within."
@@ -19,6 +21,8 @@
 	var/save_max_angular // The original maximum angular acceleration of the ship
 
 	var/obj/structure/cable/attached // The attached cable
+	var/incremental_value = 0.05 // Value we use to increment the speed/manueverability of the ship
+	var/incremental_power_threshold = 5 MW // Power threshold we use to increment the speed/manueverability of the ship
 	var/power_allocation = 0 // How much power we are pumping into the system
 	var/max_power_allocation = 5 MW // Total maximum power allocation we can devour without CE authorization
 	var/max_possible_allocation = 400 MW // 400 MW is the complete maximum this thing can draw if you override the safeties
@@ -79,13 +83,13 @@
 				OM.backward_maxthrust = 0
 				OM.side_maxthrust = 0
 				OM.max_angular_acceleration = 0
-			/*
-			if(1 to thrust_normality)
-				OM.forward_maxthrust =
-				OM.backward_maxthrust =
-				OM.side_maxthrust =
-				OM.max_angular_acceleration =
-			*/
+
+			if(1 to thrust_normality-1)
+				OM.forward_maxthrust = LINEAR_SCALE(power_allocation, incremental_power_threshold, incremental_value)
+				OM.backward_maxthrust = LINEAR_SCALE
+				OM.side_maxthrust = LINEAR_SCALE
+				OM.max_angular_acceleration = LINEAR_SCALE
+
 		return
 
 	else if(!on)
@@ -204,3 +208,4 @@
 	export_price = 5000
 
 */
+#undef LINEAR_SCALE
