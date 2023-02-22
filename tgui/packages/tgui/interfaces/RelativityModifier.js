@@ -42,10 +42,11 @@ export const RelativityModifier = (props, context) => {
         </Section>
         <Section title="Vessel Manueverability">
           <Box bold textAlign={"center"}>
-            Forward Thrust: {data.forward_maxthrust}% / {data.saved_forward}% <br />
-            Reverse Thrust: {data.backward_maxthrust}% / {data.saved_backward}% <br />
-            Side Thrust: {data.side_maxthrust}% / {data.saved_side}% <br />
-            Max Angular Acceleration: {data.saved_max_angular}% / {data.max_angular_acceleration}% <br />
+            Forward Thrust: {data.forward_maxthrust} / Original: {data.saved_forward} <br />
+            Reverse Thrust Modified: {data.backward_maxthrust} / Original: {data.saved_backward} <br />
+            Side Thrust Modified: {data.side_maxthrust} / Original: {data.saved_side} <br />
+            Max Angular Acceleration Modified: {data.max_angular_acceleration} / Original: {data.saved_max_angular} <br />
+            Test Angular Acceleration: {data.max_angular_acceleration - 8 + (data.power_allocation / 5000000) * 0.05} <br />
           </Box>
         </Section>
         <Section title="Allocation Controls">

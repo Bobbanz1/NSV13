@@ -31,6 +31,7 @@
 	idle_power_usage = 50
 	active_power_usage = 0
 	req_one_access = list(ACCESS_CE, ACCESS_CAPTAIN)
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	var/on = FALSE // Whether or not the machine is on
 	var/override_safeties = FALSE // Whether or not we are overriding the power draw limit
 
@@ -38,7 +39,7 @@
 	var/intended_mass = MASS_MEDIUM_LARGE // What ship mass this version is meant for
 
 	/// MANEUVERABILITY VARIABLES ///
-	var/const/thrust_normality = 5 MW // How much power we need to reach the normal maneuverability of the ship
+	var/thrust_normality = 5 MW // How much power we need to reach the normal maneuverability of the ship
 	var/incremental_value = 0.05 // Value we use to increment the speed/maneuverability of the ship
 	var/save_forward // The original maximum forward thrust of the ship
 	var/save_backward // The original maximum backward thrust of the ship
@@ -51,6 +52,13 @@
 	var/power_allocation = 0 // How much power we are pumping into the system
 	var/max_power_allocation = 5 MW // Total maximum power allocation we can devour without CE authorization
 	var/max_possible_allocation = 400 MW // 400 MW is the complete maximum this thing can draw if you override the safeties
+
+/obj/machinery/relativity_modifier/dreadnought
+	intended_mass = MASS_LARGE
+	thrust_normality = 10 MW
+	incremental_value = 0.05
+	incremental_power_threshold = 5 MW
+	max_power_allocation = 10 MW
 
 /obj/machinery/relativity_modifier/Initialize(mapload)
 	. = ..()
@@ -121,6 +129,7 @@
 /obj/machinery/relativity_modifier/proc/handle_mass_reduction(var/allocated)
 	if(on)
 		if(OM?.mass == intended_mass)
+			var/thrust_normal = thrust_normality
 			switch(allocated)
 				if(0)
 					OM.forward_maxthrust = 0
@@ -129,19 +138,27 @@
 					OM.max_angular_acceleration = 0
 					return
 
-				if(1 to (thrust_normality-1))
-					OM.forward_maxthrust = LINEAR_SCALE(save_forward, allocated, incremental_power_threshold, incremental_value)
-					OM.backward_maxthrust = LINEAR_SCALE(save_backward, allocated, incremental_power_threshold, incremental_value)
-					OM.side_maxthrust = LINEAR_SCALE(save_side, allocated, incremental_power_threshold, incremental_value)
-					OM.max_angular_acceleration = LINEAR_SCALE(save_max_angular, allocated, incremental_power_threshold, incremental_value)
+				if(1 to (thrust_normal-1))
+					OM.forward_maxthrust = (save_forward + (allocated / incremental_power_threshold) * incremental_value)
+					OM.backward_maxthrust = (save_backward + (allocated / incremental_power_threshold) * incremental_value)
+					OM.side_maxthrust = (save_side + (allocated / incremental_power_threshold) * incremental_value)
+					OM.max_angular_acceleration = (save_max_angular + (allocated / incremental_power_threshold) * incremental_value)
 					return
 
-				if(thrust_normality)
+				if(thrust_normal)
 					OM.forward_maxthrust = save_forward
 					OM.backward_maxthrust = save_backward
 					OM.side_maxthrust = save_side
 					OM.max_angular_acceleration = save_max_angular
 					return
+
+				if((thrust_normal+1) to max_possible_allocation)
+					OM.forward_maxthrust = (save_forward + (allocated / incremental_power_threshold) * incremental_value)
+					OM.backward_maxthrust = (save_backward + (allocated / incremental_power_threshold) * incremental_value)
+					OM.side_maxthrust = (save_side + (allocated / incremental_power_threshold) * incremental_value)
+					OM.max_angular_acceleration = (save_max_angular + (allocated / incremental_power_threshold) * incremental_value)
+					return
+
 			return
 
 	else
@@ -154,9 +171,7 @@
 		return
 
 /obj/machinery/relativity_modifier/proc/update_visuals()
-	if(panel_open)
-		icon_state = "beacon-open"
-	else if(on)
+	if(on)
 		icon_state = "beacon-active"
 	else
 		icon_state = "beacon-inactive"
@@ -239,23 +254,8 @@
 	attached = T.get_cable_node()
 	if(on || attached?.surplus() > power_allocation)
 		on = !on
+		handle_mass_reduction()
 		update_visuals()
-
-/obj/machinery/relativity_modifier/screwdriver_act(mob/user, obj/item/tool)
-	if(..())
-		return TRUE
-	if(on)
-		to_chat(user, "<span class='notice'>You must turn off [src] before opening the panel.</span>")
-		return FALSE
-	panel_open = !panel_open
-	tool.play_tool_sound(src)
-	to_chat(user, "<span class='notice'>You [panel_open?"open":"close"] the panel on [src].</span>")
-	update_visuals()
-	return TRUE
-
-/obj/machinery/relativity_modifier/crowbar_act(mob/user, obj/item/tool)
-	default_deconstruction_crowbar(tool)
-	return TRUE
 
 /* Techwebs
 
