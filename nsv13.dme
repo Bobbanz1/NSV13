@@ -253,6 +253,7 @@
 #include "code\_SANDCODE\DEFINES\spans.dm"
 #include "code\_SANDCODE\DEFINES\strippable.dm"
 #include "code\_SANDCODE\DEFINES\traits.dm"
+#include "code\_SANDCODE\DEFINES\dcs\signals\signals_mob_main.dm"
 #include "code\_globalvars\bitfields.dm"
 #include "code\_globalvars\configuration.dm"
 #include "code\_globalvars\game_modes.dm"
