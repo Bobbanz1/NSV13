@@ -104,3 +104,8 @@
 /obj/item/paper/fluff/stations/lavaland/orm_notice
 	name = "URGENT!"
 	info = "A hastily written note has been scribbled here... <br><br> Please use the ore redemption machine in the cargo office for smelting. PLEASE! <br><br>--The Research Staff"
+
+/// NSV13 - Official Seals
+/obj/item/paper/fluff/nt_logo
+	name = "paper- 'NanoTrasen Logo'"
+	logo = "Whiterapids.png"

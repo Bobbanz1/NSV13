@@ -11,6 +11,7 @@ import { vecScale, vecSubtract } from 'common/vector';
 import DOMPurify from 'dompurify';
 import { Component } from 'inferno';
 import { marked } from 'marked';
+import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
 import { Box, Flex, Tabs, TextArea, Table } from '../components';
 import { Window } from '../layouts';
@@ -243,6 +244,7 @@ const PaperSheetView = (props, context) => {
     stamps,
     backgroundColor,
     readOnly,
+    image,
   } = props;
   const stamp_list = stamps || [];
   const text_html = {
@@ -256,6 +258,14 @@ const PaperSheetView = (props, context) => {
       backgroundColor={backgroundColor}
       width="100%"
       height="100%" >
+      {!!image && (
+        <Box
+          as="img"
+          src={image}
+          style={{
+            width: '50%',
+          }} />
+      )}
       <Box
         fillPositionedParent
         width="100%"
@@ -787,6 +797,7 @@ export const PaperSheet = (props, context) => {
     stamps,
     stamp_class,
     stamped,
+    logo,
   } = data;
   // You might ask why?  Because Window/window content do wierd
   // css stuff with white for some reason
@@ -803,6 +814,7 @@ export const PaperSheet = (props, context) => {
           <PaperSheetView
             value={text}
             stamps={stamp_list}
+            image={resolveAsset(logo)}
             readOnly />
         );
       case 1:

@@ -530,3 +530,10 @@
 /proc/sanitize_css_class_name(name)
 	var/static/regex/regex = new(@"[^a-zA-Z0-9]","g")
 	return replacetext(name, regex, "")
+
+//NSV13 - Logos
+/datum/asset/simple/logo
+	assets = list(
+		"Whiterapids.png" = 'html/images/Whiterapids.png',
+	)
+

@@ -51,6 +51,9 @@
 	var/list/form_fields = list()
 	var/field_counter = 1
 
+	// NSV13 - Official Seals
+	var/logo
+
 /obj/item/paper/Destroy()
 	stamps = null
 	stamped = null
@@ -227,6 +230,7 @@
 /obj/item/paper/ui_assets(mob/user)
 	return list(
 		get_asset_datum(/datum/asset/spritesheet/simple/paper),
+		get_asset_datum(/datum/asset/simple/logo), //NSV13 - Logos
 	)
 
 /obj/item/paper/ui_interact(mob/user, datum/tgui/ui)
@@ -245,6 +249,7 @@
 	.["paper_color"] = !color || color == "white" ? "#FFFFFF" : color	// color might not be set
 	.["paper_state"] = icon_state	/// TODO: show the sheet will bloodied or crinkling?
 	.["stamps"] = stamps
+	.["logo"] = logo //NSV13 - Logos
 
 /obj/item/paper/ui_data(mob/user)
 	var/list/data = list()
