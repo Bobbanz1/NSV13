@@ -31,3 +31,25 @@
 		power++ //Transfer to output, increment power, repeat until the input pile is all used
 
 	return output
+
+
+
+/proc/linear_calculation(var/max_power, var/basic_power, var/scale_increment, var/max_excess_power, var/base_v = 3.5, var/max_v = 5, var/input_power, var/original_thrust)
+	var/increment = 0
+	var/scale_factor = 0
+	var/output = 0
+	var/usable_power = (max_power - max_excess_power)
+	var/linear_max_v = (max_v - base_v)
+	var/power = input_power ? input_power : 0
+	var/thrusty = original_thrust
+	var/maxthrusty =
+	var/linear_max_thrust = maxthrusty - thrusty
+
+	increment = ((usable_power - basic_power)/scale_increment)
+	scale_factor = (linear_max_v/increment)
+
+
+
+	output = (base_v + ((power - basic_power)/scale_increment * scale_factor))
+
+	return output

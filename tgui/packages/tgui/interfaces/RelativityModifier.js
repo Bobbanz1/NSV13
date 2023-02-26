@@ -46,7 +46,6 @@ export const RelativityModifier = (props, context) => {
             Reverse Thrust Modified: {data.backward_maxthrust} / Original: {data.saved_backward} <br />
             Side Thrust Modified: {data.side_maxthrust} / Original: {data.saved_side} <br />
             Max Angular Acceleration Modified: {data.max_angular_acceleration} / Original: {data.saved_max_angular} <br />
-            Test Angular Acceleration: {data.max_angular_acceleration - 8 + (data.power_allocation / 5000000) * 0.05} <br />
           </Box>
         </Section>
         <Section title="Allocation Controls">

@@ -48,10 +48,10 @@
 
 	/// POWER VARIABLES ///
 	var/obj/structure/cable/attached // The attached cable
-	var/incremental_power_threshold = 5 MW // Power threshold we use to increment the speed/maneuverability of the ship
+	var/incremental_power_threshold = 50 MW // Power threshold we use to increment the speed/maneuverability of the ship
 	var/power_allocation = 0 // How much power we are pumping into the system
 	var/max_power_allocation = 5 MW // Total maximum power allocation we can devour without CE authorization
-	var/max_possible_allocation = 400 MW // 400 MW is the complete maximum this thing can draw if you override the safeties
+	var/max_possible_allocation = 60 MW // 400 MW is the complete maximum this thing can draw if you override the safeties
 
 /obj/machinery/relativity_modifier/dreadnought
 	intended_mass = MASS_LARGE
@@ -129,35 +129,34 @@
 /obj/machinery/relativity_modifier/proc/handle_mass_reduction(var/allocated)
 	if(on)
 		if(OM?.mass == intended_mass)
-			var/thrust_normal = thrust_normality
-			switch(allocated)
-				if(0)
-					OM.forward_maxthrust = 0
-					OM.backward_maxthrust = 0
-					OM.side_maxthrust = 0
-					OM.max_angular_acceleration = 0
-					return
+			if(allocated == 0)
+				OM.forward_maxthrust = 0
+				OM.backward_maxthrust = 0
+				OM.side_maxthrust = 0
+				OM.max_angular_acceleration = 0
+				return
 
-				if(1 to (thrust_normal-1))
-					OM.forward_maxthrust = (save_forward + (allocated / incremental_power_threshold) * incremental_value)
-					OM.backward_maxthrust = (save_backward + (allocated / incremental_power_threshold) * incremental_value)
-					OM.side_maxthrust = (save_side + (allocated / incremental_power_threshold) * incremental_value)
-					OM.max_angular_acceleration = (save_max_angular + (allocated / incremental_power_threshold) * incremental_value)
-					return
-
-				if(thrust_normal)
+			if((allocated > 0) && (allocated <= thrust_normality))
+				OM.forward_maxthrust = linear_calculation(max_possible_allocation, thrust_normality, incremental_power_threshold, 3 MW, input_power = allocated, original_thrust = save_forward)
+				OM.backward_maxthrust = linear_calculation(max_possible_allocation, thrust_normality, incremental_power_threshold, 3 MW, input_power = allocated, original_thrust = save_backward)
+				OM.side_maxthrust = linear_calculation(max_possible_allocation, thrust_normality, incremental_power_threshold, 3 MW, input_power = allocated, original_thrust = save_side)
+				OM.max_angular_acceleration = linear_calculation(max_possible_allocation, thrust_normality, incremental_power_threshold, 3 MW, input_power = allocated, original_thrust = save_max_angular)
+				return
+			//switch(allocated)
+				/*
+				if(thrust_normality)
 					OM.forward_maxthrust = save_forward
 					OM.backward_maxthrust = save_backward
 					OM.side_maxthrust = save_side
 					OM.max_angular_acceleration = save_max_angular
 					return
-
-				if((thrust_normal+1) to max_possible_allocation)
+				if((thrust_normality+1) to max_possible_allocation)
 					OM.forward_maxthrust = (save_forward + (allocated / incremental_power_threshold) * incremental_value)
 					OM.backward_maxthrust = (save_backward + (allocated / incremental_power_threshold) * incremental_value)
 					OM.side_maxthrust = (save_side + (allocated / incremental_power_threshold) * incremental_value)
 					OM.max_angular_acceleration = (save_max_angular + (allocated / incremental_power_threshold) * incremental_value)
 					return
+				*/
 
 			return
 
@@ -277,5 +276,9 @@
 	export_price = 5000
 
 */
+
+/obj/machinery/power/rtg/abductor/debug
+	power_gen = 20000000
+
 #undef LINEAR_SCALE
 #undef EXPONENTIAL_SCALE
