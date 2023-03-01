@@ -535,5 +535,6 @@
 /datum/asset/simple/logo
 	assets = list(
 		"Whiterapids.png" = 'html/images/Whiterapids.png',
+		"Whiterapids.svg" = 'html/images/Whiterapids.svg',
 	)
 

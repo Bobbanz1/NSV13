@@ -13,7 +13,7 @@ import { Component } from 'inferno';
 import { marked } from 'marked';
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
-import { Box, Flex, Tabs, TextArea, Table } from '../components';
+import { Box, Flex, Tabs, TextArea, Table, Section } from '../components';
 import { Window } from '../layouts';
 
 const MAX_PAPER_LENGTH = 5000; // Question, should we send this with ui_data?
@@ -262,9 +262,15 @@ const PaperSheetView = (props, context) => {
         <Box
           as="img"
           src={image}
+          width={10}
+          mt={-2}
+          ml={22}
+          opacity={0.5}
           style={{
-            width: '50%',
-          }} />
+            'position': 'absolute',
+            'aspect-ratio': '16/9',
+          }}
+        />
       )}
       <Box
         fillPositionedParent
