@@ -50,7 +50,7 @@ export const RelativityModifier = (props, context) => {
 
   let angular_scale_factor = (angular_linear_maximum_v/increment);
 
-  let angular_calculation = (angular + ((input_power - minimum_power)/scale_increment * angular_scale_factor));
+  let angular_calculation = (angular - ((input_power - minimum_power)/scale_increment * angular_scale_factor));
 
   return (
     <Window

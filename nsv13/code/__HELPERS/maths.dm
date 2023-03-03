@@ -34,21 +34,15 @@
 
 
 
-/proc/linear_calculation(var/maximum_power, var/minimum_power, var/scale_increment, var/max_excess_power, var/minimum_v = 3.5, var/maximum_v = 5, var/input_power, var/original_thrust)
-	var/increment = 0
-	var/scale_factor = 0
-	var/output = 0
-	var/linear_maximum_v = (maximum_v - minimum_v)
-	var/power = input_power ? input_power : 0
-	var/thrusty = original_thrust
-	//var/maxthrusty =
-	//var/linear_max_thrust = maxthrusty - thrusty
+/proc/linear_calculation(var/maximum_power, var/minimum_power, var/scale_increment, var/input_power, var/original_thrust, var/maximum_thrust)
+	var/linear_maximum_v = (maximum_thrust - original_thrust)
 
+	var/increment = 0
 	increment = ((maximum_power - minimum_power)/scale_increment)
+	var/scale_factor = 0
 	scale_factor = (linear_maximum_v/increment)
 
+	var/calculation = 0
+	calculation = (original_thrust + ((input_power - minimum_power)/scale_increment * scale_factor))
 
-
-	output = (minimum_v + ((power - minimum_power)/scale_increment * scale_factor))
-
-	return output
+	return calculation

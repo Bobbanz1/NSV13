@@ -1,3 +1,9 @@
+#define FORWARD_MAXTHRUST 1.383
+#define BACKWARD_MAXTHRUST 1.383
+#define SIDE_MAXTHRUST 2.4292
+#define MAX_ANGULAR_ACCELERATION 123.83
+#define MAX_SPEED_LIMIT 5.716
+
 /**
  * Linear Scaling function
  *
@@ -136,11 +142,11 @@
 				OM.max_angular_acceleration = 0
 				return
 
-			if((allocated > 0) && (allocated <= thrust_normality))
-				OM.forward_maxthrust = linear_calculation(max_possible_allocation, thrust_normality, incremental_power_threshold, 3 MW, input_power = allocated, original_thrust = save_forward)
-				OM.backward_maxthrust = linear_calculation(max_possible_allocation, thrust_normality, incremental_power_threshold, 3 MW, input_power = allocated, original_thrust = save_backward)
-				OM.side_maxthrust = linear_calculation(max_possible_allocation, thrust_normality, incremental_power_threshold, 3 MW, input_power = allocated, original_thrust = save_side)
-				OM.max_angular_acceleration = linear_calculation(max_possible_allocation, thrust_normality, incremental_power_threshold, 3 MW, input_power = allocated, original_thrust = save_max_angular)
+			if((allocated > 0) && (allocated <= max_possible_allocation))
+				OM.forward_maxthrust = linear_calculation(max_possible_allocation, thrust_normality, incremental_power_threshold, allocated, save_forward, FORWARD_MAXTHRUST)
+				OM.backward_maxthrust = linear_calculation(max_possible_allocation, thrust_normality, incremental_power_threshold, allocated, save_backward, BACKWARD_MAXTHRUST)
+				OM.side_maxthrust = linear_calculation(max_possible_allocation, thrust_normality, incremental_power_threshold, allocated, save_side, SIDE_MAXTHRUST)
+				OM.max_angular_acceleration = linear_calculation(max_possible_allocation, thrust_normality, incremental_power_threshold, allocated, save_max_angular, MAX_ANGULAR_ACCELERATION)
 				return
 			//switch(allocated)
 				/*
@@ -282,3 +288,9 @@
 
 #undef LINEAR_SCALE
 #undef EXPONENTIAL_SCALE
+
+#undef FORWARD_MAXTHRUST
+#undef BACKWARD_MAXTHRUST
+#undef SIDE_MAXTHRUST
+#undef MAX_ANGULAR_ACCELERATION
+#undef MAX_SPEED_LIMIT
