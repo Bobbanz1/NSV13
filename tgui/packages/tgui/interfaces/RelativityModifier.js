@@ -18,7 +18,7 @@ export const RelativityModifier = (props, context) => {
   let scale_increment = 50000000; // 50 MW
   let original_thrust = (0.65); // 0.65
   let maximum_thrust = 5;
-  let input_power = 5; // 5 MW
+  let input_power = 5000000; // 5 MW
 
   let increment = 0;
   let scale_factor = 0;
