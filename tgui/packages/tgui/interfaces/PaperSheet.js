@@ -256,16 +256,9 @@ const PaperSheetView = (props, context) => {
     <Box
       position="relative"
       backgroundColor={backgroundColor}
+      className={!!image && "BrandLogo"}
       width="100%"
       height="100%" >
-      {!!image && (
-        <Box
-          as="img"
-          src={image}
-          className="BrandLogo"
-          opacity={0.5}
-        />
-      )}
       <Box
         fillPositionedParent
         width="100%"

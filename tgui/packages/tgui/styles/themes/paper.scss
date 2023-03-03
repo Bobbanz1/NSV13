@@ -167,4 +167,10 @@ $font-size: 24px;
       overflow: visible;
     }
   }
+  .BrandLogo {
+    background-size: 25% 25%;
+    background-image: url('../../assets/Whiterapids.svg');
+    background-repeat: no-repeat;
+    background-position: right top;
+  }
 }
