@@ -262,14 +262,8 @@ const PaperSheetView = (props, context) => {
         <Box
           as="img"
           src={image}
-          width={10}
-          mt={-2}
-          ml={22}
+          className="BrandLogo"
           opacity={0.5}
-          style={{
-            'position': 'absolute',
-            'aspect-ratio': '16/9',
-          }}
         />
       )}
       <Box

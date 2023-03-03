@@ -3,5 +3,9 @@
 @use '../functions.scss' as *;
 
 .BrandLogo {
+  position: relative;
   aspect-ratio: 16/9;
+  width: 25%;
+  top: -2%;
+  left: 74%;
 }
