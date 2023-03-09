@@ -33,6 +33,10 @@ SUBSYSTEM_DEF(economy)
 
 /datum/controller/subsystem/economy/Initialize(timeofday)
 	var/budget_to_hand_out = round(budget_pool / department_accounts.len)
+	/// NSV13 - Start - Mail Blockage
+	if(time2text(world.timeofday, "DDD") == SUNDAY)
+		mail_blocked = TRUE
+	/// NSV13 - Stop - Mail Blockage
 	for(var/A in department_accounts)
 		new /datum/bank_account/department(A, budget_to_hand_out)
 	for(var/A in nonstation_accounts)

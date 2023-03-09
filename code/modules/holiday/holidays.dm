@@ -11,9 +11,14 @@
 	var/current_year = 0
 	var/year_offset = 0
 	var/obj/item/drone_hat //If this is defined, drones without a default hat will spawn with this one during the holiday; check drones_as_items.dm to see this used
+	var/mail_holiday = FALSE // NSV13 //When this holiday is active, does this prevent mail from arriving to cargo? Try not to use this for longer holidays.
 
 // This proc gets run before the game starts when the holiday is activated. Do festive shit here.
 /datum/holiday/proc/celebrate()
+	/// NSV13 - Start - Mail Blockage
+	if(mail_holiday)
+		SSeconomy.mail_blocked = TRUE
+	/// NSV13 - Stop - Mail Blockage
 	return
 
 // When the round starts, this proc is ran to get a text message to display to everyone to wish them a happy holiday
@@ -71,6 +76,7 @@
 	end_day = 2
 	end_month = JANUARY
 	drone_hat = /obj/item/clothing/head/festive
+	mail_holiday = TRUE // NSV13 - Mail Holidays
 
 /datum/holiday/new_year/getStationPrefix()
 	return pick("Party","New","Hangover","Resolution", "Auld")
@@ -181,6 +187,7 @@
 	begin_month = APRIL
 
 /datum/holiday/april_fools/celebrate()
+	. = ..() // NSV13
 	SSjob.set_overflow_role(JOB_NAME_CLOWN)
 	SSticker.login_music = 'sound/ambience/clown.ogg'
 	for(var/mob/dead/new_player/P in GLOB.mob_list)
@@ -222,6 +229,7 @@
 	begin_day = 1
 	begin_month = MAY
 	drone_hat = /obj/item/clothing/head/hardhat
+	mail_holiday = TRUE // NSV13 - Mail Holidays
 
 /datum/holiday/firefighter
 	name = "Firefighter's Day"
@@ -265,6 +273,7 @@
 	name = "Independence Day"
 	begin_day = 4
 	begin_month = JULY
+	mail_holiday = TRUE // NSV13 - Mail Holidays
 
 /datum/holiday/USA/getStationPrefix()
 	return pick("Independent","American","Burger","Bald Eagle","Star-Spangled", "Fireworks")
@@ -279,6 +288,7 @@
 	begin_day = 14
 	begin_month = JULY
 	drone_hat = /obj/item/clothing/head/beret
+	mail_holiday = TRUE // NSV13 - Mail Holidays
 
 /datum/holiday/france/getStationPrefix()
 	return pick("Francais","Fromage", "Zut", "Merde")
@@ -523,11 +533,13 @@ Since Ramadan is an entire month that lasts 29.5 days on average, the start and 
 	begin_month = DECEMBER
 	end_day = 26
 	drone_hat = /obj/item/clothing/head/santa
+	mail_holiday = TRUE // NSV13 - Mail Holidays
 
 /datum/holiday/xmas/greet()
 	return "Have a merry Christmas!"
 
 /datum/holiday/xmas/celebrate()
+	. = ..() // NSV13 - Mail Holidays
 	SSticker.OnRoundstart(CALLBACK(src, .proc/roundstart_celebrate))
 	GLOB.maintenance_loot += list(
 		/obj/item/toy/xmas_cracker = 3,
@@ -601,6 +613,7 @@ Since Ramadan is an entire month that lasts 29.5 days on average, the start and 
 	return ..()
 
 /datum/holiday/easter/celebrate()
+	. =	..() // NSV13 - Mail Holidays
 	GLOB.maintenance_loot += list(
 		/obj/item/reagent_containers/food/snacks/egg/loaded = 15,
 		/obj/item/storage/bag/easterbasket = 15)
