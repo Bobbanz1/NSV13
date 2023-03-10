@@ -1,28 +1,42 @@
-/obj/structure/big_delivery
-	name = "large parcel"
-	desc = "A large delivery parcel."
+//NSV13 - Mail Changes - Start
+/obj/item/delivery
 	icon = 'icons/obj/storage.dmi'
-	icon_state = "deliverycloset"
-	density = TRUE
-	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
-	var/giftwrapped = FALSE
-	var/sortTag = 0
+	var/base_icon_state
+	var/giftwrapped = 0
+	var/sort_tag = 0
 
-/obj/structure/big_delivery/Initialize()
+/obj/item/delivery/Initialize()
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_DISPOSING, .proc/disposal_handling)
 
-/obj/structure/big_delivery/interact(mob/user)
-	playsound(src.loc, 'sound/items/poster_ripped.ogg', 50, 1)
+/**
+ * Initial check if manually unwrapping
+ */
+/obj/item/delivery/proc/attempt_pre_unwrap_contents(mob/user)
+	to_chat(user, "<span class='notice'>You start to unwrap the package...</span>")
+	return do_after(user, 15, target = user)
+
+/**
+ * Signals for unwrapping.
+ */
+/obj/item/delivery/proc/unwrap_contents()
+	for(var/atom/movable/movable_content as anything in contents)
+		SEND_SIGNAL(movable_content, COMSIG_ITEM_UNWRAPPED)
+
+/**
+ * Effects after completing unwrapping
+ */
+/obj/item/delivery/proc/post_unwrap_contents(mob/user)
+	var/turf/turf_loc = get_turf(user || src)
+	playsound(loc, 'sound/items/poster_ripped.ogg', 50, TRUE)
+
+	for(var/atom/movable/movable_content as anything in contents)
+		movable_content.forceMove(turf_loc)
+
 	qdel(src)
 
-/obj/structure/big_delivery/Destroy()
-	var/turf/T = get_turf(src)
-	for(var/atom/movable/AM in contents)
-		AM.forceMove(T)
-	return ..()
-
-/obj/structure/big_delivery/contents_explosion(severity, target)
+/obj/item/delivery/contents_explosion(severity, target)
+	//NSV13 - Mail Changes - Stop
 	for(var/thing in contents)
 		switch(severity)
 			if(EXPLODE_DEVASTATE)
@@ -32,17 +46,61 @@
 			if(EXPLODE_LIGHT)
 				SSexplosions.low_mov_atom += thing
 
-/obj/structure/big_delivery/attackby(obj/item/W, mob/user, params)
-	if(istype(W, /obj/item/dest_tagger))
-		var/obj/item/dest_tagger/O = W
+//NSV13 - Mail Changes - Start
+/obj/item/delivery/deconstruct(disassembled)
+	unwrap_contents()
+	post_unwrap_contents()
+	return ..()
 
-		if(sortTag != O.currTag)
-			var/tag = uppertext(GLOB.TAGGERLOCATIONS[O.currTag])
+/obj/item/delivery/proc/disposal_handling(disposal_source, obj/structure/disposalholder/disposal_holder, obj/machinery/disposal/disposal_machine, hasmob)
+	SIGNAL_HANDLER
+	if(!hasmob)
+		disposal_holder.destinationTag = sort_tag
+
+/obj/item/delivery/examine(mob/user)
+	. = ..()
+	if(sort_tag)
+		. += "There's a sorting tag with the destination set to [GLOB.TAGGERLOCATIONS[sort_tag]]."
+
+/obj/item/delivery/relay_container_resist(mob/living/user, obj/object)
+	if(ismovable(loc))
+		var/atom/movable/movable_loc = loc //can't unwrap the wrapped container if it's inside something.
+		movable_loc.relay_container_resist(user, object)
+		return
+	to_chat(user, "<span class='notice'>You lean on the back of [object] and start pushing to rip the wrapping around it.</span>")
+	if(do_after(user, 50, target = object))
+		if(!user || user.stat != CONSCIOUS || user.loc != object || object.loc != src )
+			return
+		to_chat(user, "<span class='notice'>You successfully removed [object]'s wrapping !</span>")
+		object.forceMove(loc)
+		unwrap_contents()
+		post_unwrap_contents(user)
+	else
+		if(user.loc == src) //so we don't get the message if we resisted multiple times and succeeded.
+			to_chat(user, "<span class='warning'>You fail to remove [object]'s wrapping!</span>")
+
+/obj/item/delivery/update_icon_state()
+	. = ..()
+	icon_state = giftwrapped ? "gift[base_icon_state]" : base_icon_state
+
+/obj/item/delivery/update_overlays()
+	. = ..()
+	if(sort_tag)
+		. += "[base_icon_state]_sort"
+
+/obj/item/delivery/attackby(obj/item/item, mob/user, params)
+	if(istype(item, /obj/item/dest_tagger))
+		var/obj/item/dest_tagger/dest_tagger = item
+
+		if(sort_tag != dest_tagger.currTag)
+			var/tag = uppertext(GLOB.TAGGERLOCATIONS[dest_tagger.currTag])
 			to_chat(user, "<span class='notice'>*[tag]*</span>")
-			sortTag = O.currTag
+			sort_tag = dest_tagger.currTag
 			playsound(loc, 'sound/machines/twobeep_high.ogg', 100, 1)
+			update_appearance()
 
-	else if(istype(W, /obj/item/pen))
+	else if(istype(item, /obj/item/pen))
+		//NSV13 - Mail Changes - Stop
 		if(!user.is_literate())
 			to_chat(user, "<span class='notice'>You scribble illegibly on the side of [src]!</span>")
 			return
@@ -55,121 +113,69 @@
 		user.visible_message("[user] labels [src] as [str].")
 		name = "[name] ([str])"
 
-	else if(istype(W, /obj/item/stack/wrapping_paper) && !giftwrapped)
-		var/obj/item/stack/wrapping_paper/WP = W
-		if(WP.use(3))
+	//NSV13 - Mail Changes - Start
+	else if(istype(item, /obj/item/stack/wrapping_paper) && !giftwrapped)
+		var/obj/item/stack/wrapping_paper/wrapping_paper = item
+		if(wrapping_paper.use(3))
 			user.visible_message("[user] wraps the package in festive paper!")
 			giftwrapped = TRUE
-			icon_state = "gift[icon_state]"
+			update_appearance()
+			//NSV13 - Mail Changes - Stop
 		else
 			to_chat(user, "<span class='warning'>You need more paper!</span>")
 	else
 		return ..()
 
-/obj/structure/big_delivery/relay_container_resist(mob/living/user, obj/O)
-	if(ismovableatom(loc))
-		var/atom/movable/AM = loc //can't unwrap the wrapped container if it's inside something.
-		AM.relay_container_resist(user, O)
+//NSV13 - Mail Changes - Start
+/**
+ * # Wrapped up crates and lockers - too big to carry.
+ */
+/obj/item/delivery/big
+	name = "large parcel"
+	desc = "A large delivery parcel."
+	icon_state = "deliverycloset"
+	density = TRUE
+	interaction_flags_item = 0 // Disable the ability to pick it up. Wow!
+	layer = BELOW_OBJ_LAYER
+	pass_flags_self = PASSSTRUCTURE
+	interaction_flags_atom = INTERACT_ATOM_ATTACK_HAND
+
+/obj/item/delivery/big/interact(mob/user)
+	if(!attempt_pre_unwrap_contents(user))
 		return
-	to_chat(user, "<span class='notice'>You lean on the back of [O] and start pushing to rip the wrapping around it.</span>")
-	if(do_after(user, 50, target = O))
-		if(!user || user.stat != CONSCIOUS || user.loc != O || O.loc != src )
-			return
-		to_chat(user, "<span class='notice'>You successfully removed [O]'s wrapping !</span>")
-		O.forceMove(loc)
-		playsound(src.loc, 'sound/items/poster_ripped.ogg', 50, 1)
-		qdel(src)
-	else
-		if(user.loc == src) //so we don't get the message if we resisted multiple times and succeeded.
-			to_chat(user, "<span class='warning'>You fail to remove [O]'s wrapping!</span>")
+	unwrap_contents()
+	post_unwrap_contents(user)
 
-
-/obj/structure/big_delivery/proc/disposal_handling(disposal_source, obj/structure/disposalholder/disposal_holder, obj/machinery/disposal/disposal_machine, hasmob)
-	SIGNAL_HANDLER
-	if(!hasmob)
-		disposal_holder.destinationTag = sortTag
-
-/obj/item/small_delivery
+/**
+ * # Wrapped up items small enough to carry.
+ */
+/obj/item/delivery/small
 	name = "parcel"
 	desc = "A brown paper delivery parcel."
-	icon = 'icons/obj/storage.dmi'
 	icon_state = "deliverypackage3"
-	item_state = "deliverypackage"
-	var/giftwrapped = 0
-	var/sortTag = 0
 
-/obj/item/small_delivery/contents_explosion(severity, target)
-	for(var/thing in contents)
-		switch(severity)
-			if(EXPLODE_DEVASTATE)
-				SSexplosions.high_mov_atom += thing
-			if(EXPLODE_HEAVY)
-				SSexplosions.med_mov_atom += thing
-			if(EXPLODE_LIGHT)
-				SSexplosions.low_mov_atom += thing
-
-/obj/item/small_delivery/attack_self(mob/user)
+/obj/item/delivery/small/attack_self(mob/user)
+	if(!attempt_pre_unwrap_contents(user))
+		return
 	user.temporarilyRemoveItemFromInventory(src, TRUE)
-	for(var/X in contents)
-		var/atom/movable/AM = X
-		user.put_in_hands(AM)
-	playsound(src.loc, 'sound/items/poster_ripped.ogg', 50, 1)
-	qdel(src)
+	for(var/atom/movable/movable_content as anything in contents)
+		user.put_in_hands(movable_content)
+	post_unwrap_contents(user)
 
-/obj/item/small_delivery/attack_self_tk(mob/user)
+/obj/item/delivery/small/attack_self_tk(mob/user)
 	if(ismob(loc))
 		var/mob/M = loc
 		M.temporarilyRemoveItemFromInventory(src, TRUE)
-		for(var/X in contents)
-			var/atom/movable/AM = X
-			M.put_in_hands(AM)
+		for(var/atom/movable/movable_content as anything in contents)
+			M.put_in_hands(movable_content)
 	else
-		for(var/X in contents)
-			var/atom/movable/AM = X
-			AM.forceMove(src.loc)
-	playsound(src.loc, 'sound/items/poster_ripped.ogg', 50, 1)
-	qdel(src)
+		for(var/atom/movable/movable_content as anything in contents)
+			movable_content.forceMove(loc)
 
-/obj/item/small_delivery/attackby(obj/item/W, mob/user, params)
-	if(istype(W, /obj/item/dest_tagger))
-		var/obj/item/dest_tagger/O = W
-
-		if(sortTag != O.currTag)
-			var/tag = uppertext(GLOB.TAGGERLOCATIONS[O.currTag])
-			to_chat(user, "<span class='notice'>*[tag]*</span>")
-			sortTag = O.currTag
-			playsound(loc, 'sound/machines/twobeep_high.ogg', 100, 1)
-
-	else if(istype(W, /obj/item/pen))
-		if(!user.is_literate())
-			to_chat(user, "<span class='notice'>You scribble illegibly on the side of [src]!</span>")
-			return
-		var/str = stripped_input(user, "Label text?", "Set label", "", MAX_NAME_LEN)
-		if(!user.canUseTopic(src, BE_CLOSE))
-			return
-		if(!str || !length(str))
-			to_chat(user, "<span class='warning'>Invalid text!</span>")
-			return
-		user.visible_message("[user] labels [src] as [str].")
-		name = "[name] ([str])"
-
-	else if(istype(W, /obj/item/stack/wrapping_paper) && !giftwrapped)
-		var/obj/item/stack/wrapping_paper/WP = W
-		if(WP.use(1))
-			icon_state = "gift[icon_state]"
-			giftwrapped = 1
-			user.visible_message("[user] wraps the package in festive paper!")
-		else
-			to_chat(user, "<span class='warning'>You need more paper!</span>")
-
-/obj/item/small_delivery/Initialize(mapload)
-	. = ..()
-	RegisterSignal(src, COMSIG_MOVABLE_DISPOSING, .proc/disposal_handling)
-
-/obj/item/small_delivery/proc/disposal_handling(disposal_source, obj/structure/disposalholder/disposal_holder, obj/machinery/disposal/disposal_machine, hasmob)
-	SIGNAL_HANDLER
-	if(!hasmob)
-		disposal_holder.destinationTag = sortTag
+	unwrap_contents()
+	post_unwrap_contents()
+	return COMPONENT_CANCEL_ATTACK_CHAIN
+//NSV13 - Mail Changes - Stop
 
 /obj/item/dest_tagger
 	name = "destination tagger"

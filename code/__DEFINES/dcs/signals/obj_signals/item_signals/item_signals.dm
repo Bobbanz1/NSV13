@@ -62,3 +62,7 @@
 // /obj/item/pen signals
 #define COMSIG_PEN_ROTATED "pen_rotated"						//! called after rotation in /obj/item/pen/attack_self(): (rotation, mob/living/carbon/user)
 
+// NSV13 - Mail Code Stuff - Start
+// /obj/item signals for mail
+#define COMSIG_ITEM_UNWRAPPED "item_unwrapped"					//called when a wrapped up item is opened by hand
+// NSV13 - Mail Code Stuff - Stop

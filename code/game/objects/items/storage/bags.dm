@@ -455,8 +455,8 @@
 	STR.max_items = 32
 	STR.display_numerical_stacking = FALSE
 	STR.can_hold = typecacheof (list(	/obj/item/mail,
-										/obj/item/small_delivery,
+										/obj/item/delivery/small,
 										/obj/item/paper,
 										/obj/item/reagent_containers/food/condiment/milk,
 										/obj/item/reagent_containers/food/snacks/store/bread/plain
-									))
+									)) //NSV13 - Changed small_delivery to delivery/small
