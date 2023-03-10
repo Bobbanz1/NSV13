@@ -13,6 +13,13 @@
 	var/process = FALSE // Does this quirk use on_process()?
 	var/mob/living/quirk_holder
 
+	//NSV13 - Quirk Mail Goodies - Start
+	/// A list of items people can receive from mail who have this quirk enabled
+	/// The base weight for the each quirk's mail goodies list to be selected is 5
+	/// then the item selected is determined by pick(selected_quirk.mail_goodies)
+	var/mail_goodies = list()
+	//NSV13 - Quirk Mail Goodies - Stop
+
 /datum/quirk/New(mob/living/quirk_mob, spawn_effects)
 	..()
 	if(!quirk_mob || (human_only && !ishuman(quirk_mob)) || quirk_mob.has_quirk(type))

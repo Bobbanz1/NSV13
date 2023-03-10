@@ -14,6 +14,7 @@
 	desc = "You just don't care as much as other people. That's nice to have in a place like this, I guess."
 	value = 1
 	mood_quirk = TRUE
+	mail_goodies = list(/obj/item/hourglass) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/apathetic/add()
 	var/datum/component/mood/mood = quirk_holder.GetComponent(/datum/component/mood)
