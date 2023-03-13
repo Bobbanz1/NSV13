@@ -34,24 +34,19 @@
 	var/goodie_count = 1
 	/// Goodies which can be given to anyone. The base weight for cash is 56. For there to be a 50/50 chance of getting a department item, they need 56 weight as well. //NSV13 - Changes to the comments - END
 	var/static/list/generic_goodies = list(
-		/obj/item/stack/spacecash/c10										= 22, //the lamest chance to get item, what do you expect really?
-		/obj/item/reagent_containers/food/drinks/soda_cans/pwr_game			= 10,
-		/obj/item/reagent_containers/food/drinks/soda_cans/monkey_energy	= 10,
-		/obj/item/reagent_containers/food/snacks/cheesiehonkers 			= 10,
-		/obj/item/reagent_containers/food/snacks/candy						= 10,
-		/obj/item/reagent_containers/food/snacks/chips						= 10,
-		/obj/item/stack/spacecash/c50 										= 10,
-		/obj/item/stack/spacecash/c100 										= 25,
-		/obj/item/stack/spacecash/c200 										= 15,
-		/obj/item/stack/spacecash/c500 										= 5,
-		/obj/item/stack/spacecash/c1000 									= 1,
+		//NSV13 - Mail Goodies - Start
+		/obj/effect/spawner/lootdrop/entertainment/money_medium = 25,
+		/obj/effect/spawner/lootdrop/food_or_drink/refreshing_beverage = 10,
+		/obj/effect/spawner/lootdrop/food_or_drink/snack = 5,
+		/obj/effect/spawner/lootdrop/entertainment/toy = 3,
+		/obj/effect/spawner/lootdrop/entertainment/coin = 2,
 
-		//NSV13
-		/obj/item/toy/snowball												= 15,
-		/obj/item/choice_beacon/music										= 5,
-		/obj/item/toy/plush/moth/random										= 5,
-		/obj/structure/musician/piano/unanchored							= 2,
-		/mob/living/simple_animal/cow										= 1,
+		/obj/item/toy/snowball = 15,
+		/obj/item/choice_beacon/music = 5,
+		/obj/item/toy/plush/moth/random = 5,
+		/obj/structure/musician/piano/unanchored = 2,
+		/mob/living/simple_animal/cow = 1,
+		//NSV13 - Mail Goodies - Stop
 	)
 
 	//if the goodie is dangerous for the station, in this list it goes
@@ -213,13 +208,35 @@
 	//Load the List of Dangerous goodies
 	var/list/danger_goodies = hazard_goodies
 
+	//NSV13 - Mail Goodies - Start
+	//Certain roles and jobs do not receive generic gifts
+	var/is_mail_restricted = FALSE
+	//NSV13 - Mail Goodies - Stop
+
 	//Load the job the player have
 	var/datum/job/this_job = SSjob.name_occupations[recipient.assigned_role]
 	if(this_job)
-		goodies += this_job.mail_goodies
+		//NSV13 - Mail Goodies - Start
+		var/list/job_goodies = this_job.mail_goodies
+		is_mail_restricted = this_job.exclusive_mail_goodies
+		if(LAZYLEN(job_goodies))
+			if(is_mail_restricted)
+				goodies = job_goodies
+			else
+				goodies += job_goodies
+		//NSV13 - Mail Goodies - Stop
 		if(this_job.paycheck_department && department_colors[this_job.paycheck_department])
 			color = department_colors[this_job.paycheck_department]
-
+	//NSV13 - Mail Goodies - Start
+	if(!is_mail_restricted)
+		// the weighted list is 50 (generic items) + 50 (job items)
+		// every quirk adds 5 to the final weighted list (regardless the number of items or weights in the quirk list)
+		// 5% is not too high or low so that stacking multiple quirks doesn't tilt the weighted list too much
+		for(var/datum/quirk/quirk as anything in body.roundstart_quirks)
+			if(LAZYLEN(quirk.mail_goodies))
+				var/quirk_goodie = pick(quirk.mail_goodies)
+				goodies[quirk_goodie] = 5
+	//NSV13 - Mail Goodies - Stop
 	for(var/i in 1 to goodie_count)
 		var/target_good = pickweight(goodies)
 		var/atom/movable/target_atom = new target_good(src)

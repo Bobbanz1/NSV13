@@ -228,7 +228,13 @@
 	icon_state = "mayonnaise"
 	list_reagents = list(/datum/reagent/consumable/mayonnaise = 50)
 
-
+//NSV13 - BBQ Sauce Condiment - Start
+/obj/item/reagent_containers/food/condiment/bbqsauce
+	name = "bbq sauce"
+	desc = "Hand wipes not included."
+	icon_state = "bbqsauce"
+	list_reagents = list(/datum/reagent/consumable/bbqsauce = 50)
+//NSV13 - BBQ Sauce Condiment - Stop
 
 //Food packs. To easily apply deadly toxi... delicious sauces to your food!
 

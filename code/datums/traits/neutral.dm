@@ -9,6 +9,7 @@
 	gain_text = "<span class='notice'>You can't taste anything!</span>"
 	lose_text = "<span class='notice'>You can taste again!</span>"
 	medical_record_text = "Patient suffers from ageusia and is incapable of tasting food or reagents."
+	mail_goodies = list(/obj/effect/spawner/lootdrop/food_or_drink/condiment) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/vegetarian
 	name = "Vegetarian"
@@ -16,6 +17,7 @@
 	value = 0
 	gain_text = "<span class='notice'>You feel repulsion at the idea of eating meat.</span>"
 	lose_text = "<span class='notice'>You feel like eating meat isn't that bad.</span>"
+	mail_goodies = list(/obj/effect/spawner/lootdrop/food_or_drink/salad) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/vegetarian/add()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -38,6 +40,7 @@
 	value = 0
 	gain_text = "<span class='notice'>You feel an intense craving for pineapple.</span>"
 	lose_text = "<span class='notice'>Your feelings towards pineapples seem to return to a lukewarm state.</span>"
+	mail_goodies = list(/obj/item/reagent_containers/food/snacks/pizzaslice/pineapple) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/pineapple_liker/add()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -55,6 +58,13 @@
 	value = 0
 	gain_text = "<span class='notice'>You find yourself pondering what kind of idiot actually enjoys pineapples.</span>"
 	lose_text = "<span class='notice'>Your feelings towards pineapples seem to return to a lukewarm state.</span>"
+	mail_goodies = list(
+		/obj/item/reagent_containers/food/snacks/pizzaslice/margherita,
+		/obj/item/reagent_containers/food/snacks/pizzaslice/meat,
+		/obj/item/reagent_containers/food/snacks/pizzaslice/mushroom,
+		/obj/item/reagent_containers/food/snacks/pizzaslice/vegetable,
+		/obj/item/reagent_containers/food/snacks/pizzaslice/sassysage,
+	) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/pineapple_hater/add()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -72,6 +82,7 @@
 	value = 0
 	gain_text = "<span class='notice'>You start craving something that tastes strange.</span>"
 	lose_text = "<span class='notice'>You feel like eating normal food again.</span>"
+	mail_goodies = list(/obj/item/reagent_containers/food/snacks/badrecipe) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/deviant_tastes/add()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -91,6 +102,11 @@
 	desc = "You suffer from full colorblindness, and perceive nearly the entire world in blacks and whites."
 	value = 0
 	medical_record_text = "Patient is afflicted with almost complete color blindness."
+	mail_goodies = list(
+		/obj/item/clothing/suit/det_suit/noir,
+		/obj/item/clothing/suit/det_suit/grey,
+		/obj/item/clothing/head/fedora,
+	) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/monochromatic/add()
 	quirk_holder.add_client_colour(/datum/client_colour/monochrome)

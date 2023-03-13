@@ -8,6 +8,7 @@
 	mob_trait = TRAIT_ALCOHOL_TOLERANCE
 	gain_text = "<span class='notice'>You feel like you could drink a whole keg!</span>"
 	lose_text = "<span class='danger'>You don't feel as resistant to alcohol anymore. Somehow.</span>"
+	mail_goodies = list(/obj/effect/spawner/lootdrop/food_or_drink/booze) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/apathetic
 	name = "Apathetic"
@@ -34,6 +35,7 @@
 	gain_text = "<span class='notice'>You feel like a drink would do you good.</span>"
 	lose_text = "<span class='danger'>You no longer feel like drinking would ease your pain.</span>"
 	medical_record_text = "Patient has unusually efficient liver metabolism and can slowly regenerate wounds by drinking alcoholic beverages."
+	mail_goodies = list((/obj/effect/spawner/lootdrop/food_or_drink/booze)) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/empath
 	name = "Empath"
@@ -42,6 +44,7 @@
 	mob_trait = TRAIT_EMPATH
 	gain_text = "<span class='notice'>You feel in tune with those around you.</span>"
 	lose_text = "<span class='danger'>You feel isolated from others.</span>"
+	mail_goodies = list(/obj/item/toy/snappop) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/freerunning
 	name = "Freerunning"
@@ -50,6 +53,7 @@
 	mob_trait = TRAIT_FREERUNNING
 	gain_text = "<span class='notice'>You feel lithe on your feet!</span>"
 	lose_text = "<span class='danger'>You feel clumsy again.</span>"
+	mail_goodies = list(/obj/item/melee/skateboard, /obj/item/clothing/shoes/wheelys) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/friendly
 	name = "Friendly"
@@ -59,6 +63,7 @@
 	gain_text = "<span class='notice'>You want to hug someone.</span>"
 	lose_text = "<span class='danger'>You no longer feel compelled to hug others.</span>"
 	mood_quirk = TRUE
+	mail_goodies = list(/obj/item/storage/box/hug) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/jolly
 	name = "Jolly"
@@ -67,6 +72,7 @@
 	mob_trait = TRAIT_JOLLY
 	mood_quirk = TRUE
 	process = TRUE
+	mail_goodies = list(/obj/item/clothing/mask/joy) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/jolly/on_process(delta_time)
 	if(DT_PROB(0.05, delta_time))
@@ -79,6 +85,7 @@
 	mob_trait = TRAIT_LIGHT_STEP
 	gain_text = "<span class='notice'>You walk with a little more litheness.</span>"
 	lose_text = "<span class='danger'>You start tromping around like a barbarian.</span>"
+	mail_goodies = list(/obj/item/clothing/shoes/sandal) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/musician
 	name = "Musician"
@@ -87,6 +94,7 @@
 	mob_trait = TRAIT_MUSICIAN
 	gain_text = "<span class='notice'>You know everything about musical instruments.</span>"
 	lose_text = "<span class='danger'>You forget how musical instruments work.</span>"
+	mail_goodies = list(/obj/effect/spawner/lootdrop/entertainment/musical_instrument) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/musician/on_spawn()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -127,6 +135,10 @@
 	mob_trait = TRAIT_NIGHT_VISION
 	gain_text = "<span class='notice'>The shadows seem a little less dark.</span>"
 	lose_text = "<span class='danger'>Everything seems a little darker.</span>"
+	mail_goodies = list(
+		/obj/item/flashlight/flashdark,
+		/obj/item/reagent_containers/food/snacks/grown/mushroom/glowshroom/shadowshroom
+	) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/night_vision/on_spawn()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -161,12 +173,14 @@
 	desc = "You know your body well, and can accurately assess the extent of your wounds."
 	value = 2
 	mob_trait = TRAIT_SELF_AWARE
+	mail_goodies = list(/obj/item/clothing/neck/stethoscope) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/skittish
 	name = "Skittish"
 	desc = "You can conceal yourself in danger. Ctrl-shift-click a closed locker to jump into it, as long as you have access."
 	value = 2
 	mob_trait = TRAIT_SKITTISH
+	mail_goodies = list(/obj/structure/closet/cardboard) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/spiritual
 	name = "Spiritual"
@@ -176,6 +190,11 @@
 	gain_text = "<span class='notice'>You have faith in a higher power.</span>"
 	lose_text = "<span class='danger'>You lose faith!</span>"
 	process = TRUE
+	mail_goodies = list(
+		/obj/item/storage/book/bible/booze,
+		/obj/item/reagent_containers/food/drinks/bottle/holywater,
+		/obj/item/storage/fancy/candle_box,
+	) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/spiritual/on_spawn()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -200,6 +219,12 @@
 	mob_trait = TRAIT_TAGGER
 	gain_text = "<span class='notice'>You know how to tag walls efficiently.</span>"
 	lose_text = "<span class='danger'>You forget how to tag walls properly.</span>"
+	mail_goodies = list(
+		/obj/item/toy/crayon/spraycan,
+		/obj/item/canvas/nineteen_nineteen,
+		/obj/item/canvas/twentythree_nineteen,
+		/obj/item/canvas/twentythree_twentythree,
+	) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/tagger/on_spawn()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -215,6 +240,7 @@
 	mob_trait = TRAIT_VORACIOUS
 	gain_text = "<span class='notice'>You feel HONGRY.</span>"
 	lose_text = "<span class='danger'>You no longer feel HONGRY.</span>"
+	mail_goodies = list(/obj/effect/spawner/lootdrop/food_or_drink/dinner) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/neet
 	name = "NEET"

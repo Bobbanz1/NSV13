@@ -8,6 +8,7 @@
 	gain_text = "<span class='danger'>Your back REALLY hurts!</span>"
 	lose_text = "<span class='notice'>Your back feels better.</span>"
 	process = TRUE
+	mail_goodies = list(/obj/item/cane) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/badback/on_process()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -24,6 +25,7 @@
 	lose_text = "<span class='notice'>You feel vigorous again.</span>"
 	medical_record_text = "Patient requires regular treatment for blood loss due to low production of blood."
 	process = TRUE
+	mail_goodies = list(/obj/item/reagent_containers/blood/OMinus) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/blooddeficiency/on_process(delta_time)
 	var/mob/living/carbon/human/H = quirk_holder
@@ -39,6 +41,7 @@
 	gain_text = "<span class='danger'>You can't see anything.</span>"
 	lose_text = "<span class='notice'>You miraculously gain back your vision.</span>"
 	medical_record_text = "Subject has permanent blindness."
+	mail_goodies = list(/obj/item/clothing/glasses/sunglasses, /obj/item/cane) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/blindness/add()
 	quirk_holder.become_blind(ROUNDSTART_TRAIT)
@@ -61,6 +64,7 @@
 	process = TRUE
 	var/where = "at your feet"
 	var/notified = FALSE
+	mail_goodies = list(/obj/item/storage/pill_bottle/mannitol/braintumor) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/brainproblems/on_process(delta_time)
 	if(!quirk_holder.reagents.has_reagent(/datum/reagent/medicine/mannitol))
@@ -102,6 +106,7 @@
 	gain_text = "<span class='danger'>You can't hear anything.</span>"
 	lose_text = "<span class='notice'>You're able to hear again!</span>"
 	medical_record_text = "Subject's cochlear nerve is incurably damaged."
+	mail_goodies = list(/obj/item/soundsynth) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/depression
 	name = "Depression"
@@ -113,6 +118,7 @@
 	medical_record_text = "Patient has a severe mood disorder causing them to experience sudden moments of sadness."
 	mood_quirk = TRUE
 	process = TRUE
+	mail_goodies = list(/obj/item/storage/pill_bottle/happiness) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/depression/on_process(delta_time)
 	if(DT_PROB(0.05, delta_time))
@@ -126,6 +132,7 @@
 	process = TRUE
 	var/obj/item/heirloom
 	var/where
+	mail_goodies = list(/obj/item/storage/secure/briefcase) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/family_heirloom/on_spawn()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -271,6 +278,7 @@
 	gain_text = "<span class='danger'>You feel frail.</span>"
 	lose_text = "<span class='notice'>You feel sturdy again.</span>"
 	medical_record_text = "Patient has unusually frail bones, recommend calcium-rich diet."
+	mail_goodies = list(/obj/effect/spawner/lootdrop/medical/minor_healing) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/foreigner
 	name = "Foreigner"
@@ -279,6 +287,7 @@
 	gain_text = "<span class='notice'>The words being spoken around you don't make any sense."
 	lose_text = "<span class='notice'>You've developed fluency in Galactic Common."
 	medical_record_text = "Patient does not speak Galactic Common and may require an interpreter."
+	mail_goodies = list(/obj/item/taperecorder) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/foreigner/add()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -300,6 +309,12 @@
 	gain_text = "<span class='danger'>You feel sleepy.</span>"
 	lose_text = "<span class='notice'>You feel awake again.</span>"
 	medical_record_text = "Patient has abnormal sleep study results and is difficult to wake up."
+	mail_goodies = list(
+		/obj/item/clothing/glasses/blindfold,
+		/obj/item/bedsheet/random,
+		/obj/item/clothing/under/misc/pj/red,
+		/obj/item/clothing/under/misc/pj/blue,
+	) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/hypersensitive
 	name = "Hypersensitive"
@@ -307,6 +322,7 @@
 	value = -1
 	gain_text = "<span class='danger'>You seem to make a big deal out of everything.</span>"
 	lose_text = "<span class='notice'>You don't seem to make a big deal out of everything anymore.</span>"
+	mail_goodies = list(/obj/effect/spawner/lootdrop/entertainment/plushie_delux) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/hypersensitive/add()
 	var/datum/component/mood/mood = quirk_holder.GetComponent(/datum/component/mood)
@@ -325,6 +341,7 @@
 	mob_trait = TRAIT_LIGHT_DRINKER
 	gain_text = "<span class='notice'>Just the thought of drinking alcohol makes your head spin.</span>"
 	lose_text = "<span class='danger'>You're no longer severely affected by alcohol.</span>"
+	mail_goodies = list(/obj/item/reagent_containers/glass/waterbottle) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/nearsighted //t. errorage
 	name = "Nearsighted"
@@ -333,6 +350,7 @@
 	gain_text = "<span class='danger'>Things far away from you start looking blurry.</span>"
 	lose_text = "<span class='notice'>You start seeing faraway things normally again.</span>"
 	medical_record_text = "Patient requires prescription glasses in order to counteract nearsightedness."
+	mail_goodies = list(/obj/item/clothing/glasses/regular) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/nearsighted/add()
 	quirk_holder.become_nearsighted(ROUNDSTART_TRAIT)
@@ -349,6 +367,7 @@
 	desc = "As far as you can remember, you've always been afraid of the dark. While in the dark without a light source, you instinctually act careful, and constantly feel a sense of dread."
 	value = -1
 	process = TRUE
+	mail_goodies = list(/obj/effect/spawner/lootdrop/engineering/flashlight) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/nyctophobia/on_process()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -371,6 +390,10 @@
 	gain_text = "<span class='danger'>You feel repulsed by the thought of violence!</span>"
 	lose_text = "<span class='notice'>You think you can defend yourself again.</span>"
 	medical_record_text = "Patient is unusually pacifistic and cannot bring themselves to cause physical harm."
+	mail_goodies = list(
+		/obj/effect/spawner/lootdrop/decoration/flower,
+		/obj/effect/spawner/lootdrop/contraband/cannabis,
+	) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/paraplegic
 	name = "Paraplegic"
@@ -380,6 +403,7 @@
 	gain_text = null // Handled by trauma.
 	lose_text = null
 	medical_record_text = "Patient has an untreatable impairment in motor function in the lower extremities."
+	mail_goodies = list(/obj/vehicle/ridden/wheelchair) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/paraplegic/add()
 	var/datum/brain_trauma/severe/paralysis/paraplegic/T = new()
@@ -412,6 +436,7 @@
 	value = -1
 	mob_trait = TRAIT_POOR_AIM
 	medical_record_text = "Patient possesses a strong tremor in both hands."
+	mail_goodies = list(/obj/item/cardboard_cutout) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/prosopagnosia
 	name = "Prosopagnosia"
@@ -425,6 +450,10 @@
 	desc = "An accident caused you to lose one of your limbs. Because of this, you now have a random prosthetic!"
 	value = -1
 	var/slot_string = "limb"
+	mail_goodies = list(
+		/obj/item/weldingtool/mini,
+		/obj/item/stack/cable_coil/random/five,
+	) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/prosthetic_limb/on_spawn()
 	var/limb_slot = pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -470,6 +499,7 @@
 	lose_text = "<span class='notice'>You feel in tune with the world again.</span>"
 	medical_record_text = "Patient suffers from acute Reality Dissociation Syndrome and experiences vivid hallucinations."
 	process = TRUE
+	mail_goodies = list(/obj/item/storage/pill_bottle/lsd) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/insanity/on_process(delta_time)
 	if(quirk_holder.reagents.has_reagent(/datum/reagent/toxin/mindbreaker, needs_metabolizing = TRUE))
@@ -496,6 +526,7 @@
 	medical_record_text = "Patient is usually anxious in social encounters and prefers to avoid them."
 	process = TRUE
 	var/dumb_thing = TRUE
+	mail_goodies = list(/obj/item/storage/pill_bottle/psicodine) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/social_anxiety/on_process(delta_time)
 	var/nearby_people = 0
@@ -535,6 +566,7 @@
 	var/obj/item/accessory_type //! If this is null, an accessory won't be spawned.
 	var/process_interval = 30 SECONDS //! how frequently the quirk processes
 	var/next_process = 0 //! ticker for processing
+	mail_goodies = list(/obj/effect/spawner/lootdrop/contraband/narcotics) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/junkie/on_spawn()
 	var/mob/living/carbon/human/H = quirk_holder
@@ -596,6 +628,12 @@
 	reagent_type = /datum/reagent/drug/nicotine
 	accessory_type = /obj/item/lighter/greyscale
 	process = TRUE
+	mail_goodies = list(
+		/obj/effect/spawner/lootdrop/entertainment/cigarette_pack,
+		/obj/effect/spawner/lootdrop/entertainment/cigar,
+		/obj/effect/spawner/lootdrop/entertainment/lighter,
+		/obj/item/clothing/mask/cigarette/pipe,
+	) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/junkie/smoker/on_spawn()
 	drug_container_type = pick(/obj/item/storage/fancy/cigarettes,
@@ -640,6 +678,7 @@
 	var/need = 0 // How much they crave alcohol at the moment
 	var/tick_number = 0 // Keeping track of how many ticks have passed between a check
 	var/obj/item/reagent_containers/food/drinks/bottle/drink_instance
+	mail_goodies = list(/obj/effect/spawner/lootdrop/food_or_drink/booze) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/alcoholic/on_spawn()
 	drink_instance = pick(drink_types)
@@ -689,6 +728,7 @@
 	gain_text = "<span class='danger'>There's a lot on your mind right now.</span>"
 	lose_text = "<span class='notice'>Your mind finally feels calm.</span>"
 	medical_record_text = "Patient's mind is in a vulnerable state, and cannot recover from traumatic events."
+	mail_goodies = list(/obj/effect/spawner/lootdrop/entertainment/plushie) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/phobia
 	name = "Phobia"
@@ -697,6 +737,7 @@
 	gain_text = "<span class='danger'>You start feeling an irrational fear of something.</span>"
 	lose_text = "<span class='notice'>You are no longer irrationally afraid.</span>"
 	medical_record_text = "Patient suffers from a deeply-rooted phobia."
+	mail_goodies = list(/obj/item/clothing/glasses/blindfold, /obj/item/storage/pill_bottle/psicodine) //NSV13 - Mail Goodies for Quirks
 
 /datum/quirk/phobia/add()
 	var/datum/brain_trauma/mild/phobia/T = new()
