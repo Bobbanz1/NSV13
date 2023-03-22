@@ -176,25 +176,21 @@
  * cool tip: search_tactic() can set lists
  */
 /datum/ai_behavior/find_and_set
-	action_cooldown = 5 SECONDS
-	///search range in how many tiles around the pawn to look for the path
-	var/search_range = 7
-	//optional, don't use if you're changing search_tactic()
-	var/locate_path
-	var/bb_key_to_set
+	///NSV13 - Holo Crew - Start
+	action_cooldown = 2 SECONDS
 
-/datum/ai_behavior/find_and_set/perform(delta_time, datum/ai_controller/controller)
+/datum/ai_behavior/find_and_set/perform(delta_time, datum/ai_controller/controller, set_key, locate_path, search_range)
 	. = ..()
-	var/find_this_thing = search_tactic(controller)
+	var/find_this_thing = search_tactic(controller, locate_path, search_range)
 	if(find_this_thing)
-		controller.blackboard[bb_key_to_set] = find_this_thing
+		controller.blackboard[set_key] = WEAKREF(find_this_thing)
 		finish_action(controller, TRUE)
 	else
 		finish_action(controller, FALSE)
 
-/datum/ai_behavior/find_and_set/proc/search_tactic(datum/ai_controller/controller)
+/datum/ai_behavior/find_and_set/proc/search_tactic(datum/ai_controller/controller, locate_path, search_range)
 	return locate(locate_path) in oview(search_range, controller.pawn)
-
+///NSV13 - Holo Crew - Stop
 
 /// This behavior involves attacking a target.
 /datum/ai_behavior/attack

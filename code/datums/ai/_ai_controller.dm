@@ -44,6 +44,9 @@ multiple modular subtrees with behaviors
 	///AI paused time
 	var/paused_until = 0
 
+	//NSV13
+	var/movement_target_source
+
 /datum/ai_controller/New(atom/new_pawn)
 	change_ai_movement_type(ai_movement)
 	init_subtrees()
