@@ -32,7 +32,8 @@
 
 	return output
 
-
+#define KELVIN_TO_CELSIUS(A) (A-273.15)
+#define CELSIUS_TO_KELVIN(A) (A+273.15)
 
 /proc/linear_calculation(var/maximum_power, var/minimum_power, var/scale_increment, var/input_power, var/original_thrust, var/maximum_thrust)
 	var/linear_maximum_v = (maximum_thrust - original_thrust)
