@@ -26691,6 +26691,10 @@
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden/layer4{
 	dir = 8
 	},
+/obj/machinery/navbeacon{
+	codes_txt = "patrol;next_patrol=loc1";
+	location = "sciLobby"
+	},
 /turf/open/floor/monotile/steel,
 /area/science)
 "boh" = (

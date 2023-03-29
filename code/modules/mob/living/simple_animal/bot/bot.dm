@@ -149,9 +149,10 @@
 /mob/living/simple_animal/bot/Initialize(mapload)
 	. = ..()
 	GLOB.bots_list += src
-	access_card = new /obj/item/card/id(src)
-//This access is so bots can be immediately set to patrol and leave Robotics, instead of having to be let out first.
-	access_card.access += ACCESS_ROBOTICS
+	//NSV13 - Bot access change - Start
+	access_card = new /obj/item/card/id/bot(src)
+	//This access is so bots can be immediately set to patrol and leave Robotics, instead of having to be let out first.
+	//NSV13 - Bot access change - Stop
 	set_custom_texts()
 	Radio = new/obj/item/radio(src)
 	if(radio_key)
@@ -177,6 +178,13 @@
 	if(path_hud)
 		path_hud.add_to_hud(src)
 		path_hud.add_hud_to(src)
+
+//NSV13 - Bot Fixes - Start
+/obj/item/card/id/bot
+	name = "bot access card"
+	desc = "You shouldn't have this, please throw this into the nearest recycler or call for an orbital smite of this card."
+	access = list(ACCESS_RESEARCH, ACCESS_ROBOTICS)
+//NSV13 - Bot Fixes - Stop
 
 /mob/living/simple_animal/bot/update_mobility()
 	. = ..()
