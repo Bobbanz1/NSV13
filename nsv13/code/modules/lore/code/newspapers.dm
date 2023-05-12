@@ -8,7 +8,7 @@
 	products = list(
 		/obj/item/lore/newspaper = 10
 	)
-	refill_canister = /obj/item/vending_refill/magazines
+	refill_canister = /obj/item/vending_refill/newspapers
 	default_price = 5
 	extra_price = 25
 	payment_department = ACCOUNT_SRV
