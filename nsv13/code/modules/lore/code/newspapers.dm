@@ -1,3 +1,22 @@
+/obj/machinery/vending/newspapers
+	name = "\improper Newspaper Stand"
+	desc = "Vends the latest issues of Stellar News."
+	product_ads = "Read all about it!;The latest juicy gossip!"
+	icon = 'icons/obj/vending.dmi'
+	icon_state = "generic"
+	light_color = LIGHT_COLOR_ORANGE
+	products = list(
+		/obj/item/lore/newspaper = 10
+	)
+	refill_canister = /obj/item/vending_refill/magazines
+	default_price = 5
+	extra_price = 25
+	payment_department = ACCOUNT_SRV
+
+/obj/item/vending_refill/newspapers
+	machine_name = "\improper Newspaper Stand"
+	icon_state = "refill_custom"
+
 /obj/item/lore/newspaper
 	name = "newspaper"
 	desc = "An issue of Stellar News."
@@ -8,7 +27,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 	attack_verb = list("bapped")
 	resistance_flags = FLAMMABLE
-	var/list/articles = list() //The articles in the newspaper
+	var/list/articles = list() //The amount of articles in this magazine
 	var/reading = FALSE
 	var/amount_of_articles = 3
 
@@ -54,3 +73,4 @@
 
 /obj/item/lore/newspaper/proc/on_reading_finished(mob/user)
 	to_chat(user, "<span class='notice'>You finish reading [name]!</span>")
+
