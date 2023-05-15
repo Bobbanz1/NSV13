@@ -53,7 +53,7 @@
 
 /obj/item/lore/model_ship/Initialize(mapload)
 	. = ..()
-	desc = "Model ships! Collect them all! Attack your friends or another model ship with one to initiate epic ship combat! [desc]."
+	desc = "[desc]! Attack your friends or another model ship with one to initiate an epic space battle!"
 	combat_health = max_combat_health
 	switch(special_attack_type)
 		if(SPECIAL_ATTACK_DAMAGE)
@@ -241,7 +241,7 @@
 	user.adjustBruteLoss(450)
 
 	in_combat = FALSE
-	say("AN EASY WIN. MY POWER INCREASES.") // steal a soul, become swole
+	say("AN EASY WIN. OUR POWER INCREASES.") // steal a soul, become swole
 	add_atom_colour(rgb(255, 115, 115), ADMIN_COLOUR_PRIORITY)
 	max_combat_health = round(max_combat_health*1.5 + 0.1)
 	combat_health = max_combat_health
@@ -275,7 +275,7 @@
   */
 /obj/item/lore/model_ship/proc/ship_brawl(obj/item/lore/model_ship/attacker, mob/living/carbon/attacker_controller, mob/living/carbon/opponent)
 	//A GOOD DAY FOR A SWELL BATTLE!
-	attacker_controller.visible_message("<span class='danger'> [attacker_controller.name] collides [attacker] with [src]! Looks like they're preparing for a brawl! </span>", \
+	attacker_controller.visible_message("<span class='danger'> [attacker_controller.name] collides [attacker] with [src]! Looks like they're preparing for a ship to ship brawl! </span>", \
 						"<span class='danger'> You ram [attacker] into [src], sparking a fierce battle! </span>", \
 						"<span class='hear'> You hear hard plastic smacking into hard plastic.</span>", COMBAT_MESSAGE_RANGE)
 
@@ -342,13 +342,13 @@
 					do_sparks(2, FALSE, src)
 					do_sparks(2, FALSE, attacker)
 					if(prob(50))
-						attacker_controller.visible_message("<span class='danger'> [attacker] and [src] clash dramatically, causing sparks to fly! </span>", \
-											"<span class='danger'> [attacker] and [src] clash dramatically, causing sparks to fly! </span>", \
-											"<span class='hear'> You hear hard plastic rubbing against hard plastic.</span>", COMBAT_MESSAGE_RANGE)
+						attacker_controller.visible_message("<span class='danger'> [attacker] and [src] battles dramatically, causing sparks to fly from impacts! </span>", \
+											"<span class='danger'> [attacker] and [src] battles dramatically, causing sparks to fly from impacts! </span>", \
+											"<span class='hear'> You hear hard plastic hitting hard plastic.</span>", COMBAT_MESSAGE_RANGE)
 					else
-						src_controller.visible_message("<span class='danger'> [src] and [attacker] clash dramatically, causing sparks to fly! </span>", \
-										"<span class='danger'> [src] and [attacker] clash dramatically, causing sparks to fly! </span>", \
-										"<span class='hear'> You hear hard plastic rubbing against hard plastic.</span>", COMBAT_MESSAGE_RANGE)
+						src_controller.visible_message("<span class='danger'> [src] and [attacker] exchanges gunfire dramatically, causing sparks to fly! </span>", \
+										"<span class='danger'> [src] and [attacker] exchanges gunfire dramatically, causing sparks to fly! </span>", \
+										"<span class='hear'> You hear hard plastic hitting hard plastic.</span>", COMBAT_MESSAGE_RANGE)
 				if(5) //both win
 					playsound(attacker, 'sound/weapons/parry.ogg', 20, TRUE)
 					if(prob(50))
@@ -369,9 +369,9 @@
 						SpinAnimation(5, 0)
 						playsound(src, combat_sound, 30, TRUE)
 						attacker.combat_health--
-						src_controller.visible_message("<span class='danger'> [src] smashes [attacker]! </span>", \
-										"<span class='danger'> You smash [src] into [attacker]! </span>", \
-										"<span class='hear'> You hear hard plastic smashing hard plastic.</span>", COMBAT_MESSAGE_RANGE)
+						src_controller.visible_message("<span class='danger'> [src] rams into [attacker]! </span>", \
+										"<span class='danger'> You ram [src] into [attacker]! </span>", \
+										"<span class='hear'> You hear hard plastic ramming into hard plastic.</span>", COMBAT_MESSAGE_RANGE)
 						if(prob(5))
 							attacker.combat_health--
 							playsound(attacker, 'nsv13/sound/effects/ship/damage/consolehit3.ogg', 20, TRUE)
@@ -385,7 +385,7 @@
 		sleep(0.5 SECONDS)
 
 	/// Lines chosen for the winning ship
-	var/list/winlines = list("YOU'RE NOTHING BUT SCRAP!", "I'LL YIELD TO NONE!", "GLORY IS MINE!", "AN EASY FIGHT.", "YOU SHOULD HAVE NEVER FACED ME.", "ROCKED AND SOCKED.")
+	var/list/winlines = list("VICTORY!", "WE YIELD TO NONE!", "GLORY IS OURS!", "AN EASY BATTLE.", "YOU SHOULD HAVE NEVER FACED US.")
 
 	if(attacker.combat_health <= 0 && combat_health <= 0) //both lose
 		playsound(src, 'sound/machines/warning-buzzer.ogg', 20, TRUE)
@@ -398,7 +398,7 @@
 		attacker_controller.visible_message("<span class='notice'> [attacker] falls apart!</span>", \
 							"<span class='notice'> [attacker] falls apart!</span>", null, COMBAT_MESSAGE_RANGE)
 		say("[pick(winlines)]")
-		src_controller.visible_message("<span class='notice'> [src] destroys [attacker] and walks away victorious!</span>", \
+		src_controller.visible_message("<span class='notice'> [src] shatters the hull of [attacker] and flies away victorious!</span>", \
 						"<span class='notice'> You raise up [src] victoriously over [attacker]!</span>")
 	else if (combat_health <= 0) //attacker wins
 		attacker.wins++
@@ -407,12 +407,12 @@
 		src_controller.visible_message("<span class='notice'> [src] collapses!</span>", \
 						"<span class='notice'> [src] collapses!</span>", null, COMBAT_MESSAGE_RANGE)
 		attacker.say("[pick(winlines)]")
-		attacker_controller.visible_message("<span class='notice'> [attacker] demolishes [src] and walks away victorious!</span>", \
+		attacker_controller.visible_message("<span class='notice'> [attacker] shatters the hull of [src] and flies away victorious!</span>", \
 							"<span class='notice'> You raise up [attacker] proudly over [src]</span>!")
 	else //both win?
 		say("NEXT TIME.")
 		//don't want to make this a one sided conversation
-		quiet? attacker.say("I WENT EASY ON YOU.") : attacker.say("OF COURSE.")
+		quiet? attacker.say("WE WENT EASY ON YOU.") : attacker.say("OF COURSE.")
 
 	in_combat = FALSE
 	attacker.in_combat = FALSE
@@ -469,14 +469,14 @@
 	switch(special_attack_type)
 		if(SPECIAL_ATTACK_DAMAGE) //+2 damage
 			victim.combat_health-=2
-			playsound(src, 'sound/weapons/marauder.ogg', 20, TRUE)
+			playsound(src, 'nsv13/sound/effects/ship/nukehit.ogg', 20, TRUE)
 		if(SPECIAL_ATTACK_HEAL) //+2 healing
 			combat_health+=2
-			playsound(src, 'sound/mecha/mech_shield_raise.ogg', 20, TRUE)
+			playsound(src, 'nsv13/sound/effects/ship/damage/shield_hit2.ogg', 20, TRUE)
 		if(SPECIAL_ATTACK_UTILITY) //+1 heal, +1 damage
 			victim.combat_health--
 			combat_health++
-			playsound(src, 'sound/mecha/mechmove01.ogg', 30, TRUE)
+			playsound(src, 'nsv13/sound/effects/ship/warp_exit.ogg', 30, TRUE)
 		if(SPECIAL_ATTACK_OTHER) //other
 			super_special_attack(victim)
 		else
@@ -490,45 +490,112 @@
   * * victim - the model ship being hit by the super special move (doesn't necessarily need to be used)
   */
 /obj/item/lore/model_ship/proc/super_special_attack(obj/item/lore/model_ship/victim)
-	visible_message("<span class='notice'> [src] does a cool loop.</span>")
+	visible_message("<span class='notice'> [src] does an awesome loop.</span>")
 
-/obj/item/lore/model_ship/nanotrasen/atlas
-	name = "Atlas Class Model Ship"
-	desc = "Once Pegasus-Class vessels, the Atlas design was made to be compact, hit hard, and be as cheap as possible. Most of the ship layout has been trimmed down, even forcing departments to their minimum size to save on building costs. The Atlas has since become a favorite and mainstay of the WhiteRapids fleets. Carrying crews responsible for many victories at the Rubicon Crossing."
+/// Whiterapids Model Ships
+/obj/item/lore/model_ship/whiterapids
+	name = "Whiterapids Model Ship"
+	desc = "A Whiterapids model ship"
+	shipsound = 'nsv13/sound/effects/ship/mac_fire.ogg'
+
+/obj/item/lore/model_ship/whiterapids/atlas
+	name = "NSV Atlas Model Ship"
 	max_combat_health = 4 //200 integrity
 	special_attack_type = SPECIAL_ATTACK_DAMAGE
-	special_attack_cry = "RAMMING SPEED"
-	shipsound = 'nsv13/sound/effects/ship/mac_fire.ogg'
+	special_attack_cry = "SURPRISE TORPEDO"
+	shipsound = 'nsv13/sound/effects/ship/50cal.ogg'
 	combat_sound = 'nsv13/sound/effects/ship/mac_fire.ogg'
 
-/obj/item/lore/model_ship/nanotrasen/tycoon
-	name = "Tycoon Class Model Ship"
-	desc = "A gunboat with the ability to launch fighter crafts. The Tycoon is a versatile ship that can be used for a variety of missions."
+/obj/item/lore/model_ship/whiterapids/tycoon
+	name = "NSV Tycoon Model Ship"
 	max_combat_health = 5 //250 integrity
 	special_attack_type = SPECIAL_ATTACK_UTILITY
-	special_attack_cry = "SURPRISE TORPEDO"
+	special_attack_cry = "FIGHTER SWARM"
 	shipsound = 'nsv13/sound/effects/ship/fighter_launch.ogg'
 	combat_sound = 'nsv13/sound/effects/ship/mac_fire.ogg'
 
+/obj/item/lore/model_ship/whiterapids/eclipse
+	name = "NSV Eclipse Model Ship"
+	max_combat_health = 3 //150 integrity
+	special_attack_type = SPECIAL_ATTACK_HEAL
+	special_attack_cry = "SILVER TAPE REPAIRS"
+	combat_sound = 'nsv13/sound/effects/ship/gauss.ogg'
+
+/obj/item/lore/model_ship/whiterapids/galactica
+	name = "NSV Galactica Model Ship"
+	max_combat_health = 6 //300 integrity
+	special_attack_type = SPECIAL_ATTACK_DAMAGE
+	special_attack_cry = "BLUESPACE ARTILLERY"
+	shipsound = 'nsv13/sound/weapons/bsa_select.ogg'
+	combat_sound = 'nsv13/sound/weapons/bsa_fire.ogg'
+
+/obj/item/lore/model_ship/whiterapids/gladius
+	name = "NSV Gladius Model Ship"
+	max_combat_health = 5 //250 integrity
+	special_attack_type = SPECIAL_ATTACK_DAMAGE
+	special_attack_cry = "DECK BARRAGE"
+	shipsound = 'nsv13/sound/effects/ship/torpedo.ogg'
+	combat_sound = 'nsv13/sound/effects/ship/battleship_gun2.ogg'
+
+/obj/item/lore/model_ship/whiterapids/hammerhead
+	name = "NSV Hammerhead Model Ship"
+	max_combat_health = 4 //200 integrity
+	special_attack_type = SPECIAL_ATTACK_DAMAGE
+	special_attack_cry = "RAMMING SPEED"
+	shipsound = 'nsv13/sound/effects/ship/damage/shiphit4.ogg'
+	combat_sound = 'nsv13/sound/effects/ship/broadside.ogg'
+
+/obj/item/lore/model_ship/whiterapids/shrike
+	name = "NSV Shrike Model Ship"
+	max_combat_health = 4 //200 integrity
+	special_attack_type = SPECIAL_ATTACK_DAMAGE
+	special_attack_cry = "RAILGUNS"
+	shipsound = 'nsv13/sound/effects/ship/gauss.ogg'
+	combat_sound = 'nsv13/sound/effects/ship/railgun_fire.ogg'
+
+/obj/item/lore/model_ship/whiterapids/snake
+	name = "NSV Snake Model Ship"
+	max_combat_health = 4 //200 integrity
+	special_attack_type = SPECIAL_ATTACK_UTILITY
+	special_attack_cry = "FIRE EVERYTHING"
+	combat_sound = 'nsv13/sound/effects/ship/broadside.ogg'
+
+/// Dominion Model Ships
 /obj/item/lore/model_ship/dominion
 	name = "Dominion of Light Model Ship"
-	desc = "A model ship from the Dominion"
+	desc = "A Dominion of Light model ship"
 	shipsound = 'nsv13/sound/effects/ship/plasma_gun_fire.ogg'
 
+/obj/item/lore/model_ship/dominion/serendipity
+	name = "DLV Serendipity Model Ship"
+	max_combat_health = 2 //100 integrity
+	special_attack_type = SPECIAL_ATTACK_HEAL
+	special_attack_cry = "EMERGENCY REPAIRS"
+	shipsound = 'nsv13/sound/effects/ship/plasma.ogg'
+	combat_sound = 'nsv13/sound/effects/ship/plasma_gun_fire.ogg'
+
+/// Draconic Empire Model Ships - Not implemented currently but for future stuff
 /obj/item/lore/model_ship/draconic
 	name = "Draconic Empire Model Ship"
-	desc = "A model ship from the Draconic Empire"
+	desc = "A Draconic Empire model ship"
 	shipsound = 'nsv13/sound/effects/ship/battleship_gun2.ogg'
 
-/obj/item/lore/model_ship/nanotrasen
-	name = "NanoTrasen Model Ship"
-	desc = "A model ship from NanoTrasen"
-	shipsound = 'nsv13/sound/effects/ship/mac_fire.ogg'
-
+/// SolGov Model Ships
 /obj/item/lore/model_ship/solgov
 	name = "SolGov Model Ship"
-	desc = "A model ship from SolGov"
+	desc = "A SolGov model ship"
 	shipsound = 'nsv13/sound/effects/ship/phaser.ogg'
+
+/obj/item/lore/model_ship/solgov/aetherwhisp
+	name = "SGV Aetherwhisp Model Ship"
+	max_combat_health = 6 //300 integrity
+	special_attack_type = SPECIAL_ATTACK_DAMAGE
+	special_attack_cry = "FIRE PHASERS"
+	combat_sound = 'nsv13/sound/effects/ship/burst_phaser2.ogg'
+
+/// Syndicate Model Ships - Future Implementation
+
+/// Pirate Model Ships - Future Implementation
 
 #undef SPECIAL_ATTACK_HEAL
 #undef SPECIAL_ATTACK_DAMAGE
