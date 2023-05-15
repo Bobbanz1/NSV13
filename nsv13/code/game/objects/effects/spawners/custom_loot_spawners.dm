@@ -109,22 +109,3 @@
 		/obj/structure/fighter_frame = 1
 		)
 	lootcount = 1
-
-/obj/effect/spawner/lootdrop/model_ship
-	name = "random model ship spawner"
-	icon = 'nsv13/icons/obj/lore/model_ships.dmi'
-	icon_state = "ship_spawner"
-	lootcount = 1
-	fan_out_items = TRUE
-	loot = list(
-		/obj/item/lore/model_ship/whiterapids/atlas,
-		/obj/item/lore/model_ship/whiterapids/tycoon,
-		/obj/item/lore/model_ship/whiterapids/eclipse,
-		/obj/item/lore/model_ship/whiterapids/galactica,
-		/obj/item/lore/model_ship/whiterapids/gladius,
-		/obj/item/lore/model_ship/whiterapids/hammerhead,
-		/obj/item/lore/model_ship/whiterapids/shrike,
-		/obj/item/lore/model_ship/whiterapids/snake,
-		/obj/item/lore/model_ship/dominion/serendipity,
-		/obj/item/lore/model_ship/solgov/aetherwhisp
-	)
