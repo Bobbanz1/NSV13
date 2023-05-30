@@ -6,14 +6,17 @@
 	)
 	target = 200 // Standard volume of a blood pack
 
-/datum/freight_type/single/reagent/blood/New( var/type )
-	if ( type )
-		blood_type = type
+/datum/freight_type/single/reagent/blood/New( item_type, target, item_name, blood_type )
+	if ( blood_type )
+		src.blood_type = blood_type
+	..()
 
-	set_item_name()
+/datum/freight_type/single/reagent/blood/set_item_name( custom_name )
+	if ( custom_name )
+		item_name = custom_name
+		return TRUE
 
-/datum/freight_type/single/reagent/blood/set_item_name()
-	item_name = blood_type
+	item_name = blood_type + " blood"
 	return TRUE
 
 /datum/freight_type/single/reagent/blood/get_item_targets( var/datum/freight_type_check/freight_type_check )
