@@ -17,8 +17,32 @@
 	machine_name = "\improper Newspaper Stand"
 	icon_state = "refill_custom"
 
+/obj/machinery/newspaper
+	name = "\improper Newspaper Stand"
+	desc = "Vends the latest issues of Stellar News for only 5 cr"
+	icon = 'icons/obj/vending.dmi'
+	icon_state = "generic"
+	light_color = LIGHT_COLOR_ORANGE
+	var/cost = 5
+
+/obj/machinery/newspaper/attackby(obj/item/I, mob/living/user, params)
+	if(istype(I, /obj/item/holochip))
+		var/obj/item/holochip/money = I
+		if(money.credits >= cost) // Todo, make this thing return the extra money paid
+			to_chat(user, "<span class='notice'>You insert [money] into [src]'s holochip slot and it dispenses a fresh copy of Stellar News!</span>")
+			qdel(money)
+			var/obj/item/dispensed = new /obj/item/lore/newspaper(get_turf(src))
+			if(user.put_in_hands(dispensed))
+				to_chat(user, "<span class='notice'>You grab the issue of Stellar News, maybe there's something interesting in the issue?</span>")
+			else
+				to_chat(user, "<span class='warning'>[capitalize(dispensed)] falls onto the floor!</span>")
+		else
+			to_chat(user, "<span class='warning'>The machine smartly refuses the holochip as it doesn't contain a sufficient amount of credits</span>")
+	else
+		. = ..()
+
 /obj/item/lore/newspaper
-	name = "newspaper"
+	name = "Stellar Newspaper"
 	desc = "An issue of Stellar News."
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "newspaper"
