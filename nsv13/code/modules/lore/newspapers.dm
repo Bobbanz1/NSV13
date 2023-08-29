@@ -72,6 +72,7 @@
 
 /obj/item/lore/newspaper/proc/on_reading_start(mob/living/user)
 	to_chat(user, "<span class='notice'>You start reading [name]...</span>")
+	return TRUE
 
 /obj/item/lore/newspaper/proc/on_reading_stopped(mob/living/user)
 	to_chat(user, "<span class='notice'>You stop reading...</span>")
@@ -79,6 +80,12 @@
 /obj/item/lore/newspaper/proc/on_reading_finished(mob/living/user)
 	to_chat(user, "<span class='notice'>You finish reading [name]!</span>")
 
+/**
+ * Todo
+ *
+ * * Make this machine return the extra money paid - Done
+ * * Icon for the machine - Not Done
+ */
 /obj/machinery/newspaper
 	name = "\improper Newspaper Stand"
 	desc = "Vends the latest issues of Stellar News for only 5 credits"
@@ -108,7 +115,7 @@
 		return ..()
 
 /obj/machinery/newspaper/attack_hand(mob/living/user)
-	if(internal_account >= price) // Todo, make this thing return the extra money paid
+	if(internal_account >= price)
 		var/obj/item/dispensed = new /obj/item/lore/newspaper(get_turf(src))
 		internal_account -= price
 		if(user.put_in_hands(dispensed))
