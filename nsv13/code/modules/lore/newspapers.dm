@@ -23,17 +23,54 @@
 		'sound/effects/pageturn3.ogg',
 	)
 	/// List of all the various categories you can find in this newspaper
+	/*
 	var/list/categories = list(
 		"mundane",
 		"military",
 		"economy",
 	)
+	*/
+	var/list/categories = list()
+	/// How many categories to pick, if possible
+	var/category_amount = 3
 
 /obj/item/lore/newspaper/Initialize(mapload)
 	. = ..()
+
+	/**
+	 * Todo
+	 *
+	 * * Make this list go through the categories and pick three categories to choose entries from
+	 */
 	/// Goes through the entire category list and picks from the entries
-	for(var/entry in categories)
-		articles += pick_list(NEWSPAPER_FILE, entry)
+	//for(var/entry in categories)
+	//	articles += pick_list(NEWSPAPER_FILE, entry)
+	var/list/category_entries = list()
+	var/list/category_sort = list()
+	/// Checks to ensure the file exists
+	if(fexists(NEWSPAPER_FILE))
+		/// If the file does exist then decode it, read it and add every category that exists in the file to the sorting list for later picking.
+		category_entries += json_decode(rustg_file_read(file(NEWSPAPER_FILE)))
+		for(var/i = 1; i <= category_entries.len; i++)
+			var/list/category = category_entries[i]
+			category_sort += category["category"]
+
+		while(categories.len < category_amount)
+			/// Used to prevent a possible continous loop in the event that we have less than 3 categories to pick from.
+			if(category_sort.len < category_amount && categories.len == category_sort.len)
+				break
+			/// Picks a category from the newspaper JSON file and inserts it into the categories list.
+			var/picked_category = pick(category_sort)
+			/// Checks to ensure the category we just picked isn't in the already selected categories.
+			if(!(picked_category in categories))
+				categories += picked_category
+
+		for(var/entry in categories)
+			for(var/i = 1; i <= category_entries.len; i++)
+				var/list/cat = category_entries[i]
+				if(entry == cat["category"])
+					articles += pick(json_decode(cat["stories"]))
+					break
 
 /obj/item/lore/newspaper/attack_self(mob/living/user)
 	if(reading)
@@ -57,7 +94,7 @@
 /obj/item/lore/newspaper/proc/turn_page(mob/living/user)
 	playsound(user, pick(newspaper_sounds), 30, TRUE)
 
-	if(!do_after(user, reading_time, src))
+	if(!do_after(user, reading_time, target = user))
 		return FALSE
 
 	/**
