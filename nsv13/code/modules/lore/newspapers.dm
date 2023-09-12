@@ -1,6 +1,6 @@
 /obj/item/lore/newspaper
-	name = "Stellar Newspaper"
-	desc = "An issue of Stellar News."
+	name = "Vicker Newspaper"
+	desc = "An issue of Vicker News."
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "newspaper"
 	lefthand_file = 'icons/mob/inhands/misc/books_lefthand.dmi'
@@ -10,6 +10,12 @@
 	resistance_flags = FLAMMABLE
 	/// The amount of articles in this magazine
 	var/list/articles = list()
+	/// List of all the various categories you can find in this newspaper
+	var/list/categories = list()
+	/// How many categories to pick, if possible
+	var/category_amount = 3
+	/// Articles that have already been read, used to prevent the paper from stating the same thing more than once.
+	var/list/read_articles = list()
 	/// Whether the newspaper is currently being read.
 	var/reading = FALSE
 	/// The time it takes to read a page
@@ -22,29 +28,10 @@
 		'sound/effects/pageturn2.ogg',
 		'sound/effects/pageturn3.ogg',
 	)
-	/// List of all the various categories you can find in this newspaper
-	/*
-	var/list/categories = list(
-		"mundane",
-		"military",
-		"economy",
-	)
-	*/
-	var/list/categories = list()
-	/// How many categories to pick, if possible
-	var/category_amount = 3
 
 /obj/item/lore/newspaper/Initialize(mapload)
 	. = ..()
 
-	/**
-	 * Todo
-	 *
-	 * * Make this list go through the categories and pick three categories to choose entries from
-	 */
-	/// Goes through the entire category list and picks from the entries
-	//for(var/entry in categories)
-	//	articles += pick_list(NEWSPAPER_FILE, entry)
 	var/list/category_entries = list()
 	var/list/category_sort = list()
 	/// Checks to ensure the file exists
@@ -55,6 +42,7 @@
 			var/list/category = category_entries[i]
 			category_sort += category["category"]
 
+		/// Used to sort through the categories and pick out three or less categories to choose stories from.
 		while(categories.len < category_amount)
 			/// Used to prevent a possible continous loop in the event that we have less than 3 categories to pick from.
 			if(category_sort.len < category_amount && categories.len == category_sort.len)
@@ -65,11 +53,12 @@
 			if(!(picked_category in categories))
 				categories += picked_category
 
+		/// Yes this code repeats itself in order to pick the stories out of the categories.
 		for(var/entry in categories)
 			for(var/i = 1; i <= category_entries.len; i++)
 				var/list/cat = category_entries[i]
 				if(entry == cat["category"])
-					articles += pick(json_decode(cat["stories"]))
+					articles += pick(cat["stories"])
 					break
 
 /obj/item/lore/newspaper/attack_self(mob/living/user)
@@ -94,17 +83,15 @@
 /obj/item/lore/newspaper/proc/turn_page(mob/living/user)
 	playsound(user, pick(newspaper_sounds), 30, TRUE)
 
-	if(!do_after(user, reading_time, target = user))
+	if(!do_after(user, reading_time, target = src))
 		return FALSE
 
-	/**
-	 * Todo
-	 *
-	 * * Make the articles not repeat themselves
-	 * * Possibly make it pick an article and then put that article into a list
-	 * * Make the article list reset afterwards...or make the new list purge itself?
-	 */
-	to_chat(user, "<span class='notice'>[length(articles) ? pick(articles) : "You keep reading..."]</span>")
+	if(length(articles))
+		var/article = find_article()
+		read_articles += article
+		to_chat(user, "<span class='notice'>[article]</span>")
+	else
+		to_chat(user, "<span class='notice'>You keep reading...</span>")
 	return TRUE
 
 /obj/item/lore/newspaper/proc/on_reading_start(mob/living/user)
@@ -113,9 +100,18 @@
 
 /obj/item/lore/newspaper/proc/on_reading_stopped(mob/living/user)
 	to_chat(user, "<span class='notice'>You stop reading...</span>")
+	LAZYCLEARLIST(read_articles)
 
 /obj/item/lore/newspaper/proc/on_reading_finished(mob/living/user)
 	to_chat(user, "<span class='notice'>You finish reading [name]!</span>")
+	LAZYCLEARLIST(read_articles)
+
+/obj/item/lore/newspaper/proc/find_article()
+	var/picked_article = pick(articles)
+	if(!(picked_article in read_articles))
+		return picked_article
+	else
+		find_article()
 
 /**
  * Todo
@@ -125,7 +121,7 @@
  */
 /obj/machinery/newspaper
 	name = "\improper Newspaper Stand"
-	desc = "Vends the latest issues of Stellar News for only 5 credits"
+	desc = "Vends the latest issues of Vicker News for only 5 credits"
 	icon = 'icons/obj/vending.dmi'
 	icon_state = "generic"
 	light_color = LIGHT_COLOR_ORANGE
@@ -156,7 +152,7 @@
 		var/obj/item/dispensed = new /obj/item/lore/newspaper(get_turf(src))
 		internal_account -= price
 		if(user.put_in_hands(dispensed))
-			to_chat(user, "<span class='notice'>You grab an issue of Stellar News, maybe there's something interesting in this issue?</span>")
+			to_chat(user, "<span class='notice'>You grab an issue of Vicker News, maybe there's something interesting in this issue?</span>")
 		else
 			to_chat(user, "<span class='warning'>[capitalize(dispensed)] falls onto the floor!</span>")
 	else
