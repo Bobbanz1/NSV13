@@ -71,6 +71,7 @@
 
 #define DEFAULT_RELIGION "Christianity"
 #define DEFAULT_DEITY "Space Jesus"
+#define DEFAULT_BIBLE "The Bible"
 
 #define JOB_DISPLAY_ORDER_DEFAULT 0
 
@@ -125,6 +126,28 @@
 #define DEPARTMENT_BITFLAG_SECURITY (1<<6)
 #define DEPARTMENT_BITFLAG_SILICON  (1<<7)
 #define DEPARTMENT_BITFLAG_MUNITIONS (1<<8) //NSV13 munitions
+///NSV13 - CHANGES START - ALTERATION TO PREFERENCE REDUX PR, MAKE CHANGES HERE ONCE BEEMERGE HAPPENS
+//#define DEPT_BITFLAG_CAPTAIN (1<<10)
+//#define DEPT_BITFLAG_ASSISTANT (1<<11)
+#define DEPARTMENT_BITFLAG_CAPTAIN (1<<9)
+#define DEPARTMENT_BITFLAG_ASSISTANT (1<<10)
+/// For use in the preferences menu.
+GLOBAL_LIST_INIT(dept_bitflag_to_name, list(
+	"[DEPARTMENT_BITFLAG_COMMAND]" = "Command",
+	//"[DEPT_BITFLAG_CIV]" = "Civilian",
+	"[DEPARTMENT_BITFLAG_SERVICE]" = "Service",
+	"[DEPARTMENT_BITFLAG_CARGO]" = "Cargo",
+	"[DEPARTMENT_BITFLAG_ENGINEERING]" = "Engineering",
+	"[DEPARTMENT_BITFLAG_MEDICAL]" = "Medical",
+	"[DEPARTMENT_BITFLAG_SCIENCE]" = "Science",
+	"[DEPARTMENT_BITFLAG_SECURITY]" = "Security",
+	//"[DEPT_BITFLAG_VIP]" = "Very Important People",
+	"[DEPARTMENT_BITFLAG_SILICON]" = "Silicon",
+	"[DEPARTMENT_BITFLAG_MUNITIONS]" = "Munitions", /// NSV13 - Munitions
+	"[DEPARTMENT_BITFLAG_CAPTAIN]" = "Captain",
+	"[DEPARTMENT_BITFLAG_ASSISTANT]" = "Midshipman" /// NSV13 - Midshipman, not assistant.
+))
+///NSV13 - CHANGES STOP
 
 //-------------------------------------------------------------------------------------------
 //------------------------------------- Job names -------------------------------------------

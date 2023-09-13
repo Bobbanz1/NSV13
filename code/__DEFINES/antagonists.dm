@@ -103,3 +103,6 @@
 #define IS_HIVEHOST(mob) (mob.mind?.has_antag_datum(/datum/antagonist/hivemind))
 ///Checks if given mob is an awakened vessel
 #define IS_WOKEVESSEL(mob) (mob.mind?.has_antag_datum(/datum/antagonist/hivevessel))
+
+/// The dimensions of the antagonist preview icon. Will be scaled to this size.
+#define ANTAGONIST_PREVIEW_ICON_SIZE 96

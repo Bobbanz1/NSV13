@@ -86,40 +86,6 @@
 #define GIB_TYPE_HUMAN "human"
 #define GIB_TYPE_ROBOTIC "robotic"
 
-//Species ID defines
-#define SPECIES_HUMAN			"human"
-#define SPECIES_IPC 			"ipc"
-#define SPECIES_ETHEREAL 		"ethereal"
-#define SPECIES_PLASMAMAN 		"plasmaman"
-#define SPECIES_APID 			"apid"
-#define SPECIES_MOTH			"moth"
-#define SPECIES_LIZARD			"lizard"
- #define SPECIES_ASHWALKER		"ashlizard"
-#define SPECIES_FELINID			"felinid"
-#define SPECIES_OOZELING		"oozeling"
-#define SPECIES_FLY 			"fly"
-#define SPECIES_MONKEY			"monkey"
-#define SPECIES_JELLYPERSON		"jelly"
- #define SPECIES_SLIMEPERSON	"slime"
- #define SPECIES_LUMINESCENT	"lum"
- #define SPECIES_STARGAZER		"stargazer"
-#define SPECIES_ABDUCTOR		"abductor"
-#define SPECIES_SHADOWPERSON	"shadow"
-
-//Species bitflags, used for species_restricted. If this somehow ever gets above 23 Bee has larger problems.
-#define FLAG_HUMAN			(1<<0)
-#define FLAG_IPC			(1<<1)
-#define FLAG_ETHEREAL		(1<<2)
-#define FLAG_PLASMAMAN		(1<<3)
-#define	FLAG_APID			(1<<4)
-#define FLAG_MOTH			(1<<5)
-#define FLAG_LIZARD			(1<<6)
-#define FLAG_FELINID		(1<<7)
-#define FLAG_OOZELING		(1<<8)
-#define FLAG_FLY			(1<<9)
-#define FLAG_DEBUG_SPECIES	(1<<10)
-#define FLAG_MONKEY (1<<11)
-
 #define DIGITIGRADE_NEVER 0
 #define DIGITIGRADE_OPTIONAL 1
 #define DIGITIGRADE_FORCED 2
@@ -417,22 +383,6 @@
 
 #define PULL_PRONE_SLOWDOWN 1.5
 #define HUMAN_CARRY_SLOWDOWN 0.35
-
-//! ## control what things can spawn species
-/// Badmin magic mirror
-#define MIRROR_BADMIN (1<<0)
-/// Standard magic mirror (wizard)
-#define MIRROR_MAGIC  (1<<1)
-/// Pride ruin mirror
-#define MIRROR_PRIDE  (1<<2)
-/// Race swap wizard event
-#define RACE_SWAP     (1<<3)
-/// ERT spawn template (avoid races that don't function without correct gear)
-#define ERT_SPAWN     (1<<4)
-/// xenobio black crossbreed
-#define SLIME_EXTRACT (1<<5)
-/// Wabbacjack staff projectiles
-#define WABBAJACK     (1<<6)
 
 #define SLEEP_CHECK_DEATH(X) sleep(X); if(QDELETED(src) || stat == DEAD) return;
 #define INTERACTING_WITH(X, Y) (Y in X.do_afters)
