@@ -346,6 +346,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			ui_interact(usr)
 			return TRUE
 
+		/// NSV13 - TGUI Pref Changes - Start
+		if("syndiecrew")
+			var/client/C = (istype(usr, /client)) ? usr : usr.client
+			C.select_syndie_role()
+
 	for (var/datum/preference_middleware/preference_middleware as anything in middleware)
 		var/delegation = preference_middleware.action_delegations[action]
 		if (!isnull(delegation))

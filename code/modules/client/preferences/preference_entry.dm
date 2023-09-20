@@ -554,3 +554,27 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 /datum/preference/string/is_valid(value)
 	return istext(value)
+
+// NSV13 - TGUI PREF PORT - Start
+/// A string-based preference accepting arbitrary string values entered by the user, with a maximum length.
+/datum/preference/text
+	abstract_type = /datum/preference/text
+
+	/// What is the maximum length of the value allowed in this field?
+	var/maximum_value_length = 256
+
+	/// Should we strip HTML the input or simply restrict it to the maximum_value_length?
+	var/should_strip_html = TRUE
+
+/datum/preference/text/deserialize(input, datum/preferences/preferences)
+	return should_strip_html ? strip_html_simple(input, maximum_value_length) : copytext(input, 1, maximum_value_length)
+
+/datum/preference/text/create_default_value()
+	return ""
+
+/datum/preference/text/is_valid(value)
+	return istext(value) && length(value) < maximum_value_length
+
+/datum/preference/text/compile_constant_data()
+	return list("maximum_length" = maximum_value_length)
+// NSV13 - TGUI PREF PORT - Stop
