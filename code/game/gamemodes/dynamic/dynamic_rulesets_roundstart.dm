@@ -29,6 +29,7 @@
 		assigned += M.mind
 		M.mind.special_role = ROLE_TRAITOR
 		M.mind.restricted_roles = restricted_roles
+		GLOB.pre_setup_antags += M.mind
 	return TRUE
 
 
@@ -67,6 +68,7 @@
 			team.add_member(bro.mind)
 			bro.mind.special_role = ROLE_BROTHER
 			bro.mind.restricted_roles = restricted_roles
+			GLOB.pre_setup_antags += bro.mind
 		pre_brother_teams += team
 	return TRUE
 
@@ -76,6 +78,7 @@
 		team.forge_brother_objectives()
 		for(var/datum/mind/M in team.members)
 			M.add_antag_datum(/datum/antagonist/brother, team)
+			GLOB.pre_setup_antags -= M
 		team.update_name()
 	mode.brother_teams += pre_brother_teams
 	return TRUE
@@ -109,6 +112,7 @@
 		assigned += M.mind
 		M.mind.restricted_roles = restricted_roles
 		M.mind.special_role = ROLE_CHANGELING
+		GLOB.pre_setup_antags += M.mind
 	return TRUE
 
 /datum/dynamic_ruleset/roundstart/changeling/execute()
@@ -148,6 +152,7 @@
 		assigned += picked_candidate.mind
 		picked_candidate.mind.restricted_roles = restricted_roles
 		picked_candidate.mind.special_role = ROLE_HERETIC
+		GLOB.pre_setup_antags += picked_candidate.mind
 	return TRUE
 
 /datum/dynamic_ruleset/roundstart/heretics/execute()
@@ -195,6 +200,7 @@
 		assigned += M.mind
 		M.mind.assigned_role = ROLE_WIZARD
 		M.mind.special_role = ROLE_WIZARD
+		GLOB.pre_setup_antags += M.mind
 
 	return TRUE
 

@@ -7,7 +7,7 @@
 
 
 /datum/keybinding/living/resist
-	key = "B"
+	keys = list("B")
 	name = "resist"
 	full_name = "Resist"
 	description = "Break free of your current state. Handcuffs, on fire, being trapped in an alien nest? Resist!"
@@ -17,14 +17,13 @@
 	. = ..()
 	if(.)
 		return
-	if (!isliving(user.mob)) return
 	var/mob/living/L = user.mob
 	L.resist()
 	return TRUE
 
 
 /datum/keybinding/living/rest
-	key = "V"
+	keys = list("V")
 	name = "rest"
 	full_name = "Rest"
 	description = "Lay down, or get up."

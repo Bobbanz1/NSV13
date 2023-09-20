@@ -5,7 +5,7 @@
 
 // Strafing AND turning? It's more likely than you think!
 /datum/keybinding/overmap/rotate_left
-	key = "Q"
+	keys = list("Q")
 	name = "rotate_left"
 	full_name = "Rotate Left"
 	description = ""
@@ -40,7 +40,7 @@
 	return TRUE
 
 /datum/keybinding/overmap/rotate_right
-	key = "E"
+	keys = list("E")
 	name = "rotate_right"
 	full_name = "Rotate Right"
 	description = ""
@@ -76,7 +76,7 @@
 
 // Keys that are held down in other binding modes need both a down and an up to override correctly
 /datum/keybinding/overmap/boost
-	key = "Shift"
+	keys = list("Shift")
 	name = "boost"
 	full_name = "Boost"
 	description = ""
@@ -108,7 +108,7 @@
 	return TRUE
 
 /datum/keybinding/overmap/toggle_brakes
-	key = "Alt"
+	keys = list("Alt")
 	name = "toggle_brakes"
 	full_name = "Toggle Brakes"
 	description = ""
@@ -144,7 +144,7 @@
 
 // Other ship controls
 /datum/keybinding/overmap/toggle_inertia
-	key = "X"
+	keys = list("X")
 	name = "toggle_inertia"
 	full_name = "Toggle Inertial Assistance"
 	description = ""
@@ -167,7 +167,7 @@
 	return TRUE
 
 /datum/keybinding/overmap/toggle_move_mode
-	key = "C"
+	keys = list("C")
 	name = "toggle_move_mode"
 	full_name = "Toggle Mouse Movement"
 	description = ""
@@ -190,7 +190,7 @@
 	return TRUE
 
 /datum/keybinding/overmap/cycle_firemode
-	key = "Space"
+	keys = list("Space")
 	name = "cycle_firemode"
 	full_name = "Cycle Firemode"
 	description = ""
@@ -215,7 +215,7 @@
 // Small craft - safeties and countermeasures
 
 /datum/keybinding/overmap/deploy_countermeasure
-	key = "5"
+	keys = list("5")
 	name = "deploy_countermeasure"
 	full_name = "Deploy Countermeasure"
 	description = ""
@@ -235,7 +235,7 @@
 	return TRUE
 
 /datum/keybinding/overmap/toggle_safety
-	key = "Capslock"
+	keys = list("Capslock")
 	name = "toggle_safety"
 	full_name = "Toggle Safeties"
 	description = ""
@@ -259,7 +259,7 @@
 
 // Weapon selection - this is overly complicated but probably useful as a proof of concept
 /datum/keybinding/overmap/weapon_1
-	key = "1"
+	keys = list("1")
 	name = "weapon_1"
 	full_name = "Weapon 1"
 	description = ""
@@ -279,7 +279,7 @@
 	return TRUE
 
 /datum/keybinding/overmap/weapon_2
-	key = "2"
+	keys = list("2")
 	name = "weapon_2"
 	full_name = "Weapon 2"
 	description = ""
@@ -299,7 +299,7 @@
 	return TRUE
 
 /datum/keybinding/overmap/weapon_3
-	key = "3"
+	keys = list("3")
 	name = "weapon_3"
 	full_name = "Weapon 3"
 	description = ""
@@ -319,7 +319,7 @@
 	return TRUE
 
 /datum/keybinding/overmap/weapon_4
-	key = "4"
+	keys = list("4")
 	name = "weapon_4"
 	full_name = "Weapon 4"
 	description = ""
@@ -339,7 +339,7 @@
 	return TRUE
 
 /datum/keybinding/overmap/unlock
-	key = "6"
+	keys = list("6")
 	name = "unlock"
 	full_name = "Unlock All Targets"
 	description = ""

@@ -6,7 +6,7 @@
 
 // Toggling brakes for tugs/similar vehicles
 /datum/keybinding/vehicle/toggle_brakes
-	key = "Alt"
+	keys = list("Alt")
 	name = "toggle_car_brakes"
 	full_name = "Toggle Brakes"
 	description = "Toggle a vehicle's brakes."

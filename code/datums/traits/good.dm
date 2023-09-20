@@ -4,6 +4,7 @@
 /datum/quirk/alcohol_tolerance
 	name = "Alcohol Tolerance"
 	desc = "You become drunk more slowly and suffer fewer drawbacks from alcohol."
+	icon = "beer"
 	value = 1
 	mob_trait = TRAIT_ALCOHOL_TOLERANCE
 	gain_text = "<span class='notice'>You feel like you could drink a whole keg!</span>"
@@ -12,6 +13,7 @@
 /datum/quirk/apathetic
 	name = "Apathetic"
 	desc = "You just don't care as much as other people. That's nice to have in a place like this, I guess."
+	icon = "meh"
 	value = 1
 	mood_quirk = TRUE
 
@@ -28,6 +30,7 @@
 /datum/quirk/drunkhealing
 	name = "Drunken Resilience"
 	desc = "Nothing like a good drink to make you feel on top of the world. Whenever you're drunk, you slowly recover from injuries."
+	icon = "wine-bottle"
 	value = 2
 	mob_trait = TRAIT_DRUNK_HEALING
 	gain_text = "<span class='notice'>You feel like a drink would do you good.</span>"
@@ -37,6 +40,7 @@
 /datum/quirk/empath
 	name = "Empath"
 	desc = "Whether it's a sixth sense or careful study of body language, it only takes you a quick glance at someone to understand how they feel."
+	icon = "smile-beam"
 	value = 2
 	mob_trait = TRAIT_EMPATH
 	gain_text = "<span class='notice'>You feel in tune with those around you.</span>"
@@ -45,6 +49,7 @@
 /datum/quirk/freerunning
 	name = "Freerunning"
 	desc = "You're great at quick moves! You can climb tables more quickly."
+	icon = "running"
 	value = 2
 	mob_trait = TRAIT_FREERUNNING
 	gain_text = "<span class='notice'>You feel lithe on your feet!</span>"
@@ -53,6 +58,7 @@
 /datum/quirk/friendly
 	name = "Friendly"
 	desc = "You give the best hugs, especially when you're in the right mood."
+	icon = "hands-helping"
 	value = 1
 	mob_trait = TRAIT_FRIENDLY
 	gain_text = "<span class='notice'>You want to hug someone.</span>"
@@ -62,6 +68,7 @@
 /datum/quirk/jolly
 	name = "Jolly"
 	desc = "You sometimes just feel happy, for no reason at all."
+	icon = "grin"
 	value = 1
 	mob_trait = TRAIT_JOLLY
 	mood_quirk = TRUE
@@ -74,6 +81,7 @@
 /datum/quirk/light_step
 	name = "Light Step"
 	desc = "You walk with a gentle step; stepping on sharp objects is quieter, less painful and you won't leave footprints behind you."
+	icon = "shoe-prints"
 	value = 1
 	mob_trait = TRAIT_LIGHT_STEP
 	gain_text = "<span class='notice'>You walk with a little more litheness.</span>"
@@ -82,6 +90,7 @@
 /datum/quirk/musician
 	name = "Musician"
 	desc = "You can tune handheld musical instruments to play melodies that clear certain negative effects and soothe the soul."
+	icon = "guitar"
 	value = 1
 	mob_trait = TRAIT_MUSICIAN
 	gain_text = "<span class='notice'>You know everything about musical instruments.</span>"
@@ -99,6 +108,7 @@
 /datum/quirk/multilingual
 	name = "Multilingual"
 	desc = "You spent a portion of your life learning to understand an additional language. You may or may not be able to speak it based on your anatomy."
+	icon = "comments"
 	value = 1
 	mob_trait = TRAIT_MULTILINGUAL
 	gain_text = "<span class='notice'>You have learned to understand an additional language.</span>"
@@ -122,6 +132,7 @@
 /datum/quirk/night_vision
 	name = "Night Vision"
 	desc = "You can see slightly more clearly in full darkness than most people."
+	icon = "eye"
 	value = 1
 	mob_trait = TRAIT_NIGHT_VISION
 	gain_text = "<span class='notice'>The shadows seem a little less dark.</span>"
@@ -137,6 +148,7 @@
 /datum/quirk/photographer
 	name = "Photographer"
 	desc = "You know how to handle a camera, shortening the delay between each shot."
+	icon = "camera"
 	value = 1
 	mob_trait = TRAIT_PHOTOGRAPHER
 	gain_text = "<span class='notice'>You know everything about photography.</span>"
@@ -158,18 +170,21 @@
 /datum/quirk/selfaware
 	name = "Self-Aware"
 	desc = "You know your body well, and can accurately assess the extent of your wounds."
+	icon = "bone"
 	value = 2
 	mob_trait = TRAIT_SELF_AWARE
 
 /datum/quirk/skittish
 	name = "Skittish"
 	desc = "You can conceal yourself in danger. Ctrl-shift-click a closed locker to jump into it, as long as you have access."
+	icon = "trash"
 	value = 2
 	mob_trait = TRAIT_SKITTISH
 
 /datum/quirk/spiritual
 	name = "Spiritual"
 	desc = "You hold a spiritual belief, whether in God, nature or the arcane rules of the universe. You gain comfort from the presence of holy people, and believe that your prayers are more special than others."
+	icon = "bible"
 	value = 1
 	mob_trait = TRAIT_SPIRITUAL
 	gain_text = "<span class='notice'>You have faith in a higher power.</span>"
@@ -195,6 +210,7 @@
 /datum/quirk/tagger
 	name = "Tagger"
 	desc = "You're an experienced artist. While drawing graffiti, you can get twice as many uses out of drawing supplies."
+	icon = "spray-can"
 	value = 1
 	mob_trait = TRAIT_TAGGER
 	gain_text = "<span class='notice'>You know how to tag walls efficiently.</span>"
@@ -210,6 +226,7 @@
 /datum/quirk/voracious
 	name = "Voracious"
 	desc = "Nothing gets between you and your food. You eat faster and can binge on junk food! Being fat suits you just fine."
+	icon = "drumstick-bite"
 	value = 1
 	mob_trait = TRAIT_VORACIOUS
 	gain_text = "<span class='notice'>You feel HONGRY.</span>"
@@ -218,6 +235,7 @@
 /datum/quirk/neet
 	name = "NEET"
 	desc = "For some reason you qualified for social welfare and you don't really care about your own personal hygiene." //NSV13 - kept hygiene
+	icon = "money-check-alt"
 	value = 1
 	mob_trait = TRAIT_NEET
 	gain_text = "<span class='notice'>You feel useless to society.</span>"

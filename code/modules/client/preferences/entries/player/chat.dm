@@ -13,10 +13,12 @@
 		return FALSE
 	return is_admin(preferences.parent)
 
+/* NSV13 - Disabled as we don't have this stuff yet.
 /datum/preference/toggle/chat_followghostmindless
 	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
 	db_key = "chat_followghostmindless"
 	preference_type = PREFERENCE_PLAYER
+*/
 
 /datum/preference/toggle/chat_ghostears
 	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
