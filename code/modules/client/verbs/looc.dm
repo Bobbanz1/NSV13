@@ -20,7 +20,7 @@
     if(!msg)
         return
 
-    if(!(prefs.chat_toggles & CHAT_LOOC)) //nsv13 - toggles -> chat_toggles, CHAT_OOC -> CHAT_LOOC
+    if(!prefs.read_player_preference(/datum/preference/toggle/chat_looc)) //nsv13 - chat_ooc -> chat_looc
         to_chat(src, "<span class='danger'>You have LOOC muted.</span>")
         return
 
@@ -82,7 +82,7 @@
         if (isobserver(M))
             continue //Also handled later.
 
-        if(C.prefs.chat_toggles & CHAT_LOOC) //nsv13 - toggles -> chat_toggles, CHAT_OOC -> CHAT_LOOC
+        if(C.prefs.read_player_preference(/datum/preference/toggle/chat_looc)) //nsv13 - chat_ooc -> chat_looc
 //            var/display_name = src.key
 //            if(holder)
 //                if(holder.fakekey)
@@ -93,7 +93,7 @@
             to_chat(C,"<span class='looc'><span class='prefix'>LOOC:</span> <EM>[src.mob.name]:</EM> <span class='message'>[msg]</span></span>")
 
     for(var/client/C in GLOB.admins)
-        if(C.prefs.chat_toggles & CHAT_LOOC) //nsv13 - toggles -> chat_toggles, CHAT_OOC -> CHAT_LOOC
+        if(C.prefs.read_player_preference(/datum/preference/toggle/chat_looc)) //nsv13 - chat_ooc -> chat_looc
             var/prefix = "(R)LOOC"
             if (C.mob in heard)
                 prefix = "LOOC"

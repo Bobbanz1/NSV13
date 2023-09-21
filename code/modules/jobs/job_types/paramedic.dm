@@ -1,6 +1,8 @@
 /datum/job/paramedic
 	title = JOB_NAME_PARAMEDIC
 	flag = PARAMEDIC
+	description = "Retrieve the gravely injured and dead people from around the ship, deliver medicine for minor wounds, and keep a close eye on the Crew Monitor in your free time." //NSV13 - station -> ship
+	department_for_prefs = DEPARTMENT_BITFLAG_MEDICAL ///NSV13 - DEPT_BITFLAG_MED -> DEPARTMENT_BITFLAG_MEDICAL
 	department_head = list(JOB_NAME_CHIEFMEDICALOFFICER)
 	department_flag = MEDSCI
 	faction = "Station"

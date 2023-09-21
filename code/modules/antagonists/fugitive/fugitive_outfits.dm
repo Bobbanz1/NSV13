@@ -89,7 +89,9 @@
 	r_hand = /obj/item/gun/ballistic/rifle/boltaction
 	id = /obj/item/card/id/space_russian
 
-/datum/outfit/russiancorpse/hunter/pre_equip(mob/living/carbon/human/H)
+/datum/outfit/russiancorpse/hunter/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	if(visualsOnly)
+		return
 	if(prob(50))
 		head = /obj/item/clothing/head/ushanka
 

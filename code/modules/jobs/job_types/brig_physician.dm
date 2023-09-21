@@ -1,6 +1,9 @@
 /datum/job/brig_physician
 	title = JOB_NAME_BRIGPHYSICIAN
 	flag = BRIG_PHYS
+	description = "Tend to the health of Security Officers and Prisoners, help out at Medbay if you have free time."
+	department_for_prefs = DEPARTMENT_BITFLAG_SECURITY ///NSV13 - DEPT_BITFLAG_SEC -> DEPARTMENT_BITFLAG_SECURITY
+	department_head_for_prefs = JOB_NAME_HEADOFSECURITY
 	department_head = list(JOB_NAME_CHIEFMEDICALOFFICER)
 	department_flag = ENGSEC
 	faction = "Station"

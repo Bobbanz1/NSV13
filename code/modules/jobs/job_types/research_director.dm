@@ -1,7 +1,9 @@
 /datum/job/research_director
 	title = JOB_NAME_RESEARCHDIRECTOR
 	flag = RD_JF
-	auto_deadmin_role_flags = PREFTOGGLE_DEADMIN_POSITION_HEAD
+	description = "Oversee the scientists and roboticists and keep up with their research projects, take care of any issues with the ship's AI that may arise, ensure research is being prioritized in accordance with the needs of the ship." //NSV13 - station -> ship
+	department_for_prefs = DEPARTMENT_BITFLAG_SCIENCE ///NSV13 - DEPT_BITFLAG_SCI -> DEPARTMENT_BITFLAG_SCIENCE
+	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_NAME_CAPTAIN)
 	department_flag = MEDSCI
 	head_announce = list("Science")

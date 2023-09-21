@@ -1,6 +1,7 @@
 /datum/job/virologist
 	title = JOB_NAME_VIROLOGIST
 	flag = VIROLOGIST
+	department_for_prefs = DEPARTMENT_BITFLAG_MEDICAL ///NSV13 - DEPT_BITFLAG_MED -> DEPARTMENT_BITFLAG_MEDICAL
 	department_head = list(JOB_NAME_CHIEFMEDICALOFFICER)
 	department_flag = MEDSCI
 	faction = "Station"

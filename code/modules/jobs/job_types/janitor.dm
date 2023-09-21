@@ -1,6 +1,8 @@
 /datum/job/janitor
 	title = JOB_NAME_JANITOR
 	flag = JANITOR
+	description = "Clean up vomit, trash, and other messes around the ship. Put down signs to warn people of slipping hazards, and eradicate rodents when you find them. Keep the ship clean and tidy." //NSV13 - station -> ship
+	department_for_prefs = DEPARTMENT_BITFLAG_SERVICE///NSV13 - DEPT_BITFLAG_SRV -> DEPARTMENT_BITFLAG_SERVICE
 	department_head = list(JOB_NAME_HEADOFPERSONNEL)
 	department_flag = CIVILIAN
 	faction = "Station"

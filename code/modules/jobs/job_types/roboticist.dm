@@ -1,6 +1,7 @@
 /datum/job/roboticist
 	title = JOB_NAME_ROBOTICIST
 	flag = ROBOTICIST
+	department_for_prefs = DEPARTMENT_BITFLAG_SCIENCE ///NSV13 - DEPT_BITFLAG_SCI -> DEPARTMENT_BITFLAG_SCIENCE
 	department_head = list(JOB_NAME_RESEARCHDIRECTOR)
 	department_flag = MEDSCI
 	faction = "Station"

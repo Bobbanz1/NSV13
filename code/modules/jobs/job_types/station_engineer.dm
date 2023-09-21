@@ -1,6 +1,8 @@
 /datum/job/station_engineer
 	title = JOB_NAME_STATIONENGINEER
 	flag = ENGINEER
+	description = "Ensure the station has an adequate power supply, repair and build new machinery, repair wiring chewed up by mice."
+	department_for_prefs = DEPARTMENT_BITFLAG_ENGINEERING ///NSV13 - DEPT_BITFLAG_ENG -> DEPARTMENT_BITFLAG_ENGINEERING
 	department_head = list(JOB_NAME_CHIEFENGINEER)
 	department_flag = ENGSEC
 	faction = "Station"

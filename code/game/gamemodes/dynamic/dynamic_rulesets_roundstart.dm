@@ -243,6 +243,7 @@
 		assigned += M.mind
 		M.mind.special_role = ROLE_CULTIST
 		M.mind.restricted_roles = restricted_roles
+		GLOB.pre_setup_antags += M.mind
 	return TRUE
 
 /datum/dynamic_ruleset/roundstart/bloodcult/execute()
@@ -252,6 +253,7 @@
 		new_cultist.cult_team = main_cult
 		new_cultist.give_equipment = TRUE
 		M.add_antag_datum(new_cultist)
+		GLOB.pre_setup_antags -= M
 	main_cult.setup_objectives()
 	return TRUE
 
@@ -299,6 +301,7 @@
 		assigned += M.mind
 		M.mind.assigned_role = ROLE_OPERATIVE
 		M.mind.special_role = ROLE_OPERATIVE
+		GLOB.pre_setup_antags += M.mind
 	return TRUE
 
 /datum/dynamic_ruleset/roundstart/nuclear/execute()
@@ -311,6 +314,7 @@
 		else
 			var/datum/antagonist/nukeop/new_op = new antag_datum()
 			M.add_antag_datum(new_op)
+		GLOB.pre_setup_antags -= M
 	return TRUE
 
 /datum/dynamic_ruleset/roundstart/nuclear/round_result()
@@ -384,6 +388,7 @@
 		assigned += M.mind
 		M.mind.restricted_roles = restricted_roles
 		M.mind.special_role = ROLE_REV_HEAD
+		GLOB.pre_setup_antags += M.mind
 	return TRUE
 
 /datum/dynamic_ruleset/roundstart/revs/execute()
@@ -398,6 +403,7 @@
 		else
 			assigned -= M
 			log_game("DYNAMIC: [ruletype] [name] discarded [M.name] from head revolutionary due to ineligibility.")
+		GLOB.pre_setup_antags -= M
 	if(revolution.members.len)
 		revolution.update_objectives()
 		revolution.update_heads()
@@ -476,6 +482,7 @@
 		for(var/datum/mind/V in assigned)
 			V.assigned_role = "Clown Operative"
 			V.special_role = "Clown Operative"
+			GLOB.pre_setup_antags += V
 
 //////////////////////////////////////////////
 //                                          //
@@ -506,6 +513,7 @@
 		assigned += devil.mind
 		devil.mind.special_role = ROLE_DEVIL
 		devil.mind.restricted_roles = restricted_roles
+		GLOB.pre_setup_antags += devil.mind
 
 		log_game("[key_name(devil)] has been selected as a devil")
 	return TRUE
@@ -513,6 +521,7 @@
 /datum/dynamic_ruleset/roundstart/devil/execute()
 	for(var/datum/mind/devil in assigned)
 		add_devil(devil.current, ascendable = TRUE)
+		GLOB.pre_setup_antags -= devil
 		add_devil_objectives(devil,2)
 	return TRUE
 
@@ -599,6 +608,7 @@
 		assigned += servant.mind
 		servant.mind.assigned_role = ROLE_SERVANT_OF_RATVAR
 		servant.mind.special_role = ROLE_SERVANT_OF_RATVAR
+		GLOB.pre_setup_antags += servant.mind
 	//Generate scriptures
 	generate_clockcult_scriptures()
 	return TRUE
@@ -615,6 +625,7 @@
 		S.equip_carbon(servant_mind.current)
 		S.equip_servant()
 		S.prefix = CLOCKCULT_PREFIX_MASTER
+		GLOB.pre_setup_antags -= servant_mind
 	//Setup the conversion limits for auto opening the ark
 	calculate_clockcult_values()
 	return ..()
@@ -660,6 +671,7 @@
 		assigned += M.mind
 		M.mind.special_role = ROLE_INCURSION
 		M.mind.restricted_roles = restricted_roles
+		GLOB.pre_setup_antags += M.mind
 	return TRUE
 
 /datum/dynamic_ruleset/roundstart/incursion/execute()
@@ -670,6 +682,7 @@
 		new_incursionist.team = incursion_team
 		incursion_team.add_member(M)
 		M.add_antag_datum(new_incursionist)
+		GLOB.pre_setup_antags -= M
 	return TRUE
 
 /datum/dynamic_ruleset/roundstart/incursion/round_result()
@@ -705,6 +718,7 @@
 		assigned += M.mind
 		M.mind.restricted_roles = restricted_roles
 		M.mind.special_role = ROLE_HIVE
+		GLOB.pre_setup_antags += M.mind
 	return TRUE
 
 /datum/dynamic_ruleset/roundstart/hivemind/execute()

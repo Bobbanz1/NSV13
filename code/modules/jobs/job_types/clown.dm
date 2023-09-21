@@ -1,6 +1,8 @@
 /datum/job/clown
 	title = JOB_NAME_CLOWN
 	flag = CLOWN
+	description = "Be the life and soul of the ship. Entertain the crew with your hilarious jokes and silly antics, including slipping, pie-ing and honking around. Remember your job is to keep things funny for others, not just yourself." //NSV13 - station -> ship
+	department_for_prefs = DEPARTMENT_BITFLAG_SERVICE///NSV13 - DEPT_BITFLAG_SRV -> DEPARTMENT_BITFLAG_SERVICE
 	department_head = list(JOB_NAME_HEADOFPERSONNEL)
 	department_flag = CIVILIAN
 	faction = "Station"
@@ -24,9 +26,13 @@
 		SPECIES_PLASMAMAN = /datum/outfit/plasmaman/honk
 	)
 
-/datum/job/clown/after_spawn(mob/living/carbon/human/H, mob/M)
+/datum/job/clown/after_spawn(mob/living/carbon/human/H, mob/M, latejoin = FALSE, client/preference_source, on_dummy = FALSE)
 	. = ..()
-	H.apply_pref_name("clown", M.client)
+	if(!ishuman(H))
+		return
+	if(!M.client || on_dummy)
+		return
+	H.apply_pref_name(/datum/preference/name/clown, preference_source)
 
 /datum/outfit/job/clown
 	name = JOB_NAME_CLOWN

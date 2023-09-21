@@ -40,7 +40,10 @@
 	name_source = GLOB.last_names
 
 /datum/antagonist/ert/proc/update_name()
-	owner.current.fully_replace_character_name(owner.current.real_name,"[role] [pick(name_source)]")
+	var/name = pick(name_source)
+	if (!name)
+		name = owner.current.client?.prefs.read_character_preference(/datum/preference/name/backup_human) || pick(GLOB.last_names)
+	owner.current.fully_replace_character_name(owner.current.real_name, "[role] [name]")
 
 /datum/antagonist/ert/deathsquad/New()
 	. = ..()

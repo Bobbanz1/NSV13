@@ -4,6 +4,8 @@ Assistant
 /datum/job/assistant
 	title = JOB_NAME_ASSISTANT
 	flag = ASSISTANT
+	description = "Help out around the station or ask the Head of Personnel for an assignment. As the lowest-level position, expect to be treated like an intern most of the time."
+	department_for_prefs = DEPT_BITFLAG_ASSISTANT
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 5
@@ -39,13 +41,7 @@ Assistant
 /datum/outfit/job/assistant/pre_equip(mob/living/carbon/human/H)
 	..()
 	if (CONFIG_GET(flag/grey_assistants))
-		/* NSV13 - no skirts
-		if(H.jumpsuit_style == PREF_SUIT)
-			uniform = /obj/item/clothing/under/color/grey
-		else
-			uniform = /obj/item/clothing/under/color/jumpskirt/grey
-		*/
-		uniform = /obj/item/clothing/under/color/grey
+		give_grey_suit(H)
 	else
 		/* NSV13 - no skirts
 		if(H.jumpsuit_style == PREF_SUIT)
@@ -54,3 +50,27 @@ Assistant
 			uniform = /obj/item/clothing/under/color/jumpskirt/random
 		*/
 		uniform = /obj/item/clothing/under/color/random
+
+/datum/outfit/job/assistant/proc/give_grey_suit(mob/living/carbon/human/target)
+	/* NSV13 - no skirts
+	if(H.jumpsuit_style == PREF_SUIT)
+		uniform = /obj/item/clothing/under/color/grey
+	else
+		uniform = /obj/item/clothing/under/color/jumpskirt/grey
+	*/
+	uniform = /obj/item/clothing/under/color/jumpskirt/grey
+
+/datum/outfit/job/assistant/consistent
+	name = "Assistant - Always Grey"
+
+/datum/outfit/job/assistant/consistent/pre_equip(mob/living/carbon/human/H)
+	..()
+	give_grey_suit(H)
+
+/datum/outfit/job/assistant/consistent/post_equip(mob/living/carbon/human/H, visualsOnly)
+	..()
+
+	// This outfit is used by the assets SS, which is ran before the atoms SS
+	if (SSatoms.initialized == INITIALIZATION_INSSATOMS)
+		H.w_uniform?.update_greyscale()
+		H.update_inv_w_uniform()

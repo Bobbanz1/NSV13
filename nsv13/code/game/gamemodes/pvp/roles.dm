@@ -48,7 +48,7 @@
 		return
 	var/client/C = (istype(usr, /client)) ? usr : usr.client
 	C.prefs.preferred_syndie_role = role.preference_flag
-	C.prefs.save_preferences()
+	C.prefs.mark_undatumized_dirty_player() ///jägare - Don't know if this works or not.
 
 /datum/antagonist/nukeop/syndi_crew
 	name = "Syndicate crew"

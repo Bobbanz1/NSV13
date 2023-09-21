@@ -4,6 +4,8 @@ Marine & all their unique stuff!
 /datum/job/assistant
 	title = JOB_NAME_ASSISTANT
 	flag = ASSISTANT
+	description = "Help out around the ship or ask the Executive Officer for an assignment."
+	department_for_prefs = DEPARTMENT_BITFLAG_SERVICE
 	display_rank = "MID"
 	department_flag = CIVILIAN
 	faction = "Station"
@@ -116,3 +118,14 @@ Marine & all their unique stuff!
 	W.access |= dep_access
 
 	to_chat(M, "<b>You have been assigned to [department]!</b>")
+
+/datum/outfit/job/assistant/consistent
+	name = "Midshipman"
+
+/datum/outfit/job/assistant/consistent/post_equip(mob/living/carbon/human/H, visualsOnly)
+	..()
+
+	// This outfit is used by the assets SS, which is ran before the atoms SS
+	if (SSatoms.initialized == INITIALIZATION_INSSATOMS)
+		H.w_uniform?.update_greyscale()
+		H.update_inv_w_uniform()

@@ -1,7 +1,9 @@
 /datum/job/head_of_security
 	title = JOB_NAME_HEADOFSECURITY
 	flag = HOS
-	auto_deadmin_role_flags = PREFTOGGLE_DEADMIN_POSITION_HEAD|PREFTOGGLE_DEADMIN_POSITION_SECURITY
+	description = "Oversee the members of security and ensure they follow Space Law. Deputize other crew members when the ship is in need of additional protection." //NSV13 - station -> ship
+	department_for_prefs = DEPARTMENT_BITFLAG_SECURITY ///NSV13 - DEPT_BITFLAG_SEC -> DEPARTMENT_BITFLAG_SECURITY
+	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_NAME_CAPTAIN)
 	department_flag = ENGSEC
 	head_announce = list(RADIO_CHANNEL_SECURITY)

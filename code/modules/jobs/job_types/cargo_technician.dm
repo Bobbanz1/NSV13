@@ -1,6 +1,9 @@
 /datum/job/cargo_technician
 	title = JOB_NAME_CARGOTECHNICIAN
 	flag = CARGOTECH
+	description = "Push crates around, deliver bounty papers and mail around the ship, make use of the Disposals network to make your life easier." //NSV13 - station -> ship
+	department_for_prefs = DEPARTMENT_BITFLAG_CARGO ///NSV13 - DEPT_BITFLAG_CAR -> DEPARTMENT_BITFLAG_CARGO
+	department_head_for_prefs = JOB_NAME_HEADOFPERSONNEL //NSV13
 	department_head = list(JOB_NAME_HEADOFPERSONNEL)
 	department_flag = CIVILIAN
 	faction = "Station"

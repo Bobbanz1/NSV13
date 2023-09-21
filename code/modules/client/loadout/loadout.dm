@@ -68,6 +68,10 @@ GLOBAL_LIST_EMPTY(gear_datums)
 	var/list/species_whitelist //Only allow certain species to receive this gear
 	var/sort_category = "General"
 	var/subtype_path = /datum/gear //for skipping organizational subtypes (optional)
+	/// If this gear is actually granting an item, and can be equipped.
+	var/is_equippable = TRUE
+	/// If this gear can be purchased again - used for non-items
+	var/multi_purchase = FALSE
 
 /datum/gear/New()
 	..()
@@ -77,6 +81,7 @@ GLOBAL_LIST_EMPTY(gear_datums)
 		description = initial(O.desc)
 
 /datum/gear/proc/purchase(client/C) //Called when the gear is first purchased
+	SHOULD_NOT_SLEEP(TRUE)
 	return
 
 /datum/gear_data

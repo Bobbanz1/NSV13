@@ -1,6 +1,8 @@
 /datum/job/atmospheric_technician
 	title = JOB_NAME_ATMOSPHERICTECHNICIAN
 	flag = ATMOSTECH
+	description = "Maintain the air distribution loop to ensure adequate atmospheric conditions in the station, re-pressurize areas after hull breaches, and be a firefighter if necessary."
+	department_for_prefs = DEPARTMENT_BITFLAG_ENGINEERING ///NSV13 - DEPT_BITFLAG_ENG -> DEPARTMENT_BITFLAG_ENGINEERING
 	department_head = list(JOB_NAME_CHIEFENGINEER)
 	department_flag = ENGSEC
 	faction = "Station"

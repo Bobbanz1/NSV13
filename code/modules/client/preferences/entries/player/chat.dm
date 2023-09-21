@@ -55,6 +55,13 @@
 	db_key = "chat_ooc"
 	preference_type = PREFERENCE_PLAYER
 
+///NSV13 - LOOC - Start
+/datum/preference/toggle/chat_looc
+	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
+	db_key = "chat_looc"
+	preference_type = PREFERENCE_PLAYER
+///NSV13 - LOOC - Stop
+
 /datum/preference/toggle/chat_prayer
 	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
 	db_key = "chat_prayer"

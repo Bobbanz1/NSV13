@@ -1,6 +1,7 @@
 /datum/job/warden
 	title = JOB_NAME_WARDEN
 	flag = WARDEN
+	department_for_prefs = DEPARTMENT_BITFLAG_SECURITY ///NSV13 - DEPT_BITFLAG_SEC -> DEPARTMENT_BITFLAG_SECURITY
 	auto_deadmin_role_flags = PREFTOGGLE_DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_NAME_HEADOFSECURITY)
 	department_flag = ENGSEC

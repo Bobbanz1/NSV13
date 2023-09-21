@@ -1,6 +1,9 @@
 /datum/job/gimmick //gimmick var must be set to true for all gimmick jobs BUT the parent
 	title = JOB_NAME_GIMMICK
 	flag = GIMMICK
+	description = "Use your unique position to provide a service or entertain the crew."
+	department_for_prefs = DEPARTMENT_BITFLAG_SERVICE///NSV13 - DEPT_BITFLAG_SRV -> DEPARTMENT_BITFLAG_SERVICE
+	show_in_prefs = TRUE
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 0
@@ -28,10 +31,12 @@
 /datum/job/gimmick/barber
 	title = JOB_NAME_BARBER
 	flag = BARBER
+	description = "Give the crew haircuts using the variety of tools at your disposal, and provide less professional and cosmetic surgeries."
 	supervisors = "the head of personnel"
 	department_head = list(JOB_NAME_HEADOFPERSONNEL)
 	department_flag = CIVILIAN
 	gimmick = TRUE
+	show_in_prefs = FALSE
 
 	outfit = /datum/outfit/job/gimmick/barber
 
@@ -63,10 +68,12 @@
 /datum/job/gimmick/stage_magician
 	title = JOB_NAME_STAGEMAGICIAN
 	flag = MAGICIAN
+	description = "Use your special tools to provide entertainment for the crew, show them than you can do more than simple parlor magic tricks."
 	supervisors = "the head of personnel"
 	department_head = list(JOB_NAME_HEADOFPERSONNEL)
 	department_flag = CIVILIAN
 	gimmick = TRUE
+	show_in_prefs = FALSE
 
 	outfit = /datum/outfit/job/gimmick/stage_magician
 
@@ -101,10 +108,12 @@
 /datum/job/gimmick/psychiatrist
 	title = JOB_NAME_PSYCHIATRIST
 	flag = PSYCHIATRIST
+	description = "Provide therapy to the crew through talk sessions, psychoactive drugs, and careful consideration of their thoughts and feelings. Provide mental evaluations for Security."
 	supervisors = "the chief medical officer"
 	department_head = list(JOB_NAME_CHIEFMEDICALOFFICER)
 	department_flag = MEDSCI
 	gimmick = TRUE
+	show_in_prefs = FALSE
 
 	outfit = /datum/outfit/job/gimmick/psychiatrist
 
@@ -139,7 +148,9 @@
 	title = JOB_NAME_VIP
 	flag = CELEBRITY
 	department_flag = CIVILIAN
+	description = "Flaunt around your wealth, organize posh parties and other high life activities with your near-bottomless budget."
 	gimmick = TRUE
+	show_in_prefs = FALSE
 
 	outfit = /datum/outfit/job/gimmick/vip
 
