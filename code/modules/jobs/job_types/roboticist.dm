@@ -1,6 +1,7 @@
 /datum/job/roboticist
 	title = JOB_NAME_ROBOTICIST
 	flag = ROBOTICIST
+	description = "Create bots and utility mechs for helping out around the ship. Construct war machines by the request of the Captain or Head of Security. Make new Cyborgs, give augmentations and implants to crew members." //NSV13 - station -> ship
 	department_for_prefs = DEPARTMENT_BITFLAG_SCIENCE ///NSV13 - DEPT_BITFLAG_SCI -> DEPARTMENT_BITFLAG_SCIENCE
 	department_head = list(JOB_NAME_RESEARCHDIRECTOR)
 	department_flag = MEDSCI

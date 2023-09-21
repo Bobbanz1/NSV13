@@ -2,8 +2,9 @@
 /datum/job/security_officer
 	title = JOB_NAME_SECURITYOFFICER
 	flag = OFFICER
+	description = "Follow Space Law, patrol the station, arrest criminals and bring them to the Brig."
 	department_for_prefs = DEPARTMENT_BITFLAG_SECURITY ///NSV13 - DEPT_BITFLAG_SEC -> DEPARTMENT_BITFLAG_SECURITY
-	auto_deadmin_role_flags = PREFTOGGLE_DEADMIN_POSITION_SECURITY
+	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_NAME_HEADOFSECURITY)
 	department_flag = ENGSEC
 	faction = "Station"

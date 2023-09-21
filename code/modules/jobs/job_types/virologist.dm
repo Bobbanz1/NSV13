@@ -1,6 +1,7 @@
 /datum/job/virologist
 	title = JOB_NAME_VIROLOGIST
 	flag = VIROLOGIST
+	description = "Collect virus samples from dormant viruses, old blood, and crusty vomit from around the ship, isolate the symptoms and use them to create useful healing viruses for the crew." //NSV13 - station -> ship
 	department_for_prefs = DEPARTMENT_BITFLAG_MEDICAL ///NSV13 - DEPT_BITFLAG_MED -> DEPARTMENT_BITFLAG_MEDICAL
 	department_head = list(JOB_NAME_CHIEFMEDICALOFFICER)
 	department_flag = MEDSCI

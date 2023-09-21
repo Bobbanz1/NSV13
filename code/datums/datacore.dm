@@ -130,7 +130,7 @@
 		if(N.new_character)
 			log_manifest(N.ckey,N.new_character.mind,N.new_character)
 		if(ishuman(N.new_character))
-			manifest_inject(N.new_character, N.client)
+			manifest_inject(N.new_character)
 		CHECK_TICK
 
 /datum/datacore/proc/manifest_modify(name, assignment, hudstate)
@@ -214,7 +214,7 @@
 	return dat
 
 
-/datum/datacore/proc/manifest_inject(mob/living/carbon/human/H, client/C)
+/datum/datacore/proc/manifest_inject(mob/living/carbon/human/H)
 	set waitfor = FALSE
 	var/static/list/show_directions = list(SOUTH, WEST)
 	if(H.mind && (H.mind.assigned_role != H.mind.special_role))
@@ -228,9 +228,7 @@
 
 		var/static/record_id_num = 1001
 		var/id = num2hex(record_id_num++,6)
-		if(!C)
-			C = H.client
-		var/image = get_id_photo(H, C, show_directions)
+		var/image = get_id_photo(H, show_directions)
 		var/datum/picture/pf = new
 		var/datum/picture/ps = new
 		pf.picture_name = "[H]"
@@ -263,7 +261,7 @@
 		G.fields["photo_front"]	= photo_front
 		G.fields["photo_side"]	= photo_side
 		//NSV13 - Roleplaying Records General Records - Start
-		if(C?.prefs?.general_record)
+		if(H.client?.prefs?.general_record)
 			G.fields["past_records"] = C.prefs.general_record
 		else
 			G.fields["past_records"] = ""
@@ -286,7 +284,7 @@
 		M.fields["cdi_d"]		= "No diseases have been diagnosed at the moment."
 		M.fields["notes"]		= "No notes."
 		//NSV13 - Roleplaying Records Medical Records - Start
-		if(C?.prefs?.medical_record)
+		if(H.client.prefs?.medical_record)
 			M.fields["past_records"] = C.prefs.medical_record
 		else
 			M.fields["past_records"] = ""
@@ -302,8 +300,8 @@
 		S.fields["crim"]		= list()
 		S.fields["notes"]		= "No notes."
 		//NSV13 - Roleplaying Records Security Records - Start
-		if(C?.prefs?.active_character?.security_record)
-			S.fields["past_records"] = C.prefs.active_character.security_record
+		if(H.client.prefs?.security_record)
+			S.fields["past_records"] = C.prefs.security_record
 		else
 			S.fields["past_records"] = ""
 		//NSV13 - Roleplaying Records Security Records - Stop
@@ -331,11 +329,5 @@
 		locked += L
 	return
 
-/datum/datacore/proc/get_id_photo(mob/living/carbon/human/H, client/C, show_directions = list(SOUTH))
-	var/datum/job/J = SSjob.GetJob(H.mind.assigned_role)
-	var/datum/character_save/CS
-	if(!C)
-		C = H.client
-	if(C)
-		CS = C.prefs.active_character
-	return get_flat_human_icon(null, J, CS, DUMMY_HUMAN_SLOT_MANIFEST, show_directions)
+/datum/datacore/proc/get_id_photo(mob/living/carbon/human/human, show_directions = list(SOUTH))
+	return get_flat_existing_human_icon(human, show_directions)

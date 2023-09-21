@@ -101,6 +101,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/preferred_syndie_role = CONQUEST_ROLE_GRUNT
 
 	/// AI Custom Holographic Form
+	var/lizard_hiss_style = LIZARD_HISS_EXPANDED
 	var/icon/custom_holoform_icon
 	var/list/cached_holoform_icons
 	var/last_custom_holoform = 0
@@ -429,3 +430,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		character.update_hair()
 		character.update_body_parts(TRUE) // Must pass true here or limbs won't catch changes like body_model
 		character.dna.update_body_size()
+
+//NSV13 - AI Custom Holographic Form
+/datum/preferences/proc/get_filtered_holoform(filter_type)
+	if(!custom_holoform_icon)
+		return
+	LAZYINITLIST(cached_holoform_icons)
+	if(!cached_holoform_icons[filter_type])
+		cached_holoform_icons[filter_type] = process_holoform_icon_filter(custom_holoform_icon, filter_type)
+	return cached_holoform_icons[filter_type]

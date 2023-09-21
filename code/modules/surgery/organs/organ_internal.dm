@@ -26,13 +26,19 @@
 	var/high_threshold_cleared
 	var/low_threshold_cleared
 
-/obj/item/organ/proc/Insert(mob/living/carbon/M, special = 0, drop_if_replaced = TRUE)
+// Players can look at prefs before atoms SS init, and without this
+// they would not be able to see external organs, such as moth wings.
+// This is also necessary because assets SS is before atoms, and so
+// any nonhumans created in that time would experience the same effect.
+INITIALIZE_IMMEDIATE(/obj/item/organ)
+
+/obj/item/organ/proc/Insert(mob/living/carbon/M, special = 0, drop_if_replaced = TRUE, pref_load = FALSE)
 	if(!iscarbon(M) || owner == M)
 		return
 
 	var/obj/item/organ/replaced = M.getorganslot(slot)
 	if(replaced)
-		replaced.Remove(M, special = 1)
+		replaced.Remove(M, special = 1, pref_load = pref_load)
 		if(drop_if_replaced)
 			replaced.forceMove(get_turf(M))
 		else
@@ -50,7 +56,7 @@
 	STOP_PROCESSING(SSobj, src)
 
 //Special is for instant replacement like autosurgeons
-/obj/item/organ/proc/Remove(mob/living/carbon/M, special = FALSE)
+/obj/item/organ/proc/Remove(mob/living/carbon/M, special = FALSE, pref_load = FALSE)
 	owner = null
 	if(M)
 		M.internal_organs -= src

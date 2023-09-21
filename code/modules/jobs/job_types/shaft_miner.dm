@@ -1,6 +1,9 @@
 /datum/job/shaft_miner
 	title = JOB_NAME_SHAFTMINER
 	flag = MINER
+	description = "Collect resources for the ship, redeem them for points, and purchase gear to collect even more ores." //NSV13 - station -> ship
+	department_for_prefs = DEPARTMENT_BITFLAG_CARGO ///NSV13 - DEPT_BITFLAG_CAR -> DEPARTMENT_BITFLAG_CARGO
+	department_head_for_prefs = JOB_NAME_HEADOFPERSONNEL //NSV13
 	department_head = list(JOB_NAME_HEADOFPERSONNEL)
 	department_flag = CIVILIAN
 	faction = "Station"

@@ -5,7 +5,6 @@
 	department_for_prefs = DEPARTMENT_BITFLAG_COMMAND ///NSV13 - DEPT_BITFLAG_CAPTAIN -> DEPARTMENT_BITFLAG_COMMAND
 	department_head_for_prefs = JOB_NAME_CAPTAIN
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
-	auto_deadmin_role_flags = PREFTOGGLE_DEADMIN_POSITION_HEAD|PREFTOGGLE_DEADMIN_POSITION_SECURITY
 	department_head = list("CentCom")
 	department_flag = ENGSEC
 	faction = "Station"

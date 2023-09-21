@@ -156,6 +156,7 @@
 				if(G.species_whitelist && !(human.dna.species.id in G.species_whitelist))
 					permitted = FALSE
 
+				/* NSV13 - This stuff ain't in the Beestation version, keeping for the off chance stuff breaks - jägare
 				if(G.unlocktype == GEAR_DONATOR) //Strip out donation items if the patreon has expired or they somehow have someone else's gear datum.
 					if(M.client.ckey != G.ckey)
 						to_chat(M, "<span class='warning'>You somehow have someone else's donator item! Call a coder. Item: [gear]</span>")
@@ -168,6 +169,7 @@
 						M.client.prefs.active_character.equipped_gear -= gear
 						M.client.prefs.purchased_gear -= gear
 						permitted = FALSE
+					*/
 
 				if(!permitted)
 					if(M.client)
@@ -180,7 +182,7 @@
 					if(on_dummy) // remove the old item
 						o = H.get_item_by_slot(G.slot)
 						H.doUnEquip(H.get_item_by_slot(G.slot), newloc = H.drop_location(), invdrop = FALSE, silent = TRUE)
-					if(H.equip_to_slot_or_del(G.spawn_item(H, skirt_pref = jumpsuit_style), G.slot))
+					if(H.equip_to_slot_or_del(G.spawn_item(H), G.slot)) // NSV13 - No skirts // , skirt_pref = jumpsuit_style
 						if(M.client)
 							to_chat(M, "<span class='notice'>Equipping you with [G.display_name]!</span>")
 						if(on_dummy && o)
@@ -460,7 +462,7 @@
 	if(!player_client)
 		return // Disconnected while checking for the appearance ban.
 
-	var/require_human = CONFIG_GET(flag/enforce_human_authority) && (job.departments & DEPT_BITFLAG_COM)
+	var/require_human = CONFIG_GET(flag/enforce_human_authority) && (job.departments & DEPARTMENT_BITFLAG_COMMAND) // NSV13 - DEPT_BITFLAG_COM -> DEPARTMENT_BITFLAG_COMMAND
 
 	if(fully_randomize)
 		if(require_human)

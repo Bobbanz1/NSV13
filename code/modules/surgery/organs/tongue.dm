@@ -48,7 +48,7 @@
 	M.UnregisterSignal(M, COMSIG_MOB_SAY)
 	return ..()
 
-/obj/item/organ/tongue/Remove(mob/living/carbon/M, special = 0)
+/obj/item/organ/tongue/Remove(mob/living/carbon/M, special = 0, pref_load = FALSE)
 	UnregisterSignal(M, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	M.RegisterSignal(M, COMSIG_MOB_SAY, TYPE_PROC_REF(/mob/living/carbon, handle_tongueless_speech))
 	return ..()
@@ -77,7 +77,7 @@
 	if(message[1] != "*")
 		message = lizard_hiss.Replace(message, "sss")
 		message = lizard_hiSS.Replace(message, "SSS")
-		if(owner?.client?.prefs.active_character?.lizard_hiss_style != LIZARD_HISS_LEGACY)
+		if(owner?.client?.prefs.lizard_hiss_style != LIZARD_HISS_LEGACY)
 			message = lizard_kss.Replace(message, "$1kss")
 			message = lizard_kSS.Replace(message, "$1KSS")
 			message = lizard_ecks.Replace(message, "ecks$1")

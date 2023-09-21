@@ -2333,11 +2333,3 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			purchased_gear -= RG.id
 		save_preferences()
 
-//NSV13 - AI Custom Holographic Form
-/datum/preferences/proc/get_filtered_holoform(filter_type)
-	if(!custom_holoform_icon)
-		return
-	LAZYINITLIST(cached_holoform_icons)
-	if(!cached_holoform_icons[filter_type])
-		cached_holoform_icons[filter_type] = process_holoform_icon_filter(custom_holoform_icon, filter_type)
-	return cached_holoform_icons[filter_type]

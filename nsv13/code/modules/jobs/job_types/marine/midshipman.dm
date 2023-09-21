@@ -71,15 +71,16 @@ Marine & all their unique stuff!
 	desc = "A cheaply made and uncomfortable uniform worn by squad medics. It has a conspicuous blue cross on the back. Shooting its bearer may constitute a war crime."
 	icon_state = "marine_medic"
 
-/datum/job/assistant/after_spawn(mob/living/carbon/human/H, mob/M)
+/datum/job/assistant/after_spawn(mob/living/carbon/human/H, mob/M, latejoin = FALSE, client/preference_source, on_dummy = FALSE)
 	. = ..()
 	// Assign department
-	var/department = M?.client?.prefs?.active_character?.preferred_security_department
+	var/department = preference_source.prefs?.read_character_preference(/datum/preference/choiced/security_department)
 	if(department == "None")
 		to_chat(M, "<b>You have not been assigned to any department. Help in any way you can!</b>")
 		return
-	else if(!(department in GLOB.available_depts))
-		department = pick(GLOB.available_depts)
+		if(!on_dummy && M.client) // The dummy should just use the preference always, and not remove departments.
+			if(!(department in GLOB.available_depts))
+				department = pick(GLOB.available_depts)
 
 	var/ears = null
 	var/accessory = null
@@ -87,24 +88,29 @@ Marine & all their unique stuff!
 	switch(department)
 		if(SEC_DEPT_SUPPLY)
 			ears = /obj/item/radio/headset/headset_cargo
-			dep_access = list(ACCESS_MAILSORTING, ACCESS_CARGO)
 			accessory = /obj/item/clothing/accessory/armband/cargo
+			if(!on_dummy)
+				dep_access = list(ACCESS_MAILSORTING, ACCESS_CARGO)
 		if(SEC_DEPT_ENGINEERING)
 			ears = /obj/item/radio/headset/headset_eng
-			dep_access = list(ACCESS_CONSTRUCTION, ACCESS_ENGINE, ACCESS_AUX_BASE)
 			accessory = /obj/item/clothing/accessory/armband/engine
+			if(!on_dummy)
+				dep_access = list(ACCESS_CONSTRUCTION, ACCESS_ENGINE, ACCESS_AUX_BASE)
 		if(SEC_DEPT_MEDICAL)
 			ears = /obj/item/radio/headset/headset_med
-			dep_access = list(ACCESS_MEDICAL, ACCESS_MORGUE, ACCESS_CLONING)
 			accessory =  /obj/item/clothing/accessory/armband/medblue
+			if(!on_dummy)
+				dep_access = list(ACCESS_MEDICAL, ACCESS_MORGUE, ACCESS_CLONING)
 		if(SEC_DEPT_SCIENCE)
 			ears = /obj/item/radio/headset/headset_sci
-			dep_access = list(ACCESS_RESEARCH)
 			accessory = /obj/item/clothing/accessory/armband/science
+			if(!on_dummy)
+				dep_access = list(ACCESS_RESEARCH)
 		if(SEC_DEPT_MUNITIONS)
 			ears = /obj/item/radio/headset/munitions/munitions_tech
-			dep_access = list(ACCESS_MUNITIONS, ACCESS_MUNITIONS_STORAGE)
 			accessory = /obj/item/clothing/accessory/armband/munitions
+			if(!on_dummy)
+				dep_access = list(ACCESS_MUNITIONS, ACCESS_MUNITIONS_STORAGE)
 
 	if(accessory)
 		var/obj/item/clothing/under/U = H.w_uniform
@@ -116,6 +122,9 @@ Marine & all their unique stuff!
 
 	var/obj/item/card/id/W = H.wear_id
 	W.access |= dep_access
+
+	if(!M.client || on_dummy)
+		return
 
 	to_chat(M, "<b>You have been assigned to [department]!</b>")
 

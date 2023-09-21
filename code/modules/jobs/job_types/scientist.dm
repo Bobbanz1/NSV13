@@ -1,6 +1,7 @@
 /datum/job/scientist
 	title = JOB_NAME_SCIENTIST
 	flag = SCIENTIST
+	description = "Engage in Xenobiology, Xenoarchaeology, Nanites, and Toxins; research new technology; and upgrade the machine parts around the ship." //NSV13 - station -> ship
 	department_for_prefs = DEPARTMENT_BITFLAG_SCIENCE ///NSV13 - DEPT_BITFLAG_SCI -> DEPARTMENT_BITFLAG_SCIENCE
 	department_head = list(JOB_NAME_RESEARCHDIRECTOR)
 	department_flag = MEDSCI
