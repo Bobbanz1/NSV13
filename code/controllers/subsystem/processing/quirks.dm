@@ -49,7 +49,7 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 			user.add_quirk(Q, spawn_effects)
 		else
 			stack_trace("Invalid quirk \"[V]\" in client [cli.ckey] preferences")
-			cli.prefs.active_character.all_quirks -= V
+			cli.prefs.all_quirks -= V
 			badquirk = TRUE
 	if(badquirk)
 		cli.prefs.all_quirks = list()

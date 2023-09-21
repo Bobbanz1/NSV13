@@ -32,7 +32,7 @@
 	"BREAKFAST", \
 	"CLOTH", \
 )
-/// NSV13 - Moved this out of the list, we don't have newfood ported and that PR looks like it has issues so this is for now	"GORE", \
+/*/ NSV13 - Moved this out of the list, we don't have newfood ported and that PR looks like it has issues so this is for now	"GORE", \ */
 
 #define DRINK_BAD   1
 #define DRINK_NICE	2
