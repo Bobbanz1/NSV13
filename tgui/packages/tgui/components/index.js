@@ -23,6 +23,7 @@ export { Flex } from './Flex';
 export { Grid } from './Grid';
 export { Icon } from './Icon';
 export { InfinitePlane } from './InfinitePlane';
+export { Interactive } from './Interactive';
 export { Input } from './Input';
 export { KeyListener } from './KeyListener'; // NSV13 - KeyListener
 export { Knob } from './Knob';
@@ -37,6 +38,7 @@ export { OrbitalMapComponent } from './OrbitalMapComponent';
 export { OrbitalMapSvg } from './OrbitalMapSvg';
 export { ProgressBar } from './ProgressBar';
 export { ScrollableBox } from './ScrollableBox';
+export { Pointer } from './Pointer';
 export { Popper } from './Popper';
 export { RestrictedInput } from './RestrictedInput';
 export { Section } from './Section';
