@@ -44,7 +44,7 @@
 	src.shield_icon_file = shield_icon_file
 	src.shield_icon = shield_icon
 	src.shield_inhand = shield_inhand
-	src.on_hit_effects = run_hit_callback || CALLBACK(src, .proc/default_run_hit_callback)
+	src.on_hit_effects = run_hit_callback || CALLBACK(src, PROC_REF(default_run_hit_callback))
 
 	//NSV13 - Modsuits - Start
 	if(isnull(starting_charges))
@@ -66,10 +66,10 @@
 	return ..()
 
 /datum/component/shielded/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, .proc/on_equipped)
-	RegisterSignal(parent, COMSIG_ITEM_DROPPED, .proc/lost_wearer)
-	RegisterSignal(parent, COMSIG_ITEM_HIT_REACT, .proc/on_hit_react)
-	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, .proc/check_recharge_item)
+	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equipped))
+	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(lost_wearer))
+	RegisterSignal(parent, COMSIG_ITEM_HIT_REACT, PROC_REF(on_hit_react))
+	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, PROC_REF(check_recharge_item))
 	//NSV13 - Modsuits - Start
 	var/atom/shield = parent
 	if(ismob(shield.loc))
@@ -131,8 +131,8 @@
 //NSV13 - Modsuit - Start
 /datum/component/shielded/proc/set_wearer(mob/user)
 	wearer = user
-	RegisterSignal(wearer, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_update_overlays)
-	RegisterSignal(wearer, COMSIG_PARENT_QDELETING, .proc/lost_wearer)
+	RegisterSignal(wearer, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_update_overlays))
+	RegisterSignal(wearer, COMSIG_PARENT_QDELETING, PROC_REF(lost_wearer))
 	if(current_charges)
 		wearer.update_appearance(UPDATE_ICON)
 //NSV13 - Modsuit - Stop
@@ -158,7 +158,7 @@
 	. = COMPONENT_HIT_REACTION_BLOCK
 	current_charges = max(current_charges - 1, 0)
 
-	INVOKE_ASYNC(src, .proc/actually_run_hit_callback, owner, attack_text, current_charges)
+	INVOKE_ASYNC(src, PROC_REF(actually_run_hit_callback), owner, attack_text, current_charges)
 
 	if(!recharge_start_delay) // if recharge_start_delay is 0, we don't recharge
 		/* NSV13 - Modsuits - Removal
