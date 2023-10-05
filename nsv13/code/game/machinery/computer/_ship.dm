@@ -117,6 +117,8 @@ GLOBAL_LIST_INIT(computer_beeps, list('nsv13/sound/effects/computer/beep.ogg','n
 		var/mob/dead/observer/O = user
 		O.ManualFollow(linked)
 		return
+	if(user.remote_control) // Might let us keep the players from ending up on the overmap.
+		return
 	playsound(src, 'nsv13/sound/effects/computer/hum.ogg', 100, 1)
 	linked.observe_ship(user)
 	internal_dradis.attack_hand(user)
@@ -127,6 +129,8 @@ GLOBAL_LIST_INIT(computer_beeps, list('nsv13/sound/effects/computer/beep.ogg','n
 	if(isobserver(user))
 		var/mob/dead/observer/O = user
 		O.ManualFollow(linked)
+		return
+	if(user.remote_control) // Might let us keep the players from ending up on the overmap.
 		return
 	playsound(src, 'nsv13/sound/effects/computer/hum.ogg', 100, 1)
 	linked.start_piloting(user, OVERMAP_USER_ROLE_OBSERVER)
