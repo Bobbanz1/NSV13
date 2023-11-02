@@ -9,36 +9,40 @@
 	new plush_type(loc)
 	return INITIALIZE_HINT_QDEL
 */
-/obj/item/toy/plush/hfighter
+/obj/item/toy/plush/ship/hfighter
 	name = "heavy fighter plush"
 	desc = "An adorable stuffed toy shaped like a Su-410 Scimitar heavy fighter."
 	icon = 'nsv13/icons/obj/custom_plushes.dmi'
 	icon_state = "heavyfighter"
 	attack_verb = list("bombed", "bumped", "rammed", "torpedoed")
 	squeak_override = list('nsv13/sound/effects/fighters/BRRTTTTTT.ogg'=1)
+	max_combat_health = 6 // 300 Integrity
 
-/obj/item/toy/plush/lfighter
+/obj/item/toy/plush/ship/lfighter
 	name = "light fighter plush"
 	desc = "An adorable stuffed toy shaped like a Su-818 Rapier light fighter."
 	icon = 'nsv13/icons/obj/custom_plushes.dmi'
 	icon_state = "lightfighter"
 	attack_verb = list("bumped", "rammed", "missiled")
 	squeak_override = list('nsv13/sound/effects/fighters/autocannon.ogg'=1)
+	max_combat_health = 4 // 200 Integrity
 
-/obj/item/toy/plush/synlfighter
+/obj/item/toy/plush/ship/synlfighter
 	name = "Syndicate light fighter plush"
 	desc = "An adorable stuffed toy shaped like a Su-818 Rapier light fighter with Syndicate livery."
 	icon_state = "synlightfighter"
+	max_combat_health = 4 // 200 Integrity
 
-/obj/item/toy/plush/transport
+/obj/item/toy/plush/ship/transport
 	name = "utility craft plush"
 	desc = "An adorable stuffed toy shaped like a Su-437 Sabre utility vessel."
 	icon = 'nsv13/icons/obj/custom_plushes.dmi'
 	icon_state = "transport"
 	attack_verb = list("bumped", "rammed")
 	squeak_override = list('nsv13/sound/effects/fighters/warmup.ogg'=1)
+	max_combat_health = 5 // 250 Integrity
 
-/obj/item/toy/plush/transport/mining
+/obj/item/toy/plush/ship/transport/mining
 	name = "mining craft plush"
 	desc = "An adorable stuffed toy shaped like a Su-437 Sabre mining vessel."
 	icon_state = "mining"
