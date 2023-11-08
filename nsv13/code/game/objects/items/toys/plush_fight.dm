@@ -25,8 +25,8 @@
 		. += "<span class='notice'>This plushie has won [wins] battles, and lost [losses] battles</span>"
 
 /obj/item/toy/plush/ship/attackby(obj/item/plushie, mob/living/user)
-	if(istype(plushie, /obj/item/plush/ship))
-		var/obj/item/plush/ship/P = plushie
+	if(istype(plushie, /obj/item/toy/plush/ship))
+		var/obj/item/toy/plush/ship/P = plushie
 		if(check_battle_start(user, P))
 			space_battle(P, user)
 	else
@@ -35,7 +35,7 @@
 /obj/item/toy/plush/ship/proc/space_battle(obj/item/toy/plush/ship/attacker, mob/living/carbon/attacker_controller, mob/living/carbon/opponent)
 
 
-/obj/item/toy/plush/ship/proc/check_battle_start(mob/living/carbon/user, obj/item/plush/ship/attacker, mob/living/carbon/target)
+/obj/item/toy/plush/ship/proc/check_battle_start(mob/living/carbon/user, obj/item/toy/plush/ship/attacker, mob/living/carbon/target)
 	if(attacker?.in_combat)
 		to_chat(user, "<span class='notice'>[target?target.p_their() : "Your" ] [attacker.name] is in combat.</span>")
 		to_chat(target, "<span class='notice'>Your [attacker.name] is in combat.</span>")
