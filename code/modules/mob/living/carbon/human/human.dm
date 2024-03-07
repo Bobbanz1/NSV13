@@ -405,8 +405,8 @@
 					return
 				to_chat(usr, "<b>Comments/Log:</b>")
 				var/counter = 1
-				while(sec_record.fields[text("com_[]", counter)])
-					to_chat(usr, sec_record.fields[text("com_[]", counter)])
+				while(sec_record.fields["com_[counter]"])
+					to_chat(usr, sec_record.fields["com_[counter]"])
 					to_chat(usr, "----------")
 					counter++
 				return
@@ -420,9 +420,9 @@
 				if(!HAS_TRAIT(H, TRAIT_SECURITY_HUD))
 					return
 				var/counter = 1
-				while(sec_record.fields[text("com_[]", counter)])
+				while(sec_record.fields["com_[counter]"])
 					counter++
-				sec_record.fields[text("com_[]", counter)] = text("Made by [] on [] [], []<BR>[]", allowed_access, station_time_timestamp(), time2text(world.realtime, "MMM DD"), GLOB.year_integer+YEAR_OFFSET, t1) //NSV13 edit: year offset change
+				sec_record.fields["com_[counter]"] = "Made by [allowed_access] on [station_time_timestamp()] [time2text(world.realtime, "MMM DD")], [GLOB.year_integer+YEAR_OFFSET]<BR>[t1]" //NSV13 edit: year offset change
 				to_chat(usr, "<span class='notice'>Successfully added comment.</span>")
 				return
 		//NSV13 - Roleplaying Records - End

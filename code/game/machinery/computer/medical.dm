@@ -29,7 +29,7 @@
 		playsound(src, 'sound/machines/terminal_prompt_confirm.ogg', 50, FALSE)
 	var/dat
 	if(temp)
-		dat = text("<TT>[temp]</TT><BR><BR><A href='?src=[REF(src)];temp=1'>Clear Screen</A>")
+		dat = "<TT>[temp]</TT><BR><BR><A href='?src=[REF(src)];temp=1'>Clear Screen</A>"
 	else
 		if(authenticated)
 			switch(screen)
@@ -82,12 +82,12 @@
 							else
 								background = "'background-color:#4F7529;'"
 
-							dat += text("<tr style=[]><td><A href='?src=[REF(src)];d_rec=[]'>[]</a></td>", background, R.fields["id"], R.fields["name"])
-							dat += text("<td>[]</td>", R.fields["id"])
-							dat += text("<td><b>F:</b> []<BR><b>D:</b> []</td>", R.fields["fingerprint"], b_dna)
-							dat += text("<td>[]</td>", blood_type)
-							dat += text("<td>[]</td>", R.fields["p_stat"])
-							dat += text("<td>[]</td></tr>", R.fields["m_stat"])
+							dat += "<tr style=[background]><td><A href='?src=[REF(src)];d_rec=[R.fields["id"]]'>[R.fields["name"]]</a></td>"
+							dat += "<td>[R.fields["id"]]</td>"
+							dat += "<td><b>F:</b> [R.fields["fingerprint"]]<BR><b>D:</b> [b_dna]</td>"
+							dat += "<td>[blood_type]</td>"
+							dat += "<td>[R.fields["p_stat"]]</td>"
+							dat += "<td>[R.fields["m_stat"]]</td></tr>"
 					dat += "</table><hr width='75%' />"
 					dat += "<HR><A href='?src=[REF(src)];screen=1'>Back</A>"
 				if(3)
@@ -134,8 +134,8 @@
 
 						dat += "<tr><td><br><b><font size='4'>Comments/Log</font></b></td></tr>"
 						var/counter = 1
-						while(src.active2.fields[text("com_[]", counter)])
-							dat += "<tr><td>[active2.fields[text("com_[]", counter)]]</td></tr><tr><td><A href='?src=[REF(src)];del_c=[counter]'>Delete Entry</A></td></tr>"
+						while(src.active2.fields["com_[counter]"])
+							dat += "<tr><td>[active2.fields["com_[counter]"]]</td></tr><tr><td><A href='?src=[REF(src)];del_c=[counter]'>Delete Entry</A></td></tr>"
 							counter++
 						dat += "<tr><td><A href='?src=[REF(src)];add_c=1'>Add Entry</A></td></tr>"
 
@@ -467,7 +467,7 @@
 					var/datum/data/record/R = new /datum/data/record(  )
 					R.fields["name"] = src.active1.fields["name"]
 					R.fields["id"] = src.active1.fields["id"]
-					R.name = text("Medical Record #[]", R.fields["id"])
+					R.name = "Medical Record #[R.fields["id"]]"
 					R.fields["blood_type"] = "Unknown"
 					R.fields["b_dna"] = "Unknown"
 					R.fields["mi_dis"] = "None"
@@ -491,13 +491,13 @@
 				if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
 					return
 				var/counter = 1
-				while(src.active2.fields[text("com_[]", counter)])
+				while(src.active2.fields["com_[counter]"])
 					counter++
-				src.active2.fields[text("com_[]", counter)] = text("Made by [] ([]) on [] [], []<BR>[]", src.authenticated, src.rank, station_time_timestamp(), time2text(world.realtime, "MMM DD"), GLOB.year_integer+YEAR_OFFSET, t1) //NSV13 edit: year offset change
+				src.active2.fields["com_[counter]"] = "Made by [src.authenticated] ([src.rank]) on [station_time_timestamp()] [time2text(world.realtime, "MMM DD")], [GLOB.year_integer+YEAR_OFFSET]<BR>[t1]" //NSV13 edit: year offset change
 
 			else if(href_list["del_c"])
-				if((istype(src.active2, /datum/data/record) && src.active2.fields[text("com_[]", href_list["del_c"])]))
-					src.active2.fields[text("com_[]", href_list["del_c"])] = "<B>Deleted</B>"
+				if((istype(src.active2, /datum/data/record) && src.active2.fields["com_[href_list["del_c"]]"]))
+					src.active2.fields["com_[href_list["del_c"]]"] = "<B>Deleted</B>"
 
 			else if(href_list["search"])
 				var/t1 = stripped_input(usr, "Search String: (Name, DNA, or ID)", "Med. records")
@@ -512,7 +512,7 @@
 					else
 						//Foreach continue //goto(3229)
 				if(!( src.active2 ))
-					src.temp = text("Could not locate record [].", sanitize(t1))
+					src.temp = "Could not locate record [sanitize(t1)]."
 				else
 					for(var/datum/data/record/E in GLOB.data_core.general)
 						if((E.fields["name"] == src.active2.fields["name"] || E.fields["id"] == src.active2.fields["id"]))
@@ -530,9 +530,9 @@
 					var/obj/item/paper/printed_paper = new /obj/item/paper( src.loc )
 					var/final_paper_text = "<CENTER><B>Medical Record - (MR-[GLOB.data_core.medicalPrintCount])</B></CENTER><BR>"
 					if(active1 in GLOB.data_core.general)
-						final_paper_text += text("Name: [] ID: []<BR>\nGender: []<BR>\nSex: []<BR>\nAge: []<BR>", src.active1.fields["name"], src.active1.fields["id"], src.active1.fields["gender"], src.active1.fields["sex"], src.active1.fields["age"]) //NSV13
+						final_paper_text += "Name: [src.active1.fields["name"]] ID: [src.active1.fields["id"]]<BR>\nGender: [src.active1.fields["gender"]]<BR>\nSex: [src.active1.fields["sex"]]<BR>\nAge: [src.active1.fields["age"]]<BR>" //NSV13
 						final_paper_text += "\nSpecies: [active1.fields["species"]]<BR>"
-						final_paper_text += text("\nFingerprint: []<BR>\nPhysical Status: []<BR>\nMental Status: []<BR>", src.active1.fields["fingerprint"], src.active1.fields["p_stat"], src.active1.fields["m_stat"])
+						final_paper_text += "\nFingerprint: [src.active1.fields["fingerprint"]]<BR>\nPhysical Status: [src.active1.fields["p_stat"]]<BR>\nMental Status: [src.active1.fields["m_stat"]]<BR>"
 						//NSV13 - Roleplaying Records - Start
 						if(!(active1.fields["past_records"] == ""))
 							final_paper_text += "\nGeneral Records:\n[active1.fields["past_records"]]\n"
@@ -560,15 +560,16 @@
 						final_paper_text += "<BR>\nImportant Notes:"
 						final_paper_text += "<BR>\n\t[active2.fields["notes"]]"
 						final_paper_text += "<BR>\n"
+						final_paper_text += "<CENTER><B>Comments/Log</B></CENTER><BR>"
 						//NSV13 - Roleplaying Records - End
 						var/counter = 1
-						while(src.active2.fields[text("com_[]", counter)])
-							final_paper_text += text("[]<BR>", src.active2.fields[text("com_[]", counter)])
+						while(src.active2.fields["com_[counter]"])
+							final_paper_text += "[src.active2.fields["com_[counter]"]]<BR>"
 							counter++
-						printed_paper.name = text("MR-[] '[]'", GLOB.data_core.medicalPrintCount, src.active1.fields["name"])
+						printed_paper.name = "MR-[GLOB.data_core.medicalPrintCount] '[src.active1.fields["name"]]'"
 					else
 						final_paper_text += "<B>Medical Record Lost!</B><BR>"
-						printed_paper.name = text("MR-[] '[]'", GLOB.data_core.medicalPrintCount, "Record Lost")
+						printed_paper.name = "MR-[GLOB.data_core.medicalPrintCount] '["Record Lost"]'"
 					final_paper_text += "</TT>"
 					printed_paper.add_raw_text(final_paper_text)
 					printed_paper.update_appearance()
