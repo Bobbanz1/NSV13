@@ -2432,7 +2432,7 @@
 /obj/structure/hull_plate,
 /obj/machinery/ship_weapon/gauss_gun,
 /turf/open/floor/engine/airless,
-/area/space/nearstation)
+/area/nsv/weapons/gauss/battery/deck2/starboard)
 "kO" = (
 /obj/structure/cable{
 	icon_state = "1-4"
@@ -7146,6 +7146,9 @@
 	},
 /turf/open/floor/engine,
 /area/ai_monitored/turret_protected/aisat)
+"GF" = (
+/turf/closed/wall/r_wall,
+/area/nsv/weapons/gauss/battery/deck2/starboard)
 "GG" = (
 /obj/structure/cable{
 	icon_state = "1-2"
@@ -7751,6 +7754,10 @@
 /obj/item/stack/cable_coil/random,
 /turf/open/floor/plating,
 /area/maintenance/nsv/deck1/port)
+"Jj" = (
+/obj/structure/hull_plate,
+/turf/open/floor/engine/airless,
+/area/nsv/weapons/gauss/battery/deck2/starboard)
 "Jk" = (
 /obj/structure/fluff/bleepypanel{
 	dir = 4
@@ -11295,6 +11302,11 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer4,
 /turf/open/floor/carpet/blue,
 /area/crew_quarters/heads/chief)
+"Zu" = (
+/obj/structure/hull_plate,
+/obj/machinery/camera/autoname,
+/turf/open/floor/engine/airless,
+/area/nsv/weapons/gauss/battery/deck2/starboard)
 "ZA" = (
 /obj/structure/table/reinforced,
 /obj/item/reagent_containers/food/drinks/shaker,
@@ -42890,11 +42902,11 @@ LQ
 Ya
 rO
 MS
-lx
-mK
-mK
-mK
-mK
+GF
+Jj
+Jj
+Jj
+Jj
 mK
 Rg
 cL
@@ -43147,11 +43159,11 @@ MS
 Va
 rO
 MS
-mK
-mK
+Jj
+Jj
 kN
-mK
-mK
+Jj
+Jj
 mK
 Rg
 cL
@@ -43404,11 +43416,11 @@ MS
 wX
 db
 MS
-yg
-mK
-mK
-mK
-mK
+Zu
+Jj
+Jj
+Jj
+Jj
 mK
 Rg
 cx
@@ -43661,11 +43673,11 @@ MS
 dH
 rV
 MS
-mK
-mK
-mK
-mK
-mK
+Jj
+Jj
+Jj
+Jj
+Jj
 mK
 Rg
 cx
@@ -43918,11 +43930,11 @@ MS
 Om
 bU
 MS
-mK
-mK
+Jj
+Jj
 kN
-mK
-mK
+Jj
+Jj
 mK
 Rg
 cx
@@ -44175,11 +44187,11 @@ MS
 Ge
 lh
 MS
-lx
-mK
-mK
-mK
-mK
+GF
+Jj
+Jj
+Jj
+Jj
 mK
 Rg
 cx
@@ -44433,8 +44445,8 @@ MS
 ta
 MS
 MS
-lx
-lx
+GF
+GF
 MS
 MS
 MS

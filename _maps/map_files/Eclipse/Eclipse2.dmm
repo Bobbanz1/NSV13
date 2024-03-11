@@ -14,6 +14,9 @@
 	},
 /turf/open/floor/monotile/dark/airless,
 /area/space/nearstation)
+"bM" = (
+/turf/open/floor/plating/airless,
+/area/nsv/weapons/fore)
 "cf" = (
 /obj/effect/turf_decal/tile/ship/full/orange,
 /obj/effect/turf_decal/tile/ship/full/orange,
@@ -47,7 +50,7 @@
 "eO" = (
 /obj/machinery/ship_weapon/gauss_gun/east,
 /turf/open/floor/monotile/dark/airless,
-/area/space/nearstation)
+/area/nsv/weapons/fore)
 "fb" = (
 /obj/effect/turf_decal/ship/letter{
 	icon_state = "2"
@@ -314,6 +317,9 @@
 	},
 /turf/open/floor/monotile/steel/airless,
 /area/space/nearstation)
+"KH" = (
+/turf/open/floor/monotile/dark/airless,
+/area/nsv/weapons/fore)
 "Mm" = (
 /obj/structure/ladder,
 /obj/effect/turf_decal/stripes/box,
@@ -384,6 +390,11 @@
 /obj/item/stack/cable_coil/cut/red,
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
+"QY" = (
+/obj/structure/ladder,
+/obj/effect/turf_decal/stripes/box,
+/turf/open/floor/plating/airless,
+/area/nsv/weapons/fore)
 "RP" = (
 /obj/machinery/light/runway/delay4{
 	use_power = 0
@@ -30935,12 +30946,12 @@ YI
 YI
 YI
 YI
-YI
-YI
-YI
-YI
-YI
-YI
+KH
+KH
+KH
+KH
+KH
+KH
 YI
 NC
 MS
@@ -31192,12 +31203,12 @@ YI
 YI
 jF
 UK
-YI
+KH
 eO
-YI
-YI
+KH
+KH
 eO
-YI
+KH
 YI
 NC
 MS
@@ -31449,12 +31460,12 @@ YI
 YI
 YI
 YI
-YI
-YI
-YI
-YI
-UK
-YI
+KH
+KH
+KH
+KH
+bM
+KH
 YI
 NC
 MS
@@ -31706,12 +31717,12 @@ YI
 UK
 YI
 XJ
-YI
-YI
-Mm
-YI
-YI
-UK
+KH
+KH
+QY
+KH
+KH
+bM
 YI
 NC
 MS
@@ -31963,12 +31974,12 @@ YI
 YI
 YI
 ho
-YI
-YI
-YI
-YI
-YI
-YI
+KH
+KH
+KH
+KH
+KH
+KH
 YI
 NC
 MS
