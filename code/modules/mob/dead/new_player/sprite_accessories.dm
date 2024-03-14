@@ -2107,6 +2107,14 @@
 	name = "Moon Fly"
 	icon_state = "moonfly"
 
+/datum/sprite_accessory/moth_wings/witchwing
+	name = "Witch Wing"
+	icon_state = "witchwing"
+
+/datum/sprite_accessory/moth_wingsopen/witchwing
+	name = "Witch Wing"
+	icon_state = "witchwing"
+
 /datum/sprite_accessory/moth_wings/snow
 	name = "Snow"
 	icon_state = "snow"
@@ -2197,6 +2205,10 @@
 	name = "Snow"
 	icon_state = "snow"
 
+/datum/sprite_accessory/moth_antennae/witchwing
+	name = "Witch Wing"
+	icon_state = "witchwing"
+
 /datum/sprite_accessory/moth_markings // the markings that moths can have. finally something other than the boring tan
 	icon = 'icons/mob/moth_markings.dmi'
 	color_src = null
@@ -2248,6 +2260,10 @@
 /datum/sprite_accessory/moth_markings/moonfly
 	name = "Moon Fly"
 	icon_state = "moonfly"
+
+/datum/sprite_accessory/moth_markings/witchwing
+	name = "Witch Wing"
+	icon_state = "witchwing"
 
 // IPC accessories.
 
