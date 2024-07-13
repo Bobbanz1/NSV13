@@ -87,6 +87,9 @@ GLOBAL_LIST_INIT(available_ui_styles, sortList(list(
 		var/atom/movable/plane_master_controller/controller_instance = new mytype(null, src)
 		plane_master_controllers[controller_instance.name] = controller_instance
 
+	// NSV13 - Cabling - START
+	// RegisterSignal(mymob, COMSIG_VIEWDATA_UPDATE, PROC_REF(on_viewdata_update))
+	// NSV13 - Cabling - STOP
 
 /datum/hud/Destroy()
 	if(mymob?.hud_used == src)
@@ -123,6 +126,14 @@ GLOBAL_LIST_INIT(available_ui_styles, sortList(list(
 	mymob = null
 
 	return ..()
+
+/* NSV13 - Cabling - START
+/datum/hud/proc/on_viewdata_update(datum/source, view)
+	SIGNAL_HANDLER
+
+	view_audit_buttons()
+
+*/ // NSV13 - Cabling - STOP
 
 /mob
 	var/hud_type = /datum/hud

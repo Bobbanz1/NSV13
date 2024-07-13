@@ -1,3 +1,4 @@
+/// NSV13 - File Unticked upon introduction of lock_on_cursor.dm
 #define LOCKON_IGNORE_RESULT "ignore_my_result"
 #define LOCKON_RANGING_BREAK_CHECK if(current_ranging_id != this_id){return LOCKON_IGNORE_RESULT}
 

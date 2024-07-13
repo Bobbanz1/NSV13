@@ -146,12 +146,12 @@
 	var/projectile_pixel_homing_spread = 32
 	var/projectile_initial_spread_amount = 30
 	var/projectile_location_spread_amount = 12
-	var/datum/component/lockon_aiming/lockon_component
+	var/datum/component/lock_on_cursor/lockon_component //NSV13 - Cabling!
 	ranged_clickcd_override = TRUE
 
 /obj/effect/proc_holder/spell/aimed/spell_cards/on_activation(mob/M)
 	QDEL_NULL(lockon_component)
-	lockon_component = M.AddComponent(/datum/component/lockon_aiming, 5, typecacheof(list(/mob/living)), 1, null, CALLBACK(src, PROC_REF(on_lockon_component)))
+	lockon_component = M.AddComponent(/datum/component/lock_on_cursor, lock_cursor_range = 5, target_typecache = typecacheof(list(/mob/living)), lock_amount = 1, on_lock = CALLBACK(src, PROC_REF(on_lockon_component))) //NSV13 - Cabling!
 
 /obj/effect/proc_holder/spell/aimed/spell_cards/proc/on_lockon_component(list/locked_weakrefs)
 	if(!length(locked_weakrefs))

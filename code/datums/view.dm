@@ -21,6 +21,10 @@
 		assertFormat()
 		return
 	resetFormat()
+	/// NSV13 - Cabling - START
+	if(chief?.mob)
+		SEND_SIGNAL(chief.mob, COMSIG_VIEWDATA_UPDATE, getView())
+	/// NSV13 - Cabling - STOP
 
 /datum/viewData/proc/assertFormat()//T-Pose
 	winset(chief, "mapwindow.map", "zoom=0")
