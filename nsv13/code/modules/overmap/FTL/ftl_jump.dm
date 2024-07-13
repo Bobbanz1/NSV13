@@ -39,13 +39,12 @@
 	OM.forceMove(exit)
 	if(istype(OM, /obj/structure/overmap))
 		OM.current_system = src //Debugging purposes only
-	after_enter(OM)
+		after_enter(OM)
 
 /datum/star_system/proc/after_enter(obj/structure/overmap/OM)
 	if(desc)
 		OM.relay(null, "<span class='notice'><h2>Now entering [name]...</h2></span>")
 		OM.relay(null, "<span class='notice'>[desc]</span>")
-		//If we have an audio cue, ensure it doesn't overlap with a fleet's one...
 	//End the round upon entering O45.
 	if(system_traits & STARSYSTEM_END_ON_ENTER)
 		if(OM.role == MAIN_OVERMAP)
@@ -56,6 +55,7 @@
 			SSblackbox.record_feedback("text", "nsv_endings", 1, "succeeded")
 	if(!length(audio_cues))
 		return FALSE
+	//If we have an audio cue, ensure it doesn't overlap with a fleet's one...
 	for(var/datum/fleet/F as() in fleets)
 		if(length(F.audio_cues) && F.alignment != OM.faction && !F.federation_check(OM))
 			return TRUE
@@ -224,7 +224,10 @@
 	var/datum/star_system/curr = SSstar_system.ships[src]["current_system"]
 	SEND_SIGNAL(src, COMSIG_SHIP_DEPARTED) // Let missions know we have left the system
 	curr.remove_ship(src)
-	var/speed = (curr.dist(target_system) / (ftl_drive.get_jump_speed() * 10)) //TODO: FTL drive speed upgrades.
+	var/drive_speed = ftl_drive.get_jump_speed()
+	if(drive_speed <= 0) //Assumption: If we got into this proc with speed 0, we want it to jump anyways, as it should be caught before otherwise. Using very slow speed in this case.
+		drive_speed = 1 //Div-by-0s are not fun.
+	var/speed = (curr.dist(target_system) / (drive_speed * 10)) //TODO: FTL drive speed upgrades.
 	SSstar_system.ships[src]["to_time"] = world.time + speed MINUTES
 	SEND_SIGNAL(src, COMSIG_FTL_STATE_CHANGE)
 	if(role == MAIN_OVERMAP) //Scuffed please fix
